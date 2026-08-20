@@ -11,4 +11,4 @@ difference(){
 }
 // low corner retainers
 for(x=[-BOARD[0]/2,BOARD[0]/2],y=[-BOARD[1]/2,BOARD[1]/2]) translate([x,y,BASE_T]) cylinder(h=3,d=4);
-translate([0,0,-RM_RAIL_H]) male_interface();
+male_interface();

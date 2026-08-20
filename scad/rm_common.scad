@@ -40,13 +40,13 @@ module dovetail_channel(len=RM_DOCK_L) {
 }
 
 module male_interface() {
-    // Interface origin centered X/Y, bottom at Z=0.
+    // Interface origin centered X/Y at the carrier underside (Z=0).
     for (sx=[-1,1])
-      translate([sx*(RM_DOCK_W/2-RM_RAIL_INSET), -RM_DOCK_L/2+2, 0])
+      translate([sx*(RM_DOCK_W/2-RM_RAIL_INSET), -RM_DOCK_L/2+2, 0.1])
         rotate([-90,0,0]) dovetail_rail();
     // central catch boss engaged by dock latch
-    translate([-RM_LATCH_W/2, RM_DOCK_L/2-7, 0])
-      cube([RM_LATCH_W,4,1.25]);
+    translate([-RM_LATCH_W/2, RM_DOCK_L/2-7, -RM_RAIL_H+0.1])
+      cube([RM_LATCH_W,4,RM_RAIL_H]);
 }
 
 module dock_body_base() {
@@ -54,7 +54,7 @@ module dock_body_base() {
       rounded_box([RM_DOCK_W,RM_DOCK_L,RM_DOCK_H],2.2,center=true);
       // open female dovetails from insertion side
       for (sx=[-1,1])
-        translate([sx*(RM_DOCK_W/2-RM_RAIL_INSET), -RM_DOCK_L/2-0.2, -RM_DOCK_H/2+1.1])
+        translate([sx*(RM_DOCK_W/2-RM_RAIL_INSET), -RM_DOCK_L/2-0.2, RM_DOCK_H/2])
           rotate([-90,0,0]) dovetail_channel(len=RM_DOCK_L+1);
       // four M3 mounting holes
       for(x=[-10.5,10.5], y=[-12,12]) translate([x,y,0]) cylinder(h=RM_DOCK_H+2,d=RM_M3,center=true);
@@ -65,7 +65,7 @@ module dock_body_base() {
 
 module latch_finger() {
     // flexible cantilever integrated at back of dock
-    translate([-RM_LATCH_W/2, RM_DOCK_L/2-10, -RM_DOCK_H/2+0.7]) {
+    translate([-RM_LATCH_W/2, RM_DOCK_L/2-11.1, -RM_DOCK_H/2+0.7]) {
       cube([RM_LATCH_W,RM_LATCH_L,RM_LATCH_T]);
       translate([0,RM_LATCH_L-1.4,RM_LATCH_T]) cube([RM_LATCH_W,1.4,RM_LATCH_HOOK]);
       // thumb tab
@@ -91,7 +91,7 @@ module sensor_carrier(pcb=[20,20], wall=1.7, floor=1.8, clearance=0.5) {
       // small retention lips; gentle, printable snap
       for(x=[-W/2+2.2,W/2-2.2], y=[-L/2+2.2,L/2-2.2])
          translate([x,y,floor+2.5]) cylinder(h=1.3,d=2.2);
-      translate([0,0,-RM_RAIL_H]) male_interface();
+      male_interface();
     }
 }
 
@@ -103,11 +103,17 @@ module tag_insert(tag=[60,60], border=3.0, t=1.0) {
     }
 }
 
-module tag_insert_rails(tag=[60,60], border=4, rail=1.5, depth=2.2) {
+module tag_insert_rails(tag=[60,60], border=4, rail=1.5, depth=2.2, clearance=0.25, lip=0.8, lip_t=0.6) {
     W=tag[0]+2*border; H=tag[1]+2*border;
-    // rails intended to capture tag insert edges
-    for(sx=[-1,1]) translate([sx*(W/2-rail/2),0,0]) cube([rail,H,depth],center=true);
-    translate([0,H/2-rail/2,0]) cube([W,rail,depth],center=true); // hard stop
+    // Side channels capture the insert; the open -Y end matches the pull tab.
+    for(sx=[-1,1]) {
+      x=sx>0 ? W/2+clearance : -W/2-clearance-rail;
+      translate([x,-H/2-clearance,0]) cube([rail,H+2*clearance+rail,depth]);
+      translate([sx>0 ? W/2-lip : -W/2-clearance-rail,-H/2-clearance,depth-lip_t])
+        cube([rail+clearance+lip,H+2*clearance+rail,lip_t]);
+    }
+    // Hard stop at +Y; side lips provide out-of-plane retention.
+    translate([-W/2-clearance-rail,H/2+clearance,0]) cube([W+2*(clearance+rail),rail,depth]);
 }
 
 module angle_wedge(angle=15) {

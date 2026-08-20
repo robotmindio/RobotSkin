@@ -14,11 +14,17 @@ build() {
 
 models=(
   01_universal_dock
-  03_apriltag_insert 04_beacon_flat 05_beacon_cube
+  03_apriltag_insert 04_beacon_flat
   dock_90deg 08_esp32_uno_mount 09_cable_clip
 )
 
 for model in "${models[@]}"; do build "$model" "$model"; done
+
+build 05_beacon_cube_shell 05_beacon_cube -D 'PART="shell"'
+build 05_beacon_cube_lid 05_beacon_cube -D 'PART="lid"'
+build 05_beacon_cube_gasket 05_beacon_cube -D 'PART="gasket"'
+build 05_beacon_cube_pcb_carrier 05_beacon_cube -D 'PART="pcb_carrier"'
+build 05_beacon_cube_tag_insert 03_apriltag_insert -D 'TAG_SIZE=42'
 
 build carrier_20x20 02_carriers -D 'PCB=[20,20]'
 build carrier_20x40 02_carriers -D 'PCB=[20,40]'

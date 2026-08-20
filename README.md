@@ -14,7 +14,7 @@ The same lower interface is used by Grove carriers, the flat beacon, the cube be
 - Grove carriers: 20×20, 20×40, 20×60, 40×40, 40×60 mm.
 - Interchangeable AprilTag insert.
 - Flat AprilTag + beacon enclosure with provisional electronics cavity and RF keep-out opening.
-- Cube beacon with five tag faces and the same universal lower interface.
+- Dual-sided cube beacon with five exterior tag positions, four interior PCB-card positions, a gasketed bottom lid and the same universal lower interface.
 - 15°, 30°, 45° and 90° mounting concepts.
 - Adjustable Arduino-UNO-format ESP32-S3/Grove shield mount.
 - Grove cable clip.
@@ -25,7 +25,11 @@ For larger layouts, fasten docks to the robot chassis or an off-the-shelf perfor
 
 ## Important: Rev A is mechanical concept hardware
 
-Before printing the beacon enclosure as a final fit, **measure the actual UWB/beacon PCB, antenna location, connector location, and keep-out requirements** and update the `PCB` dimensions in `04_beacon_flat.scad` and the cube design if necessary.
+Before printing the beacon enclosure as a final fit, **measure the actual UWB/beacon PCB, antenna location, connector location, and keep-out requirements** and update the `PCB` dimensions in `04_beacon_flat.scad` and `05_beacon_cube.scad`.
+
+The cube exports as a continuous five-sided shell, dock lid, TPU gasket, generic PCB carrier and 42 mm AprilTag insert. PCB carriers slide into any combination of the four internal faces before the bottom lid is fitted; tag inserts remain independently removable outside. The shell defaults to 56 mm to clear the provisional 28×45 mm board.
+
+The gasketed lid is a waterproofing prototype, not an IP rating. Its 1.1 mm groove compresses the 1.5 mm TPU gasket by about 27%; use sealing washers on the four lid screws, sufficient wall perimeters, and a sealed cable gland for external wiring. Sensors that must sample outside air require a suitable membrane vent. Tune `TAG_CLEARANCE` and `SLIDE_CLEARANCE` for the printer before producing the full shell.
 
 Similarly, Grove boards nominally use standard board size classes, but individual modules can have connectors/components that overhang the nominal PCB. The carriers intentionally include clearance and an open top.
 
