@@ -12,7 +12,7 @@ the neighboring panel directly at either 0° or 90°.
 
 - Dense, double-sided hex dock panels in 42×42, 84×42 and 84×84 mm sizes.
 - Direct male/female hex panel edges for rigid flat and right-angle joints.
-- Optional M3 clamping at 90°, directly between panels.
+- Optional M3 locking for carriers and 90° panel joints.
 - Grove carriers for 20×20, 20×40, 20×60, 40×40 and 40×60 mm boards.
 - Arduino-UNO-format two-plug carrier.
 - AprilTag/beacon two-plug carrier and removable 60 mm tag insert.
@@ -30,7 +30,7 @@ blind with a solid center web, but the direct 90° joins have screw openings
 near the edges. Use sealing washers and sealant for wet operation.
 
 The tapered fits are printer-sensitive. Start with PETG, 0.20 mm layers,
-4 perimeters and 25–35% infill. Tune `RM_HEX_CLEARANCE` and
+4 perimeters and 25–35% infill. Tune `RM_HEX_ENTRY_CLEARANCE`, `RM_HEX_GRIP` and
 `RM_JOIN_CLEARANCE` by ±0.10 mm before printing full panels.
 
 Print the four separate `fit_test_*.stl` coupons first. Every generated model

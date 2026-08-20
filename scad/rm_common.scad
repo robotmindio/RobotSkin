@@ -1,21 +1,21 @@
 // RobotMind direct-join hex construction system.
-// All dimensions are millimetres; tune the two clearances after fit tests.
+// All dimensions are millimetres; tune the two fits after printing coupons.
 $fn = 48;
 
 RM_UNIT = 42;
 RM_PANEL_T = 10;
 
-// Carrier-to-panel tapered hex fit: no barbs, snap ridges or flexures.
+// One carrier joint: a progressive hex press fit plus an optional M3 lock.
 RM_SOCKET_DEPTH = 3.4;
 RM_HEX_R = 10.5;
 RM_HEX_TAPER = 0.28;
-RM_HEX_CLEARANCE = 0.24;
-RM_HEX_SEAT_CLEARANCE = RM_HEX_CLEARANCE/2;
+RM_HEX_ENTRY_CLEARANCE = 0.24;
+RM_HEX_GRIP = 0.08;
 RM_HEX_X = sqrt(3) * RM_HEX_R;
 RM_HEX_Y = 1.5 * RM_HEX_R;
 
 // Panel-to-panel direct join. Male pins fit the female edge at 0° or the
-// female face sockets at 90°. M3 screws are optional only at 90°.
+// female face sockets at 90°. Panel screws are optional at 90°.
 RM_JOIN_PITCH = 14;
 RM_JOIN_LENGTH = 3.0;
 RM_JOIN_R = 2.5;
@@ -25,9 +25,14 @@ RM_JOIN_SEAT_CLEARANCE = 0.10;
 RM_M3_CLEARANCE = 3.4;
 RM_M3_PILOT = 2.6;
 RM_M3_HEAD = 6.2;
+RM_M3_MEMBRANE = 0.3;
+RM_M3_BLIND_DEPTH =
+  (RM_PANEL_T-2*RM_SOCKET_DEPTH-RM_M3_MEMBRANE)/2;
 
 assert(RM_PANEL_T > 2 * RM_SOCKET_DEPTH,
        "Panel needs a solid web between its two carrier sockets");
+assert(RM_M3_BLIND_DEPTH > 0,
+       "Panel is too thin for double-sided blind M3 pilots");
 
 module rounded_box(size=[20,20,3], r=2, center=false) {
   x=size[0]; y=size[1]; z=size[2];
@@ -49,17 +54,25 @@ module hex_frustum(r1=RM_HEX_R, r2=RM_HEX_R, h=1) {
 }
 
 module top_socket_cut() {
-  translate([0,0,RM_PANEL_T-RM_SOCKET_DEPTH])
-    hex_frustum(RM_HEX_R-RM_HEX_TAPER,
-                 RM_HEX_R,
-                 RM_SOCKET_DEPTH+0.1);
+  union() {
+    translate([0,0,RM_PANEL_T-RM_SOCKET_DEPTH])
+      hex_frustum(RM_HEX_R-RM_HEX_TAPER,
+                   RM_HEX_R,
+                   RM_SOCKET_DEPTH+0.1);
+    translate([0,0,RM_PANEL_T-RM_SOCKET_DEPTH-RM_M3_BLIND_DEPTH])
+      cylinder(h=RM_M3_BLIND_DEPTH+0.1,d=RM_M3_PILOT,$fn=24);
+  }
 }
 
 module bottom_socket_cut() {
-  translate([0,0,-0.1])
-    hex_frustum(RM_HEX_R,
-                 RM_HEX_R-RM_HEX_TAPER,
-                 RM_SOCKET_DEPTH+0.1);
+  union() {
+    translate([0,0,-0.1])
+      hex_frustum(RM_HEX_R,
+                   RM_HEX_R-RM_HEX_TAPER,
+                   RM_SOCKET_DEPTH+0.1);
+    translate([0,0,RM_SOCKET_DEPTH-0.1])
+      cylinder(h=RM_M3_BLIND_DEPTH+0.1,d=RM_M3_PILOT,$fn=24);
+  }
 }
 
 module socket_pair() {
@@ -162,25 +175,36 @@ module dock_panel(size=[2*RM_UNIT,2*RM_UNIT]) {
   }
 }
 
-// Plain tapered plug. It locates on six rigid faces and cannot be damaged by
-// insertion because there is no interference ridge.
+// The tip enters freely; the last fraction of travel supplies the grip.
 module integral_hex_plug(at=[0,0]) {
   translate([at[0],at[1],-RM_SOCKET_DEPTH+0.2])
-    hex_frustum(RM_HEX_R-RM_HEX_TAPER-RM_HEX_CLEARANCE,
-                 RM_HEX_R-RM_HEX_SEAT_CLEARANCE,
+    hex_frustum(RM_HEX_R-RM_HEX_TAPER-RM_HEX_ENTRY_CLEARANCE,
+                 RM_HEX_R+RM_HEX_GRIP,
                  RM_SOCKET_DEPTH+0.1);
 }
 
-module two_integral_plugs() {
-  for(x=[-RM_HEX_X,RM_HEX_X]) integral_hex_plug([x,0]);
+// Adds one or more identical plugs. M3 is optional: the press fit works alone.
+module carrier_mount(points=[[0,0]]) {
+  difference() {
+    union() {
+      children();
+      for(at=points) integral_hex_plug(at);
+    }
+    for(at=points) {
+      translate([at[0],at[1],-RM_SOCKET_DEPTH])
+        cylinder(h=RM_SOCKET_DEPTH+100,d=RM_M3_CLEARANCE,$fn=24);
+      translate([at[0],at[1],-0.01])
+        cylinder(h=2.21,d=RM_M3_HEAD,$fn=32);
+    }
+  }
 }
 
 module sensor_carrier(pcb=[20,20], wall=1.7, floor=1.8, clearance=0.5) {
   W=pcb[0]+2*(wall+clearance);
   L=pcb[1]+2*(wall+clearance);
-  assert(W >= 2*(RM_HEX_R-RM_HEX_TAPER-RM_HEX_CLEARANCE),
+  assert(W >= 2*(RM_HEX_R+RM_HEX_GRIP),
          "Carrier is narrower than its integral hex plug");
-  union() {
+  carrier_mount() union() {
     translate([-W/2,-L/2,0]) difference() {
       rounded_box([W,L,floor+3.1],2);
       translate([wall,wall,floor])
@@ -189,7 +213,6 @@ module sensor_carrier(pcb=[20,20], wall=1.7, floor=1.8, clearance=0.5) {
     }
     for(x=[-W/2+2.2,W/2-2.2], y=[-L/2+2.2,L/2-2.2])
       translate([x,y,floor+2.5]) cylinder(h=1.3,d=2.2);
-    integral_hex_plug();
   }
 }
 

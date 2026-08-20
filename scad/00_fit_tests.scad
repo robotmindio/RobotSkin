@@ -14,9 +14,8 @@ module hex_socket_coupon() {
 }
 
 module hex_plug_coupon() {
-  union() {
+  carrier_mount() {
     translate([-14,-14,0]) rounded_box([28,28,2],1.5);
-    integral_hex_plug();
   }
 }
 

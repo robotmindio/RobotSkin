@@ -2,20 +2,23 @@
 
 ## Carrier to panel
 
-The carrier now uses a plain tapered hexagonal plug. There are no barbs,
-interference ridges or flexible tabs to scrape during insertion.
+Every carrier uses the same progressive tapered hexagonal plug. There are no
+barbs, flexible tabs or separate connector parts.
 
 - Socket depth: 3.4 mm
-- Nominal radial clearance: 0.24 mm
-- Final seat clearance: 0.12 mm
+- Entry clearance: 0.24 mm
+- Final radial grip: 0.08 mm
 - Taper: 0.28 mm across the insertion depth
 - One integral plug for Grove carriers
-- Two integral plugs for Arduino UNO and AprilTag/beacon carriers
+- Two identical plugs for Arduino UNO and AprilTag/beacon carriers
+- One optional M3 lock through the center of each plug
 
-The loose tip starts easily; only the final portion wedges to remove play.
-The six long faces resist rotation. Tune
-RM_HEX_CLEARANCE by ±0.10 mm after printing the separate plug and socket
-coupons.
+The loose tip starts easily; only the final portion grips. The M3 is not needed
+for normal use. If permanent locking is wanted, install it before the sensor:
+the screw passes through the carrier and forms its thread in the panel's blind
+2.6 mm pilot. A 0.3 mm membrane keeps opposite sockets separated and sealed
+until a screw intentionally pierces it. Tune `RM_HEX_ENTRY_CLEARANCE` and
+`RM_HEX_GRIP` after printing the separate plug and socket coupons.
 
 ## Panel to panel
 
