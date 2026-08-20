@@ -23,21 +23,17 @@ chosen insert, plus `RM_HEX_ENTRY_CLEARANCE` and
 
 ## Panel to panel
 
-Every panel has the same direct joining geometry:
+Every plate has the same direct joining geometry:
 
-- Integral tapered male hex pins on the +X and +Y edges.
-- Female edge sockets on the -X and -Y edges for coplanar 0° joints.
-- Female face sockets beside those same edges for perpendicular 90° joints.
+- Integral rectangular tabs on the +X and +Y edges.
+- Open edge slots on the -X and -Y edges for 90° corners.
 - No printed connector, hinge, rail or corner piece.
 
-At 0°, press an A edge directly into a B edge. At 90°, rotate the A panel so
-its pins enter the perpendicular sockets of the B panel. One M3 position per
-42 mm edge unit is counterbored from both faces. An M3 screw passes through
-the female panel and threads into a 2.6 mm blind pilot running through the
-male pin and into its panel edge.
+Rotate an A plate 90° so its tabs enter the open slots of a B plate. One M3
+position per 42 mm edge unit passes through the female plate and threads into
+a 2.6 mm blind pilot in the male tab.
 
-Use M3x12 screws at 90°, or M3x14 with a washer. The hex pins locate the panels; the screws
-only clamp them. The 84 mm edge provides two screw positions. Screws are
+The tabs locate the plates; the screws only clamp them. The 84 mm edge provides two screw positions. Screws are
 optional, and no heat-set insert or nut is required for the first prototypes.
 
 ## Printing and testing
@@ -49,8 +45,8 @@ Print these four separate files before a full panel:
 3. plate_joint_male_test.stl
 4. plate_joint_female_test.stl
 
-The edge coupons can be tested directly both coplanar and perpendicular. All
+The edge coupons test the 90° corner directly. All
 exports are already oriented for printing.
 
-The perpendicular socket and screw counterbore create an opening near panel
-edges. Use sealing washers and sealant if the final cube must resist water.
+Use sealing washers and sealant around optional screws if the final cube must
+resist water.

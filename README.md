@@ -5,14 +5,14 @@ A printable construction system in which the docks are the structure:
 `payload → carrier with integral hex plug → flat dock panel`
 
 There are no separate carrier feet, dock blocks, hinges, angle brackets or
-corner connectors. Tapered male hex pins on one panel enter female sockets in
-the neighboring panel directly at either 0° or 90°.
+corner connectors. Integral tabs enter open slots in the neighboring plate to
+form a direct 90° corner.
 
 ## Included models
 
 - Dense, double-sided hex plates in 42×42, 84×42 and 84×84 mm sizes.
-- Direct male/female hex panel edges for rigid flat and right-angle joints.
-- Optional M3 locking for carriers and 90° panel joints.
+- Direct tab-and-slot plate edges for rigid right-angle joints.
+- Optional M3 locking for carriers and plate corners.
 - Grove carriers for 20×20, 20×40, 20×60, 40×40 and 40×60 mm boards.
 - Arduino-UNO-format two-plug carrier.
 - AprilTag/beacon two-plug carrier and removable 60 mm tag insert.

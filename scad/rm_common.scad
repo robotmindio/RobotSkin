@@ -9,19 +9,16 @@ RM_PANEL_T = 12;
 RM_SOCKET_DEPTH = 3.4;
 RM_HEX_R = 10.5;
 RM_HEX_TAPER = 0.28;
-RM_HEX_ENTRY_CLEARANCE = 0.24;
-RM_HEX_GRIP = 0.08;
+RM_HEX_ENTRY_CLEARANCE = 0.10;
+RM_HEX_GRIP = 0.20;
 RM_HEX_X = sqrt(3) * RM_HEX_R;
 RM_HEX_Y = 1.5 * RM_HEX_R;
 
-// Panel-to-panel direct join. Male pins fit the female edge at 0° or the
-// female face sockets at 90°. Panel screws are optional at 90°.
+// Panel-to-panel 90° box joint: integral tabs enter open edge slots.
 RM_JOIN_PITCH = 14;
 RM_JOIN_LENGTH = 3.0;
-RM_JOIN_R = 2.5;
-RM_JOIN_TAPER = 0.18;
-RM_JOIN_CLEARANCE = 0.25;
-RM_JOIN_SEAT_CLEARANCE = 0.10;
+RM_JOIN_W = 8;
+RM_JOIN_CLEARANCE = 0.06;
 RM_M3_CLEARANCE = 3.4;
 RM_M3_PILOT = 2.6;
 RM_M3_HEAD = 6.2;
@@ -102,19 +99,16 @@ function join_index(p,edge_len) =
   round((p+edge_len/2-RM_JOIN_PITCH/2)/RM_JOIN_PITCH);
 function is_m3_join(p,edge_len) = join_index(p,edge_len)%3 == 1;
 
-// Integral tapered hex pins on an A edge (+Y in local coordinates).
+// Integral rectangular tabs on an A edge (+Y in local coordinates).
 module male_edge(edge_len, panel_half) {
   for(p=[-edge_len/2+RM_JOIN_PITCH/2:
          RM_JOIN_PITCH:
          edge_len/2-RM_JOIN_PITCH/2])
-    translate([p,panel_half-0.05,RM_PANEL_T/2])
-      rotate([-90,0,0])
-        hex_frustum(RM_JOIN_R+RM_JOIN_CLEARANCE-RM_JOIN_SEAT_CLEARANCE,
-                     RM_JOIN_R-RM_JOIN_TAPER,
-                     RM_JOIN_LENGTH+0.05);
+    translate([p-RM_JOIN_W/2,panel_half-0.05,0])
+      cube([RM_JOIN_W,RM_JOIN_LENGTH+0.05,RM_PANEL_T]);
 }
 
-// Blind thread-forming pilots continue through selected pins into the edge.
+// Blind thread-forming pilots continue through selected tabs into the edge.
 module male_edge_m3_cuts(edge_len, panel_half) {
   for(p=[-edge_len/2+RM_JOIN_PITCH/2:
          RM_JOIN_PITCH:
@@ -125,38 +119,29 @@ module male_edge_m3_cuts(edge_len, panel_half) {
           cylinder(h=RM_JOIN_LENGTH+4.2,d=RM_M3_PILOT,$fn=24);
 }
 
-// Female B edge (-Y): lateral sockets accept the same pins coplanar at 0°.
+// Female B edge (-Y): open slots accept tabs from either face at 90°.
 module female_edge_cuts(edge_len, panel_half) {
   for(p=[-edge_len/2+RM_JOIN_PITCH/2:
          RM_JOIN_PITCH:
-         edge_len/2-RM_JOIN_PITCH/2])
-    translate([p,-panel_half-0.1,RM_PANEL_T/2])
-      rotate([-90,0,0])
-        hex_frustum(RM_JOIN_R+RM_JOIN_CLEARANCE,
-                     RM_JOIN_R-RM_JOIN_TAPER+RM_JOIN_CLEARANCE,
-                     RM_JOIN_LENGTH+0.2);
-}
-
-// The same B edge has perpendicular sockets for a direct 90° connection.
-// Counterbores on both faces let the panel be flipped and still accept M3.
-module female_90_cuts(edge_len, panel_half) {
-  for(p=[-edge_len/2+RM_JOIN_PITCH/2:
-         RM_JOIN_PITCH:
          edge_len/2-RM_JOIN_PITCH/2]) {
-    translate([p,-panel_half+RM_PANEL_T/2,-0.1])
-      hex_frustum(RM_JOIN_R+RM_JOIN_CLEARANCE,
-                   RM_JOIN_R+RM_JOIN_CLEARANCE,
-                   RM_PANEL_T+0.2);
+    translate([p-RM_JOIN_W/2-RM_JOIN_CLEARANCE,
+               -panel_half-0.1,-0.1])
+      cube([RM_JOIN_W+2*RM_JOIN_CLEARANCE,
+            RM_PANEL_T+RM_JOIN_CLEARANCE,
+            RM_JOIN_LENGTH+0.1]);
+    translate([p-RM_JOIN_W/2-RM_JOIN_CLEARANCE,
+               -panel_half-0.1,RM_PANEL_T-RM_JOIN_LENGTH])
+      cube([RM_JOIN_W+2*RM_JOIN_CLEARANCE,
+            RM_PANEL_T+RM_JOIN_CLEARANCE,
+            RM_JOIN_LENGTH+0.1]);
     if(is_m3_join(p,edge_len)) {
       translate([p,-panel_half+RM_PANEL_T/2,-0.1])
-        cylinder(h=2.1,d=RM_M3_HEAD,$fn=32);
-      translate([p,-panel_half+RM_PANEL_T/2,RM_PANEL_T-2])
-        cylinder(h=2.1,d=RM_M3_HEAD,$fn=32);
+        cylinder(h=RM_PANEL_T+0.2,d=RM_M3_CLEARANCE,$fn=24);
     }
   }
 }
 
-// Identical panels: male joins on +X/+Y, dual female joins on -X/-Y.
+// Identical panels: tabs on +X/+Y and 90° slots on -X/-Y.
 module dock_panel(size=[2*RM_UNIT,2*RM_UNIT]) {
   assert(size[0] % RM_UNIT == 0 && size[1] % RM_UNIT == 0,
          "Panel dimensions must be whole 42 mm units");
@@ -169,11 +154,7 @@ module dock_panel(size=[2*RM_UNIT,2*RM_UNIT]) {
     }
     dense_socket_grid(size);
     female_edge_cuts(size[0],size[1]/2);
-    female_90_cuts(size[0],size[1]/2);
-    rotate([0,0,-90]) {
-      female_edge_cuts(size[1],size[0]/2);
-      female_90_cuts(size[1],size[0]/2);
-    }
+    rotate([0,0,-90]) female_edge_cuts(size[1],size[0]/2);
     male_edge_m3_cuts(size[0],size[1]/2);
     rotate([0,0,-90]) male_edge_m3_cuts(size[1],size[0]/2);
   }
