@@ -2,12 +2,13 @@ include <rm_common.scad>
 
 // Dual-sided cube: AprilTag cards outside, PCB carrier cards inside, one bottom seal.
 PART="shell"; // shell, lid, gasket or pcb_carrier
-TAG=42;
+TAG=60;
 TAG_CLEARANCE=0.25;
-PCB=[28,45]; // provisional board footprint; measure the real board before printing.
-CUBE=56;
+PCB=[54,69]; // Arduino UNO-format board rotated vertically on the carrier.
+PCB_DEPTH=18; // Includes headers/shield; measure the assembled stack before printing.
+CUBE=85;
 WALL=2.4;
-CARD=[42,48,1.6];
+CARD=[64,78,1.6];
 SLIDE_CLEARANCE=0.30;
 LID_T=3;
 GASKET_T=1.5;
@@ -16,7 +17,7 @@ GASKET_GROOVE=1.1;
 SCREW_D=3.3;
 PILOT_D=2.8;
 BOSS_D=6.5;
-SCREW_POS=24;
+SCREW_POS=CUBE/2-4;
 
 assert(PART=="shell" || PART=="lid" || PART=="gasket" || PART=="pcb_carrier",
        "PART must be shell, lid, gasket or pcb_carrier");
@@ -24,6 +25,8 @@ assert(CARD[0] < CUBE-2*WALL && CARD[1] < CUBE-WALL,
        "PCB carrier must fit inside the cube");
 assert(PCB[0]+6 < CARD[0] && PCB[1] <= CARD[1]-2,
        "PCB envelope is too large for the carrier");
+assert(2*(PCB_DEPTH+CARD[2]) < CUBE-2*WALL,
+       "Two opposing Arduino stacks are too deep for the cube");
 assert(GASKET_GROOVE > 0 && GASKET_GROOVE < GASKET_T,
        "Gasket groove must leave the gasket proud for compression");
 
@@ -104,11 +107,11 @@ module cube_gasket() {
 module pcb_carrier() {
   difference(){
     translate([0,0,CARD[2]/2]) rounded_box(CARD,1.5,center=true);
-    // Four generic zip-tie / M2 slots avoid assuming clone-specific hole positions.
-    for(x=[-PCB[0]/2-2.5,PCB[0]/2+2.5],y=[-12,12])
+    // Rotated version of the clone-tolerant slots used by the UNO tray.
+    for(x=[-20,20],y=[-27,27])
       translate([x,y,-0.1]) linear_extrude(height=CARD[2]+0.2) hull(){
-        translate([0,-2.5]) circle(d=2.8);
-        translate([0, 2.5]) circle(d=2.8);
+        translate([0,-3.35]) circle(d=3.3);
+        translate([0, 3.35]) circle(d=3.3);
       }
     // Cable notch faces the open bottom of the shell.
     translate([-5,-CARD[1]/2-0.1,-0.1]) cube([10,5,CARD[2]+0.2]);

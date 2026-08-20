@@ -27,7 +27,7 @@ For larger layouts, fasten docks to the robot chassis or an off-the-shelf perfor
 
 Before printing the beacon enclosure as a final fit, **measure the actual UWB/beacon PCB, antenna location, connector location, and keep-out requirements** and update the `PCB` dimensions in `04_beacon_flat.scad` and `05_beacon_cube.scad`.
 
-The cube exports as a continuous five-sided shell, dock lid, TPU gasket, generic PCB carrier and 42 mm AprilTag insert. PCB carriers slide into any combination of the four internal faces before the bottom lid is fitted; tag inserts remain independently removable outside. The shell defaults to 56 mm to clear the provisional 28×45 mm board.
+The cube exports as a continuous five-sided shell, dock lid, TPU gasket and Arduino UNO carrier. It reuses the same 60 mm AprilTag insert as the flat beacon. UNO-format boards mount vertically on any combination of the four internal faces before the bottom lid is fitted; tag inserts remain independently removable outside. The 85 mm shell fits the repository's 69×54 mm UNO envelope and allows two opposing board stacks up to 18 mm deep each.
 
 The gasketed lid is a waterproofing prototype, not an IP rating. Its 1.1 mm groove compresses the 1.5 mm TPU gasket by about 27%; use sealing washers on the four lid screws, sufficient wall perimeters, and a sealed cable gland for external wiring. Sensors that must sample outside air require a suitable membrane vent. Tune `TAG_CLEARANCE` and `SLIDE_CLEARANCE` for the printer before producing the full shell.
 
