@@ -33,7 +33,9 @@ The snap plug and hinge are printer-sensitive. Start with PETG, 0.20 mm layers,
 4 perimeters and 25–35% infill. Tune `RM_HEX_CLEARANCE` and
 `RM_HINGE_CLEARANCE` by ±0.10 mm before printing full panels.
 
-Print `fit_test_hex.stl` and `fit_test_hinge.stl` first.
+Print the four separate `fit_test_*.stl` coupons first. Every generated model
+is already oriented in its recommended printing position. Carriers stand on
+a long edge to avoid support beneath the integral plug; add a brim if needed.
 
 Measure actual electronics and antenna keep-outs before final use.
 

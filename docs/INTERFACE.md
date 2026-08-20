@@ -31,6 +31,8 @@ carriers use two plugs spaced to match the dense lattice.
 
 Print the fit-test parts before a full panel. Tune `RM_HEX_CLEARANCE` by
 ±0.10 mm and `RM_HINGE_CLEARANCE` by ±0.10 mm for the printer and material.
+The socket, plug, bead and channel are exported as four separate, print-ready
+STL files.
 
 ## Water resistance
 

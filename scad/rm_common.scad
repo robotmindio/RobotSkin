@@ -28,6 +28,14 @@ module rounded_box(size=[20,20,3], r=2, center=false) {
       offset(r=r) offset(delta=-r) square([x,y]);
 }
 
+module print_on_x_edge(span) {
+  translate([0,0,span/2]) rotate([0,90,0]) children();
+}
+
+module print_on_y_edge(span) {
+  translate([0,0,span/2]) rotate([90,0,0]) children();
+}
+
 module hex_prism(r=RM_HEX_R, h=1) {
   cylinder(r=r, h=h, $fn=6);
 }
