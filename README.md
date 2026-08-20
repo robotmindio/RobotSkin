@@ -14,7 +14,8 @@ printed connectors.
 - 40 mm structural unit; plates are 40×40, 80×40 or 80×80 mm.
 - 20 mm triangular socket pitch.
 - 16 mm hex width across flats, leaving 4 mm nominal ligaments.
-- 10 mm corner-tab pitch.
+- 5 mm engagement depth for both carrier and corner joints.
+- Progressive 7 mm corner tabs at 10 mm pitch.
 - One hex plug per carrier, including Arduino and AprilTag carriers.
 - Double-sided carrier sockets and corner slots.
 - Optional M3 locking; screws are never required for normal assembly.
@@ -53,10 +54,11 @@ All exports are oriented for their recommended print position.
 
 ## M3 locking and water resistance
 
-Each carrier socket contains a 4.0 mm pocket for a nominal 5 mm M3 heat-set
-insert. A 0.3 mm membrane keeps the opposite socket closed until an insert is
-installed. Insert and screw dimensions remain configurable in
-`scad/rm_common.scad`.
+Each carrier socket and selected corner tab contains a 4.0 mm pocket for a
+nominal 5 mm M3 heat-set insert. A 0.3 mm membrane keeps opposite carrier
+sockets closed until an insert is installed. Inserts and screws remain
+optional; the progressive press fits carry normal assemblies without them.
+Dimensions remain configurable in `scad/rm_common.scad`.
 
 V1 is not IP-rated. Blind sockets preserve the plate wall, but corner seams
 and optional screws require sealing. A waterproof product needs a dedicated

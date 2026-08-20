@@ -4,7 +4,7 @@
 
 - All dimensions are millimetres.
 - `RM_UNIT=40` defines plate sizes.
-- Plates are 12 mm thick and accept carriers from either face.
+- Plates are 16 mm thick and accept carriers from either face.
 - Positive `RM_FIT` values loosen carrier and corner fits together.
 
 ## Carrier interface
@@ -13,7 +13,7 @@ The universal carrier interface is one six-sided tapered plug:
 
 - Socket pitch: 20 mm triangular lattice.
 - Hex width across flats: 16 mm.
-- Socket depth: 3.4 mm.
+- Socket depth: 5 mm.
 - Entry clearance at `RM_FIT=0`: 0.10 mm radial.
 - Final grip at `RM_FIT=0`: 0.20 mm radial interference.
 - One plug per carrier; the hex prevents rotation.
@@ -30,11 +30,16 @@ socket's 4.0 mm pocket, then pass an M3 screw through the carrier. The central
 
 All plates use the same edge convention:
 
-- Integral 6 mm tabs at 10 mm pitch on +X and +Y.
+- Progressive 7 mm tabs at 10 mm pitch on +X and +Y.
+- Tab engagement depth: 5 mm.
 - Matching open slots on -X and -Y.
 - Tabs enter slots from either plate face to form a 90° corner.
-- One optional M3 clamp per 40 mm of edge.
+- One optional M3 clamp and heat-set insert per 40 mm of edge.
 - No flat 0° joint and no separate corner piece.
+
+Each tab starts undersize and wedges only during the final travel, so the
+corner holds without screws. Selected male tabs expose a 4.0×5 mm axial pocket
+for the same M3 heat-set insert used by carrier sockets.
 
 Plates are available in 40×40, 80×40 and 80×80 mm. Six 80×80 plates are the
 reference cube, but a complete cube closure must be verified with the corner

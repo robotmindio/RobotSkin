@@ -2,11 +2,11 @@
 $fn = 48;
 
 RM_UNIT = 40;
-RM_PLATE_T = 12;
+RM_PLATE_T = 16;
 RM_FIT = 0; // positive is looser; tune in 0.05 mm steps
 
 // One carrier joint: a progressive hex press fit plus an optional M3 lock.
-RM_SOCKET_DEPTH = 3.4;
+RM_SOCKET_DEPTH = 5;
 RM_HEX_AF = 16;
 RM_HEX_R = RM_HEX_AF/sqrt(3);
 RM_HEX_TAPER = 0.28;
@@ -18,11 +18,11 @@ RM_HEX_Y = sqrt(3)/2*RM_HEX_PITCH;
 
 // Plate-to-plate 90° box joint: integral tabs enter open edge slots.
 RM_JOIN_PITCH = 10;
-RM_JOIN_LENGTH = 3.0;
-RM_JOIN_W = 6;
-RM_JOIN_CLEARANCE = 0.06+RM_FIT;
+RM_JOIN_LENGTH = 5;
+RM_JOIN_W = 7;
+RM_JOIN_ENTRY_CLEARANCE = 0.10+RM_FIT;
+RM_JOIN_GRIP = 0.15-RM_FIT;
 RM_M3_CLEARANCE = 3.4;
-RM_M3_PILOT = 2.6;
 RM_M3_HEAD = 6.2;
 RM_M3_INSERT_HOLE = 4.0; // tune for the chosen M3 heat-set insert
 RM_M3_INSERT_LENGTH = 5.0;
@@ -33,7 +33,7 @@ RM_M3_BLIND_DEPTH =
 assert(RM_PLATE_T > 2 * RM_SOCKET_DEPTH,
        "Plate needs a solid web between its two carrier sockets");
 assert(RM_HEX_ENTRY_CLEARANCE >= 0 && RM_HEX_GRIP > 0 &&
-       RM_JOIN_CLEARANCE >= 0,
+       RM_JOIN_ENTRY_CLEARANCE >= 0 && RM_JOIN_GRIP > 0,
        "RM_FIT is outside the printable range");
 assert(RM_M3_BLIND_DEPTH > 0,
        "Plate is too thin for double-sided M3 insert pockets");
@@ -109,24 +109,31 @@ function join_index(p,edge_len) =
   round((p+edge_len/2-RM_JOIN_PITCH/2)/RM_JOIN_PITCH);
 function is_m3_join(p,edge_len) = join_index(p,edge_len)%4 == 1;
 
-// Integral rectangular tabs on an A edge (+Y in local coordinates).
+// Progressive tabs: a loose tip guides insertion and the root wedges firmly.
 module male_edge(edge_len, plate_half) {
+  root_w=RM_JOIN_W+2*RM_JOIN_GRIP;
+  tip_w=RM_JOIN_W-2*RM_JOIN_ENTRY_CLEARANCE;
   for(p=[-edge_len/2+RM_JOIN_PITCH/2:
          RM_JOIN_PITCH:
          edge_len/2-RM_JOIN_PITCH/2])
-    translate([p-RM_JOIN_W/2,plate_half-0.05,0])
-      cube([RM_JOIN_W,RM_JOIN_LENGTH+0.05,RM_PLATE_T]);
+    hull() {
+      translate([p-root_w/2,plate_half-0.05,0])
+        cube([root_w,0.1,RM_PLATE_T]);
+      translate([p-tip_w/2,plate_half+RM_JOIN_LENGTH-0.05,0])
+        cube([tip_w,0.1,RM_PLATE_T]);
+    }
 }
 
-// Blind thread-forming pilots continue through selected tabs into the edge.
-module male_edge_m3_cuts(edge_len, plate_half) {
+// Selected tabs accept the same 5 mm M3 heat-set insert as carrier sockets.
+module male_edge_insert_cuts(edge_len, plate_half) {
   for(p=[-edge_len/2+RM_JOIN_PITCH/2:
          RM_JOIN_PITCH:
          edge_len/2-RM_JOIN_PITCH/2])
     if(is_m3_join(p,edge_len))
-      translate([p,plate_half-4,RM_PLATE_T/2])
-        rotate([-90,0,0])
-          cylinder(h=RM_JOIN_LENGTH+4.2,d=RM_M3_PILOT,$fn=24);
+      translate([p,plate_half+RM_JOIN_LENGTH+0.1,RM_PLATE_T/2])
+        rotate([90,0,0])
+          cylinder(h=RM_M3_INSERT_LENGTH+0.2,
+                   d=RM_M3_INSERT_HOLE,$fn=24);
 }
 
 // Female B edge (-Y): open slots accept tabs from either face at 90°.
@@ -134,15 +141,15 @@ module female_edge_cuts(edge_len, plate_half) {
   for(p=[-edge_len/2+RM_JOIN_PITCH/2:
          RM_JOIN_PITCH:
          edge_len/2-RM_JOIN_PITCH/2]) {
-    translate([p-RM_JOIN_W/2-RM_JOIN_CLEARANCE,
+    translate([p-RM_JOIN_W/2,
                -plate_half-0.1,-0.1])
-      cube([RM_JOIN_W+2*RM_JOIN_CLEARANCE,
-            RM_PLATE_T+RM_JOIN_CLEARANCE,
+      cube([RM_JOIN_W,
+            RM_PLATE_T+0.1,
             RM_JOIN_LENGTH+0.1]);
-    translate([p-RM_JOIN_W/2-RM_JOIN_CLEARANCE,
+    translate([p-RM_JOIN_W/2,
                -plate_half-0.1,RM_PLATE_T-RM_JOIN_LENGTH])
-      cube([RM_JOIN_W+2*RM_JOIN_CLEARANCE,
-            RM_PLATE_T+RM_JOIN_CLEARANCE,
+      cube([RM_JOIN_W,
+            RM_PLATE_T+0.1,
             RM_JOIN_LENGTH+0.1]);
     if(is_m3_join(p,edge_len)) {
       translate([p,-plate_half+RM_PLATE_T/2,-0.1])
@@ -165,8 +172,8 @@ module plate(size=[2*RM_UNIT,2*RM_UNIT]) {
     dense_socket_grid(size);
     female_edge_cuts(size[0],size[1]/2);
     rotate([0,0,-90]) female_edge_cuts(size[1],size[0]/2);
-    male_edge_m3_cuts(size[0],size[1]/2);
-    rotate([0,0,-90]) male_edge_m3_cuts(size[1],size[0]/2);
+    male_edge_insert_cuts(size[0],size[1]/2);
+    rotate([0,0,-90]) male_edge_insert_cuts(size[1],size[0]/2);
   }
 }
 

@@ -25,7 +25,7 @@ module edge_male_coupon() {
       translate([-15,-10,0]) rounded_box([30,20,RM_PLATE_T],1);
       male_edge(30,10);
     }
-    male_edge_m3_cuts(30,10);
+    male_edge_insert_cuts(30,10);
   }
 }
 
