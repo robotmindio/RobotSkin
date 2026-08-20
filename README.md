@@ -10,7 +10,7 @@ the neighboring panel directly at either 0° or 90°.
 
 ## Included models
 
-- Dense, double-sided hex dock panels in 42×42, 84×42 and 84×84 mm sizes.
+- Dense, double-sided hex plates in 42×42, 84×42 and 84×84 mm sizes.
 - Direct male/female hex panel edges for rigid flat and right-angle joints.
 - Optional M3 locking for carriers and 90° panel joints.
 - Grove carriers for 20×20, 20×40, 20×60, 40×40 and 40×60 mm boards.
@@ -33,7 +33,8 @@ The tapered fits are printer-sensitive. Start with PETG, 0.20 mm layers,
 4 perimeters and 25–35% infill. Tune `RM_HEX_ENTRY_CLEARANCE`, `RM_HEX_GRIP` and
 `RM_JOIN_CLEARANCE` by ±0.10 mm before printing full panels.
 
-Print the four separate `fit_test_*.stl` coupons first. Every generated model
+Print the two `fit_test_hex_*.stl` and two `plate_joint_*_test.stl` coupons
+first. Every generated model
 is already oriented in its recommended printing position. Carriers stand on
 a long edge to avoid support beneath the integral plug; add a brim if needed.
 

@@ -11,13 +11,14 @@ barbs, flexible tabs or separate connector parts.
 - Taper: 0.28 mm across the insertion depth
 - One integral plug for Grove carriers
 - Two identical plugs for Arduino UNO and AprilTag/beacon carriers
-- One optional M3 lock through the center of each plug
+- One optional M3 heat-set insert and lock through the center of each plug
 
 The loose tip starts easily; only the final portion grips. The M3 is not needed
-for normal use. If permanent locking is wanted, install it before the sensor:
-the screw passes through the carrier and forms its thread in the panel's blind
-2.6 mm pilot. A 0.3 mm membrane keeps opposite sockets separated and sealed
-until a screw intentionally pierces it. Tune `RM_HEX_ENTRY_CLEARANCE` and
+for normal use. If permanent locking is wanted, heat an M3 insert into the
+4.0 mm central pocket, then install the screw through the carrier before the
+sensor. A 0.3 mm membrane keeps opposite sockets separated and sealed until
+an insert intentionally melts through it. Tune `RM_M3_INSERT_HOLE` for the
+chosen insert, plus `RM_HEX_ENTRY_CLEARANCE` and
 `RM_HEX_GRIP` after printing the separate plug and socket coupons.
 
 ## Panel to panel
@@ -45,8 +46,8 @@ Print these four separate files before a full panel:
 
 1. fit_test_hex_socket.stl
 2. fit_test_hex_plug.stl
-3. fit_test_edge_male.stl
-4. fit_test_edge_female.stl
+3. plate_joint_male_test.stl
+4. plate_joint_female_test.stl
 
 The edge coupons can be tested directly both coplanar and perpendicular. All
 exports are already oriented for printing.

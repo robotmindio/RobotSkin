@@ -3,7 +3,7 @@
 $fn = 48;
 
 RM_UNIT = 42;
-RM_PANEL_T = 10;
+RM_PANEL_T = 12;
 
 // One carrier joint: a progressive hex press fit plus an optional M3 lock.
 RM_SOCKET_DEPTH = 3.4;
@@ -25,6 +25,8 @@ RM_JOIN_SEAT_CLEARANCE = 0.10;
 RM_M3_CLEARANCE = 3.4;
 RM_M3_PILOT = 2.6;
 RM_M3_HEAD = 6.2;
+RM_M3_INSERT_HOLE = 4.0; // tune for the chosen M3 heat-set insert
+RM_M3_INSERT_LENGTH = 5.0;
 RM_M3_MEMBRANE = 0.3;
 RM_M3_BLIND_DEPTH =
   (RM_PANEL_T-2*RM_SOCKET_DEPTH-RM_M3_MEMBRANE)/2;
@@ -32,7 +34,9 @@ RM_M3_BLIND_DEPTH =
 assert(RM_PANEL_T > 2 * RM_SOCKET_DEPTH,
        "Panel needs a solid web between its two carrier sockets");
 assert(RM_M3_BLIND_DEPTH > 0,
-       "Panel is too thin for double-sided blind M3 pilots");
+       "Panel is too thin for double-sided M3 insert pockets");
+assert(2*RM_M3_BLIND_DEPTH+RM_M3_MEMBRANE >= RM_M3_INSERT_LENGTH,
+       "Panel web is too thin for the M3 insert");
 
 module rounded_box(size=[20,20,3], r=2, center=false) {
   x=size[0]; y=size[1]; z=size[2];
@@ -60,7 +64,7 @@ module top_socket_cut() {
                    RM_HEX_R,
                    RM_SOCKET_DEPTH+0.1);
     translate([0,0,RM_PANEL_T-RM_SOCKET_DEPTH-RM_M3_BLIND_DEPTH])
-      cylinder(h=RM_M3_BLIND_DEPTH+0.1,d=RM_M3_PILOT,$fn=24);
+      cylinder(h=RM_M3_BLIND_DEPTH+0.1,d=RM_M3_INSERT_HOLE,$fn=24);
   }
 }
 
@@ -71,7 +75,7 @@ module bottom_socket_cut() {
                    RM_HEX_R-RM_HEX_TAPER,
                    RM_SOCKET_DEPTH+0.1);
     translate([0,0,RM_SOCKET_DEPTH-0.1])
-      cylinder(h=RM_M3_BLIND_DEPTH+0.1,d=RM_M3_PILOT,$fn=24);
+      cylinder(h=RM_M3_BLIND_DEPTH+0.1,d=RM_M3_INSERT_HOLE,$fn=24);
   }
 }
 

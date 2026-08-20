@@ -14,13 +14,13 @@ build() {
   openscad "$@" -o "$STL/$output.stl" "$SCAD/$source.scad"
 }
 
-build dock_panel_1x1 01_dock_panels -D 'PANEL=[42,42]'
-build dock_panel_2x1 01_dock_panels -D 'PANEL=[84,42]'
-build dock_panel_2x2 01_dock_panels -D 'PANEL=[84,84]'
+build plate_42x42 01_dock_panels -D 'PANEL=[42,42]'
+build plate_84x42 01_dock_panels -D 'PANEL=[84,42]'
+build plate_84x84 01_dock_panels -D 'PANEL=[84,84]'
 build fit_test_hex_socket 00_fit_tests -D 'PART="hex_socket"'
 build fit_test_hex_plug 00_fit_tests -D 'PART="hex_plug"'
-build fit_test_edge_male 00_fit_tests -D 'PART="edge_male"'
-build fit_test_edge_female 00_fit_tests -D 'PART="edge_female"'
+build plate_joint_male_test 00_fit_tests -D 'PART="edge_male"'
+build plate_joint_female_test 00_fit_tests -D 'PART="edge_female"'
 
 build apriltag_insert 03_apriltag_insert
 build apriltag_beacon_carrier 04_beacon_flat
