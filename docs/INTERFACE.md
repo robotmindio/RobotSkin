@@ -1,24 +1,40 @@
-# Universal mechanical interface
+# Modular hex interface
 
-Current prototype target dimensions:
+## Dock panels
 
-- Dock footprint: 30 × 34 mm
-- Dock body: 5 mm
-- Two longitudinal dovetail rails
-- Nominal FDM sliding clearance: 0.28 mm per side
-- Flexible rear latch: 7 mm wide
-- Four M3 mounting positions
+- Base construction unit: 42 mm
+- Printable panels: 42×42, 84×42 and 84×84 mm
+- Panel thickness: 7 mm
+- Dense 18.2 mm flat-to-flat hex socket lattice
+- Mirrored 2.4 mm blind sockets with a 2.2 mm solid center web
+- Nominal plug clearance: 0.28 mm
 
-## Installation
+Every panel has integral faceted bead segments on its `+X` and `+Y` edges and
+integral snap channels on its `-X` and `-Y` edges. Rotate a panel until an A
+edge meets a B edge, press the short segments together, then leave the joint
+flat or rotate it to 90°. The faceted rail supplies both detents. No hinge pin,
+corner key or bracket is required.
 
-1. Align the carrier with the two dock rails.
-2. Slide from the open end.
-3. Push until the carrier reaches the hard stop and the latch clicks behind the catch.
+Six 84×84 panels make a cube. Smaller panels extend a face on the same 42 mm
+grid.
 
-## Removal
+## Carriers
 
-1. Press the rear latch tab.
-2. Slide the carrier toward the insertion side.
-3. Disconnect the Grove/JST cable if fitted.
+Each carrier includes its male hex plug in the same print:
 
-This deliberately avoids making the snap-fit carry the sensor load. The dovetails handle alignment and mechanical loads; the latch only prevents reverse sliding.
+1. Align the plug with any socket.
+2. Press straight in until the shallow split ridge snaps beneath the lip.
+3. Pull straight out with a gentle rocking motion to remove.
+
+Small Grove carriers use one plug. The AprilTag/beacon and Arduino UNO
+carriers use two plugs spaced to match the dense lattice.
+
+Print the fit-test parts before a full panel. Tune `RM_HEX_CLEARANCE` by
+±0.10 mm and `RM_HINGE_CLEARANCE` by ±0.10 mm for the printer and material.
+
+## Water resistance
+
+The blind sockets do not penetrate the panel. Direct panel joints are suitable
+as a structural prototype and rain labyrinth, not an immersion seal. Add a
+continuous TPU seam gasket or a thin waterproof inner liner when sealing is
+required.

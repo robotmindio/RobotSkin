@@ -1,126 +1,180 @@
-// RobotMind Modular Ecosystem — common library
-// Rev A concept for FDM prototyping.
+// RobotMind modular hex construction system — common geometry.
+// All dimensions are millimetres; tune the two clearances for the printer.
 $fn = 48;
 
-// ---- Global mechanical interface ----
-RM_DOCK_W = 30;
-RM_DOCK_L = 34;
-RM_DOCK_H = 5;
-RM_RAIL_H = 2.6;
-RM_RAIL_W = 3.2;
-RM_RAIL_INSET = 3.8;
-RM_CLEARANCE = 0.28;   // FDM sliding clearance per side
-RM_LATCH_W = 7;
-RM_LATCH_L = 9;
-RM_LATCH_T = 1.6;
-RM_LATCH_HOOK = 1.1;
-RM_M3 = 3.3;
+RM_UNIT = 42;
+RM_PANEL_T = 7;
+RM_SOCKET_DEPTH = 2.4;
+RM_HEX_R = 10.5;
+RM_HEX_CLEARANCE = 0.28;
+RM_SNAP = 0.30;
+RM_HEX_X = sqrt(3) * RM_HEX_R;
+RM_HEX_Y = 1.5 * RM_HEX_R;
+
+RM_HINGE_PITCH = 14;
+RM_HINGE_LEN = 10;
+RM_HINGE_R = 2.0;
+RM_HINGE_CLEARANCE = 0.25;
+RM_CHANNEL_R = 3.1;
+RM_HINGE_Z = RM_CHANNEL_R*cos(22.5);
+
+assert(RM_PANEL_T > 2 * RM_SOCKET_DEPTH,
+       "Panel needs a solid web between its two socket faces");
 
 module rounded_box(size=[20,20,3], r=2, center=false) {
-    x=size[0]; y=size[1]; z=size[2];
-    translate(center ? [-x/2,-y/2,-z/2] : [0,0,0])
+  x=size[0]; y=size[1]; z=size[2];
+  translate(center ? [-x/2,-y/2,-z/2] : [0,0,0])
     linear_extrude(height=z)
-      offset(r=r)
-      offset(delta=-r)
-      square([x,y]);
+      offset(r=r) offset(delta=-r) square([x,y]);
 }
 
-// Male dovetail rail. The simplified trapezoid is robust in FDM and moldable.
-module dovetail_rail(len=RM_DOCK_L-4) {
-    w=RM_RAIL_W; h=RM_RAIL_H;
-    linear_extrude(height=len)
-      polygon(points=[[-w/2,0],[w/2,0],[w/2+1.0,h],[-w/2-1.0,h]]);
+module hex_prism(r=RM_HEX_R, h=1) {
+  cylinder(r=r, h=h, $fn=6);
 }
 
-// Female channel cutter, slightly oversized.
-module dovetail_channel(len=RM_DOCK_L) {
-    w=RM_RAIL_W+2*RM_CLEARANCE; h=RM_RAIL_H+RM_CLEARANCE;
-    linear_extrude(height=len)
-      polygon(points=[[-w/2,0],[w/2,0],[w/2+1.15,h],[-w/2-1.15,h]]);
+// A shallow expanded pocket below the entry lip creates the snap catch.
+module top_socket_cut() {
+  translate([0,0,RM_PANEL_T-RM_SOCKET_DEPTH])
+    hex_prism(RM_HEX_R + RM_SNAP, RM_SOCKET_DEPTH-0.65);
+  translate([0,0,RM_PANEL_T-RM_SOCKET_DEPTH+0.65])
+    hex_prism(RM_HEX_R, RM_SOCKET_DEPTH+0.1);
 }
 
-module male_interface() {
-    // Interface origin centered X/Y at the carrier underside (Z=0).
-    for (sx=[-1,1])
-      translate([sx*(RM_DOCK_W/2-RM_RAIL_INSET), -RM_DOCK_L/2+2, 0.1])
-        rotate([-90,0,0]) dovetail_rail();
-    // central catch boss engaged by dock latch
-    translate([-RM_LATCH_W/2, RM_DOCK_L/2-7, -RM_RAIL_H+0.1])
-      cube([RM_LATCH_W,4,RM_RAIL_H]);
+module bottom_socket_cut() {
+  translate([0,0,-0.1]) hex_prism(RM_HEX_R, RM_SOCKET_DEPTH-0.55);
+  translate([0,0,0.65])
+    hex_prism(RM_HEX_R + RM_SNAP, RM_SOCKET_DEPTH-0.55);
 }
 
-module dock_body_base() {
-    difference(){
-      rounded_box([RM_DOCK_W,RM_DOCK_L,RM_DOCK_H],2.2,center=true);
-      // open female dovetails from insertion side
-      for (sx=[-1,1])
-        translate([sx*(RM_DOCK_W/2-RM_RAIL_INSET), -RM_DOCK_L/2-0.2, RM_DOCK_H/2])
-          rotate([-90,0,0]) dovetail_channel(len=RM_DOCK_L+1);
-      // four M3 mounting holes
-      for(x=[-10.5,10.5], y=[-12,12]) translate([x,y,0]) cylinder(h=RM_DOCK_H+2,d=RM_M3,center=true);
-      // latch relief window
-      translate([-RM_LATCH_W/2-0.5, RM_DOCK_L/2-11, -RM_DOCK_H/2-0.1]) cube([RM_LATCH_W+1,11,RM_DOCK_H+1]);
+module socket_pair() {
+  top_socket_cut();
+  bottom_socket_cut();
+}
+
+// Dense pointy-top honeycomb, clipped to leave material around every edge.
+module dense_socket_grid(size=[2*RM_UNIT,2*RM_UNIT]) {
+  rows=ceil(size[1]/RM_HEX_Y)+2;
+  cols=ceil(size[0]/RM_HEX_X)+2;
+  margin=2;
+  for(row=[-rows:rows], col=[-cols:cols]) {
+    y=(row+0.5)*RM_HEX_Y;
+    x=(col + ((abs(row)%2)==1 ? 0.5 : 0))*RM_HEX_X;
+    if(abs(x)+RM_HEX_X/2 <= size[0]/2-margin &&
+       abs(y)+RM_HEX_R <= size[1]/2-margin)
+      translate([x,y,0]) socket_pair();
+  }
+}
+
+module hinge_bead_segment() {
+  rotate([0,90,0]) rotate([0,0,22.5])
+    cylinder(h=RM_HINGE_LEN,r=RM_HINGE_R,$fn=8,center=true);
+}
+
+module hinge_channel_segment() {
+  // Short channels flex over the faceted bead. Its flats detent at 0°/90°.
+  rotate([0,90,0]) difference() {
+    rotate([0,0,22.5])
+      cylinder(h=RM_HINGE_LEN,r=RM_CHANNEL_R,$fn=8,center=true);
+    rotate([0,0,22.5])
+      cylinder(h=RM_HINGE_LEN+0.2,
+               r=RM_HINGE_R+RM_HINGE_CLEARANCE,$fn=8,center=true);
+    translate([-1.7,-RM_CHANNEL_R-0.1,-RM_HINGE_LEN/2-0.2])
+      cube([3.4,RM_CHANNEL_R+0.2,RM_HINGE_LEN+0.4]);
+  }
+}
+
+module edge_a(edge_len, panel_half) {
+  for(p=[-edge_len/2+RM_HINGE_PITCH/2:
+         RM_HINGE_PITCH:
+         edge_len/2-RM_HINGE_PITCH/2]) {
+    translate([p,panel_half+RM_HINGE_R-0.3,RM_HINGE_Z])
+      hinge_bead_segment();
+  }
+}
+
+module edge_b(edge_len, panel_half) {
+  for(p=[-edge_len/2+RM_HINGE_PITCH/2:
+         RM_HINGE_PITCH:
+         edge_len/2-RM_HINGE_PITCH/2]) {
+    translate([p,-panel_half-RM_CHANNEL_R+0.3,RM_HINGE_Z])
+      hinge_channel_segment();
+  }
+}
+
+// Every panel is the same type: bead rails on +X/+Y, snap channels on -X/-Y.
+// Rotate panels to select the mating edge; no pins, keys, screws or brackets.
+module dock_panel(size=[2*RM_UNIT,2*RM_UNIT]) {
+  assert(size[0] % RM_UNIT == 0 && size[1] % RM_UNIT == 0,
+         "Panel dimensions must be whole 42 mm units");
+  difference() {
+    union() {
+      translate([-size[0]/2,-size[1]/2,0])
+        rounded_box([size[0],size[1],RM_PANEL_T],1.5);
+      edge_a(size[0],size[1]/2);
+      rotate([0,0,-90]) edge_a(size[1],size[0]/2);
+      edge_b(size[0],size[1]/2);
+      rotate([0,0,-90]) edge_b(size[1],size[0]/2);
     }
+    dense_socket_grid(size);
+  }
 }
 
-module latch_finger() {
-    // flexible cantilever integrated at back of dock
-    translate([-RM_LATCH_W/2, RM_DOCK_L/2-11.1, -RM_DOCK_H/2+0.7]) {
-      cube([RM_LATCH_W,RM_LATCH_L,RM_LATCH_T]);
-      translate([0,RM_LATCH_L-1.4,RM_LATCH_T]) cube([RM_LATCH_W,1.4,RM_LATCH_HOOK]);
-      // thumb tab
-      translate([-1.2,RM_LATCH_L-0.8,-0.2]) cube([RM_LATCH_W+2.4,3,RM_LATCH_T+0.4]);
+// Printed as part of the carrier. Three slots let the shallow snap ridge flex.
+module integral_hex_plug(at=[0,0]) {
+  translate([at[0],at[1],0]) difference() {
+    union() {
+      translate([0,0,-RM_SOCKET_DEPTH+0.25])
+        hex_prism(RM_HEX_R-RM_HEX_CLEARANCE,RM_SOCKET_DEPTH+0.05);
+      translate([0,0,-RM_SOCKET_DEPTH+0.25])
+        hex_prism(RM_HEX_R+RM_SNAP/2,0.55);
     }
+    for(a=[0,120,240]) rotate([0,0,a])
+      translate([-0.35,0,-RM_SOCKET_DEPTH-0.1])
+        cube([0.7,RM_HEX_R+1,RM_SOCKET_DEPTH-0.35]);
+  }
 }
 
-module universal_dock() {
-    union(){ dock_body_base(); latch_finger(); }
+module two_integral_plugs() {
+  for(x=[-RM_HEX_X,RM_HEX_X]) integral_hex_plug([x,0]);
 }
 
 module sensor_carrier(pcb=[20,20], wall=1.7, floor=1.8, clearance=0.5) {
-    // carrier top tray centered; universal male interface below
-    W=pcb[0]+2*(wall+clearance);
-    L=pcb[1]+2*(wall+clearance);
-    union(){
-      translate([-W/2,-L/2,0]) difference(){
-        rounded_box([W,L,floor+3.1],2);
-        translate([wall,wall,floor]) rounded_box([pcb[0]+2*clearance,pcb[1]+2*clearance,5],1.0);
-        // cable exit on front edge
-        translate([W/2-6,-0.2,floor+0.5]) cube([12,wall+1,3.5]);
-      }
-      // small retention lips; gentle, printable snap
-      for(x=[-W/2+2.2,W/2-2.2], y=[-L/2+2.2,L/2-2.2])
-         translate([x,y,floor+2.5]) cylinder(h=1.3,d=2.2);
-      male_interface();
+  W=pcb[0]+2*(wall+clearance);
+  L=pcb[1]+2*(wall+clearance);
+  assert(W >= 2*(RM_HEX_R-RM_HEX_CLEARANCE),
+         "Carrier is narrower than its integral hex plug");
+  union() {
+    translate([-W/2,-L/2,0]) difference() {
+      rounded_box([W,L,floor+3.1],2);
+      translate([wall,wall,floor])
+        rounded_box([pcb[0]+2*clearance,pcb[1]+2*clearance,5],1);
+      translate([W/2-6,-0.2,floor+0.5]) cube([12,wall+1,3.5]);
     }
+    for(x=[-W/2+2.2,W/2-2.2], y=[-L/2+2.2,L/2-2.2])
+      translate([x,y,floor+2.5]) cylinder(h=1.3,d=2.2);
+    integral_hex_plug();
+  }
 }
 
-module tag_insert(tag=[60,60], border=3.0, t=1.0) {
-    W=tag[0]+2*border; H=tag[1]+2*border;
-    union(){
-      translate([-W/2,-H/2,0]) rounded_box([W,H,t],1.2);
-      translate([-8,-H/2-4,0]) rounded_box([16,5,t],1.2);
-    }
+module tag_insert(tag=[60,60], border=3, t=1) {
+  W=tag[0]+2*border; H=tag[1]+2*border;
+  union() {
+    translate([-W/2,-H/2,0]) rounded_box([W,H,t],1.2);
+    translate([-8,-H/2-4,0]) rounded_box([16,5,t],1.2);
+  }
 }
 
-module tag_insert_rails(tag=[60,60], border=4, rail=1.5, depth=2.2, clearance=0.25, lip=0.8, lip_t=0.6) {
-    W=tag[0]+2*border; H=tag[1]+2*border;
-    // Side channels capture the insert; the open -Y end matches the pull tab.
-    for(sx=[-1,1]) {
-      x=sx>0 ? W/2+clearance : -W/2-clearance-rail;
-      translate([x,-H/2-clearance,0]) cube([rail,H+2*clearance+rail,depth]);
-      translate([sx>0 ? W/2-lip : -W/2-clearance-rail,-H/2-clearance,depth-lip_t])
-        cube([rail+clearance+lip,H+2*clearance+rail,lip_t]);
-    }
-    // Hard stop at +Y; side lips provide out-of-plane retention.
-    translate([-W/2-clearance-rail,H/2+clearance,0]) cube([W+2*(clearance+rail),rail,depth]);
-}
-
-module angle_wedge(angle=15) {
-    // solid wedge with top angled; child dock can be placed on top by caller
-    W=RM_DOCK_W+4; L=RM_DOCK_L+4; min_h=3; dh=tan(angle)*L;
-    polyhedron(points=[
-      [-W/2,-L/2,0],[W/2,-L/2,0],[W/2,L/2,0],[-W/2,L/2,0],
-      [-W/2,-L/2,min_h],[W/2,-L/2,min_h],[W/2,L/2,min_h+dh],[-W/2,L/2,min_h+dh]
-    ], faces=[[0,1,2,3],[4,7,6,5],[0,4,5,1],[1,5,6,2],[2,6,7,3],[3,7,4,0]]);
+module tag_insert_rails(tag=[60,60], border=4, rail=1.5,
+                        depth=2.2, clearance=0.25, lip=0.8, lip_t=0.6) {
+  W=tag[0]+2*border; H=tag[1]+2*border;
+  for(sx=[-1,1]) {
+    x=sx>0 ? W/2+clearance : -W/2-clearance-rail;
+    translate([x,-H/2-clearance,0])
+      cube([rail,H+2*clearance+rail,depth]);
+    translate([sx>0 ? W/2-lip : -W/2-clearance-rail,
+               -H/2-clearance,depth-lip_t])
+      cube([rail+clearance+lip,H+2*clearance+rail,lip_t]);
+  }
+  translate([-W/2-clearance-rail,H/2+clearance,0])
+    cube([W+2*(clearance+rail),rail,depth]);
 }

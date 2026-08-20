@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
+
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SCAD="$ROOT/scad"
 STL="$ROOT/stl"
 mkdir -p "$STL"
+find "$STL" -maxdepth 1 -type f -name '*.stl' -delete
 
 build() {
   local output="$1" source="$2"
@@ -12,30 +14,21 @@ build() {
   openscad "$@" -o "$STL/$output.stl" "$SCAD/$source.scad"
 }
 
-models=(
-  01_universal_dock
-  03_apriltag_insert 04_beacon_flat
-  dock_90deg 08_esp32_uno_mount 09_cable_clip
-)
+build dock_panel_1x1 01_dock_panels -D 'PANEL=[42,42]'
+build dock_panel_2x1 01_dock_panels -D 'PANEL=[84,42]'
+build dock_panel_2x2 01_dock_panels -D 'PANEL=[84,84]'
+build fit_test_hex 00_fit_tests -D 'PART="hex"'
+build fit_test_hinge 00_fit_tests -D 'PART="hinge"'
 
-for model in "${models[@]}"; do build "$model" "$model"; done
-
-build 05_beacon_cube_shell 05_beacon_cube -D 'PART="shell"'
-build 05_beacon_cube_lid 05_beacon_cube -D 'PART="lid"'
-build 05_beacon_cube_gasket 05_beacon_cube -D 'PART="gasket"'
-build 05_beacon_cube_arduino_uno_carrier 05_beacon_cube -D 'PART="pcb_carrier"'
+build apriltag_insert 03_apriltag_insert
+build apriltag_beacon_carrier 04_beacon_flat
+build arduino_uno_carrier 08_esp32_uno_mount
+build grove_cable_clip_carrier 09_cable_clip
 
 build carrier_20x20 02_carriers -D 'PCB=[20,20]'
 build carrier_20x40 02_carriers -D 'PCB=[20,40]'
 build carrier_20x60 02_carriers -D 'PCB=[20,60]'
 build carrier_40x40 02_carriers -D 'PCB=[40,40]'
 build carrier_40x60 02_carriers -D 'PCB=[40,60]'
-
-build dock_15deg 06_angle_docks -D 'ANGLE=15'
-build dock_30deg 06_angle_docks -D 'ANGLE=30'
-build dock_45deg 06_angle_docks -D 'ANGLE=45'
-
-build mount_magnet 10_mount_adapters -D 'TYPE="magnet"'
-build mount_tripod 10_mount_adapters -D 'TYPE="tripod"'
 
 echo "Built STLs in $STL"
