@@ -1,5 +1,5 @@
 // RobotMind Modular Ecosystem — common library
-// Rev A concept for FDM prototyping, designed to migrate to injection molding.
+// Rev A concept for FDM prototyping.
 $fn = 48;
 
 // ---- Global mechanical interface ----
@@ -25,21 +25,16 @@ module rounded_box(size=[20,20,3], r=2, center=false) {
       square([x,y]);
 }
 
-module slot2d(len=10, d=3) {
-    hull(){
-      translate([-len/2+d/2,0]) circle(d=d);
-      translate([ len/2-d/2,0]) circle(d=d);
-    }
-}
-
 // Male dovetail rail. The simplified trapezoid is robust in FDM and moldable.
-module dovetail_rail(len=RM_DOCK_L-4, w=RM_RAIL_W, h=RM_RAIL_H) {
+module dovetail_rail(len=RM_DOCK_L-4) {
+    w=RM_RAIL_W; h=RM_RAIL_H;
     linear_extrude(height=len)
       polygon(points=[[-w/2,0],[w/2,0],[w/2+1.0,h],[-w/2-1.0,h]]);
 }
 
 // Female channel cutter, slightly oversized.
-module dovetail_channel(len=RM_DOCK_L, w=RM_RAIL_W+2*RM_CLEARANCE, h=RM_RAIL_H+RM_CLEARANCE) {
+module dovetail_channel(len=RM_DOCK_L) {
+    w=RM_RAIL_W+2*RM_CLEARANCE; h=RM_RAIL_H+RM_CLEARANCE;
     linear_extrude(height=len)
       polygon(points=[[-w/2,0],[w/2,0],[w/2+1.15,h],[-w/2-1.15,h]]);
 }
@@ -100,11 +95,11 @@ module sensor_carrier(pcb=[20,20], wall=1.7, floor=1.8, clearance=0.5) {
     }
 }
 
-module tag_insert(tag=[60,60], border=3.0, t=1.0, pulltab=true) {
+module tag_insert(tag=[60,60], border=3.0, t=1.0) {
     W=tag[0]+2*border; H=tag[1]+2*border;
     union(){
       translate([-W/2,-H/2,0]) rounded_box([W,H,t],1.2);
-      if(pulltab) translate([-8,-H/2-4,0]) rounded_box([16,5,t],1.2);
+      translate([-8,-H/2-4,0]) rounded_box([16,5,t],1.2);
     }
 }
 
@@ -115,9 +110,9 @@ module tag_insert_rails(tag=[60,60], border=4, rail=1.5, depth=2.2) {
     translate([0,H/2-rail/2,0]) cube([W,rail,depth],center=true); // hard stop
 }
 
-module angle_wedge(angle=15, footprint=[RM_DOCK_W+4,RM_DOCK_L+4], min_h=3) {
+module angle_wedge(angle=15) {
     // solid wedge with top angled; child dock can be placed on top by caller
-    W=footprint[0]; L=footprint[1]; dh=tan(angle)*L;
+    W=RM_DOCK_W+4; L=RM_DOCK_L+4; min_h=3; dh=tan(angle)*L;
     polyhedron(points=[
       [-W/2,-L/2,0],[W/2,-L/2,0],[W/2,L/2,0],[-W/2,L/2,0],
       [-W/2,-L/2,min_h],[W/2,-L/2,min_h],[W/2,L/2,min_h+dh],[-W/2,L/2,min_h+dh]

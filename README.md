@@ -19,7 +19,7 @@ The same lower interface is used by Grove carriers, the flat beacon, the cube be
 - Adjustable Arduino-UNO-format ESP32-S3/Grove shield mount.
 - Grove cable clip.
 - Generic mounting adapter concept for magnets / 1/4-20 insert. Use the dock directly for M3 or VHB mounting.
-- `build.sh` to generate STL files and PNG previews using OpenSCAD.
+- `build.sh` to generate STL files using OpenSCAD.
 
 For larger layouts, fasten docks to the robot chassis or an off-the-shelf perforated plate rather than printing a custom base plate.
 
@@ -33,10 +33,6 @@ Similarly, Grove boards nominally use standard board size classes, but individua
 
 For prototype: PETG, 0.20 mm layer, 3–4 perimeters, 25–35% infill. Print the dock flat on its mounting face and the carrier flat on its tray floor. Start with `RM_CLEARANCE=0.28`; tune by ±0.10 mm based on your printer.
 
-## Injection-molding migration
-
-The geometry deliberately separates **guidance** (dovetail) from **retention** (latch). For injection molding, add final draft angles, consistent wall thickness, ribs, proper snap-fit root radii and mold-specific parting/undercut review. Do not cut production tooling directly from Rev A.
-
 ## Build
 
 ```bash
@@ -44,4 +40,4 @@ cd robotmind_modular_ecosystem
 ./scripts/build.sh
 ```
 
-Generated STL and preview files are written to `stl/` and `previews/`; they are not source artifacts.
+Generated STL files are written to `stl/`; they are not source artifacts.
