@@ -19,8 +19,8 @@ build dock_panel_2x1 01_dock_panels -D 'PANEL=[84,42]'
 build dock_panel_2x2 01_dock_panels -D 'PANEL=[84,84]'
 build fit_test_hex_socket 00_fit_tests -D 'PART="hex_socket"'
 build fit_test_hex_plug 00_fit_tests -D 'PART="hex_plug"'
-build fit_test_hinge_bead 00_fit_tests -D 'PART="hinge_bead"'
-build fit_test_hinge_channel 00_fit_tests -D 'PART="hinge_channel"'
+build fit_test_edge_male 00_fit_tests -D 'PART="edge_male"'
+build fit_test_edge_female 00_fit_tests -D 'PART="edge_female"'
 
 build apriltag_insert 03_apriltag_insert
 build apriltag_beacon_carrier 04_beacon_flat

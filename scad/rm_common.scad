@@ -1,25 +1,33 @@
-// RobotMind modular hex construction system — common geometry.
-// All dimensions are millimetres; tune the two clearances for the printer.
+// RobotMind direct-join hex construction system.
+// All dimensions are millimetres; tune the two clearances after fit tests.
 $fn = 48;
 
 RM_UNIT = 42;
-RM_PANEL_T = 7;
-RM_SOCKET_DEPTH = 2.4;
+RM_PANEL_T = 10;
+
+// Carrier-to-panel tapered hex fit: no barbs, snap ridges or flexures.
+RM_SOCKET_DEPTH = 3.4;
 RM_HEX_R = 10.5;
-RM_HEX_CLEARANCE = 0.28;
-RM_SNAP = 0.30;
+RM_HEX_TAPER = 0.28;
+RM_HEX_CLEARANCE = 0.24;
+RM_HEX_SEAT_CLEARANCE = RM_HEX_CLEARANCE/2;
 RM_HEX_X = sqrt(3) * RM_HEX_R;
 RM_HEX_Y = 1.5 * RM_HEX_R;
 
-RM_HINGE_PITCH = 14;
-RM_HINGE_LEN = 10;
-RM_HINGE_R = 2.0;
-RM_HINGE_CLEARANCE = 0.25;
-RM_CHANNEL_R = 3.1;
-RM_HINGE_Z = RM_CHANNEL_R*cos(22.5);
+// Panel-to-panel direct join. Male pins fit the female edge at 0° or the
+// female face sockets at 90°. M3 screws are optional only at 90°.
+RM_JOIN_PITCH = 14;
+RM_JOIN_LENGTH = 3.0;
+RM_JOIN_R = 2.5;
+RM_JOIN_TAPER = 0.18;
+RM_JOIN_CLEARANCE = 0.25;
+RM_JOIN_SEAT_CLEARANCE = 0.10;
+RM_M3_CLEARANCE = 3.4;
+RM_M3_PILOT = 2.6;
+RM_M3_HEAD = 6.2;
 
 assert(RM_PANEL_T > 2 * RM_SOCKET_DEPTH,
-       "Panel needs a solid web between its two socket faces");
+       "Panel needs a solid web between its two carrier sockets");
 
 module rounded_box(size=[20,20,3], r=2, center=false) {
   x=size[0]; y=size[1]; z=size[2];
@@ -36,22 +44,22 @@ module print_on_y_edge(span) {
   translate([0,0,span/2]) rotate([90,0,0]) children();
 }
 
-module hex_prism(r=RM_HEX_R, h=1) {
-  cylinder(r=r, h=h, $fn=6);
+module hex_frustum(r1=RM_HEX_R, r2=RM_HEX_R, h=1) {
+  cylinder(r1=r1,r2=r2,h=h,$fn=6);
 }
 
-// A shallow expanded pocket below the entry lip creates the snap catch.
 module top_socket_cut() {
   translate([0,0,RM_PANEL_T-RM_SOCKET_DEPTH])
-    hex_prism(RM_HEX_R + RM_SNAP, RM_SOCKET_DEPTH-0.65);
-  translate([0,0,RM_PANEL_T-RM_SOCKET_DEPTH+0.65])
-    hex_prism(RM_HEX_R, RM_SOCKET_DEPTH+0.1);
+    hex_frustum(RM_HEX_R-RM_HEX_TAPER,
+                 RM_HEX_R,
+                 RM_SOCKET_DEPTH+0.1);
 }
 
 module bottom_socket_cut() {
-  translate([0,0,-0.1]) hex_prism(RM_HEX_R, RM_SOCKET_DEPTH-0.55);
-  translate([0,0,0.65])
-    hex_prism(RM_HEX_R + RM_SNAP, RM_SOCKET_DEPTH-0.55);
+  translate([0,0,-0.1])
+    hex_frustum(RM_HEX_R,
+                 RM_HEX_R-RM_HEX_TAPER,
+                 RM_SOCKET_DEPTH+0.1);
 }
 
 module socket_pair() {
@@ -73,44 +81,65 @@ module dense_socket_grid(size=[2*RM_UNIT,2*RM_UNIT]) {
   }
 }
 
-module hinge_bead_segment() {
-  rotate([0,90,0]) rotate([0,0,22.5])
-    cylinder(h=RM_HINGE_LEN,r=RM_HINGE_R,$fn=8,center=true);
+function join_index(p,edge_len) =
+  round((p+edge_len/2-RM_JOIN_PITCH/2)/RM_JOIN_PITCH);
+function is_m3_join(p,edge_len) = join_index(p,edge_len)%3 == 1;
+
+// Integral tapered hex pins on an A edge (+Y in local coordinates).
+module male_edge(edge_len, panel_half) {
+  for(p=[-edge_len/2+RM_JOIN_PITCH/2:
+         RM_JOIN_PITCH:
+         edge_len/2-RM_JOIN_PITCH/2])
+    translate([p,panel_half-0.05,RM_PANEL_T/2])
+      rotate([-90,0,0])
+        hex_frustum(RM_JOIN_R+RM_JOIN_CLEARANCE-RM_JOIN_SEAT_CLEARANCE,
+                     RM_JOIN_R-RM_JOIN_TAPER,
+                     RM_JOIN_LENGTH+0.05);
 }
 
-module hinge_channel_segment() {
-  // Short channels flex over the faceted bead. Its flats detent at 0°/90°.
-  rotate([0,90,0]) difference() {
-    rotate([0,0,22.5])
-      cylinder(h=RM_HINGE_LEN,r=RM_CHANNEL_R,$fn=8,center=true);
-    rotate([0,0,22.5])
-      cylinder(h=RM_HINGE_LEN+0.2,
-               r=RM_HINGE_R+RM_HINGE_CLEARANCE,$fn=8,center=true);
-    translate([-1.7,-RM_CHANNEL_R-0.1,-RM_HINGE_LEN/2-0.2])
-      cube([3.4,RM_CHANNEL_R+0.2,RM_HINGE_LEN+0.4]);
+// Blind thread-forming pilots continue through selected pins into the edge.
+module male_edge_m3_cuts(edge_len, panel_half) {
+  for(p=[-edge_len/2+RM_JOIN_PITCH/2:
+         RM_JOIN_PITCH:
+         edge_len/2-RM_JOIN_PITCH/2])
+    if(is_m3_join(p,edge_len))
+      translate([p,panel_half-4,RM_PANEL_T/2])
+        rotate([-90,0,0])
+          cylinder(h=RM_JOIN_LENGTH+4.2,d=RM_M3_PILOT,$fn=24);
+}
+
+// Female B edge (-Y): lateral sockets accept the same pins coplanar at 0°.
+module female_edge_cuts(edge_len, panel_half) {
+  for(p=[-edge_len/2+RM_JOIN_PITCH/2:
+         RM_JOIN_PITCH:
+         edge_len/2-RM_JOIN_PITCH/2])
+    translate([p,-panel_half-0.1,RM_PANEL_T/2])
+      rotate([-90,0,0])
+        hex_frustum(RM_JOIN_R+RM_JOIN_CLEARANCE,
+                     RM_JOIN_R-RM_JOIN_TAPER+RM_JOIN_CLEARANCE,
+                     RM_JOIN_LENGTH+0.2);
+}
+
+// The same B edge has perpendicular sockets for a direct 90° connection.
+// Counterbores on both faces let the panel be flipped and still accept M3.
+module female_90_cuts(edge_len, panel_half) {
+  for(p=[-edge_len/2+RM_JOIN_PITCH/2:
+         RM_JOIN_PITCH:
+         edge_len/2-RM_JOIN_PITCH/2]) {
+    translate([p,-panel_half+RM_PANEL_T/2,-0.1])
+      hex_frustum(RM_JOIN_R+RM_JOIN_CLEARANCE,
+                   RM_JOIN_R+RM_JOIN_CLEARANCE,
+                   RM_PANEL_T+0.2);
+    if(is_m3_join(p,edge_len)) {
+      translate([p,-panel_half+RM_PANEL_T/2,-0.1])
+        cylinder(h=2.1,d=RM_M3_HEAD,$fn=32);
+      translate([p,-panel_half+RM_PANEL_T/2,RM_PANEL_T-2])
+        cylinder(h=2.1,d=RM_M3_HEAD,$fn=32);
+    }
   }
 }
 
-module edge_a(edge_len, panel_half) {
-  for(p=[-edge_len/2+RM_HINGE_PITCH/2:
-         RM_HINGE_PITCH:
-         edge_len/2-RM_HINGE_PITCH/2]) {
-    translate([p,panel_half+RM_HINGE_R-0.3,RM_HINGE_Z])
-      hinge_bead_segment();
-  }
-}
-
-module edge_b(edge_len, panel_half) {
-  for(p=[-edge_len/2+RM_HINGE_PITCH/2:
-         RM_HINGE_PITCH:
-         edge_len/2-RM_HINGE_PITCH/2]) {
-    translate([p,-panel_half-RM_CHANNEL_R+0.3,RM_HINGE_Z])
-      hinge_channel_segment();
-  }
-}
-
-// Every panel is the same type: bead rails on +X/+Y, snap channels on -X/-Y.
-// Rotate panels to select the mating edge; no pins, keys, screws or brackets.
+// Identical panels: male joins on +X/+Y, dual female joins on -X/-Y.
 module dock_panel(size=[2*RM_UNIT,2*RM_UNIT]) {
   assert(size[0] % RM_UNIT == 0 && size[1] % RM_UNIT == 0,
          "Panel dimensions must be whole 42 mm units");
@@ -118,28 +147,28 @@ module dock_panel(size=[2*RM_UNIT,2*RM_UNIT]) {
     union() {
       translate([-size[0]/2,-size[1]/2,0])
         rounded_box([size[0],size[1],RM_PANEL_T],1.5);
-      edge_a(size[0],size[1]/2);
-      rotate([0,0,-90]) edge_a(size[1],size[0]/2);
-      edge_b(size[0],size[1]/2);
-      rotate([0,0,-90]) edge_b(size[1],size[0]/2);
+      male_edge(size[0],size[1]/2);
+      rotate([0,0,-90]) male_edge(size[1],size[0]/2);
     }
     dense_socket_grid(size);
+    female_edge_cuts(size[0],size[1]/2);
+    female_90_cuts(size[0],size[1]/2);
+    rotate([0,0,-90]) {
+      female_edge_cuts(size[1],size[0]/2);
+      female_90_cuts(size[1],size[0]/2);
+    }
+    male_edge_m3_cuts(size[0],size[1]/2);
+    rotate([0,0,-90]) male_edge_m3_cuts(size[1],size[0]/2);
   }
 }
 
-// Printed as part of the carrier. Three slots let the shallow snap ridge flex.
+// Plain tapered plug. It locates on six rigid faces and cannot be damaged by
+// insertion because there is no interference ridge.
 module integral_hex_plug(at=[0,0]) {
-  translate([at[0],at[1],0]) difference() {
-    union() {
-      translate([0,0,-RM_SOCKET_DEPTH+0.25])
-        hex_prism(RM_HEX_R-RM_HEX_CLEARANCE,RM_SOCKET_DEPTH+0.05);
-      translate([0,0,-RM_SOCKET_DEPTH+0.25])
-        hex_prism(RM_HEX_R+RM_SNAP/2,0.55);
-    }
-    for(a=[0,120,240]) rotate([0,0,a])
-      translate([-0.35,0,-RM_SOCKET_DEPTH-0.1])
-        cube([0.7,RM_HEX_R+1,RM_SOCKET_DEPTH-0.35]);
-  }
+  translate([at[0],at[1],-RM_SOCKET_DEPTH+0.2])
+    hex_frustum(RM_HEX_R-RM_HEX_TAPER-RM_HEX_CLEARANCE,
+                 RM_HEX_R-RM_HEX_SEAT_CLEARANCE,
+                 RM_SOCKET_DEPTH+0.1);
 }
 
 module two_integral_plugs() {
@@ -149,7 +178,7 @@ module two_integral_plugs() {
 module sensor_carrier(pcb=[20,20], wall=1.7, floor=1.8, clearance=0.5) {
   W=pcb[0]+2*(wall+clearance);
   L=pcb[1]+2*(wall+clearance);
-  assert(W >= 2*(RM_HEX_R-RM_HEX_CLEARANCE),
+  assert(W >= 2*(RM_HEX_R-RM_HEX_TAPER-RM_HEX_CLEARANCE),
          "Carrier is narrower than its integral hex plug");
   union() {
     translate([-W/2,-L/2,0]) difference() {
