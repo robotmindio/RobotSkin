@@ -54,6 +54,18 @@ coupons before committing to a long print run.
 
 Compatibility adapters do not change the plate or hex interface.
 
+## Source ownership
+
+- `rm_common.scad`: every dimension shared by plates and carriers.
+- `rm_apriltag.scad`: dimensions shared only by the two AprilTag products.
+- `02_grove_carriers.scad`: Grove tray geometry and PCB clearance.
+- Other numbered files: dimensions owned by one payload or adapter.
+
+`RM_EPS` is the common boolean overlap, `RM_FIT` is the only printed-fit
+calibration, and the `RM_M3_*` variables describe shared screw and insert
+hardware. Payload-specific clearances must not be promoted into the core
+library unless a second independent object actually uses the same interface.
+
 ## Prototype order
 
 1. Print and tune the separate hex plug and socket coupons.

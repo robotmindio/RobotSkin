@@ -7,7 +7,8 @@ module technic_adapter() {
   carrier_mount() difference() {
     translate([-SIZE[0]/2,-SIZE[1]/2,0]) rounded_box([SIZE[0],SIZE[1],3],2);
     for(x=[-16,-8,8,16], y=[-8,0,8])
-      translate([x,y,-0.1]) cylinder(h=3.2,d=HOLE_D,$fn=32);
+      translate([x,y,-RM_EPS])
+        cylinder(h=3+2*RM_EPS,d=HOLE_D,$fn=32);
   }
 }
 

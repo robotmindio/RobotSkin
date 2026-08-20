@@ -52,6 +52,18 @@ reasonable prototype baseline.
 
 All exports are oriented for their recommended print position.
 
+## SCAD library structure
+
+- `scad/rm_common.scad` is the V1 mechanical source of truth: plate grid,
+  carrier hex, corner joint, M3 hardware and print-orientation helpers.
+- `scad/rm_apriltag.scad` contains the tag dimensions and rails shared by the
+  AprilTag insert and beacon carrier.
+- Numbered SCAD files contain only payload-specific geometry and defaults.
+
+Change a shared interface only in `rm_common.scad`. Keep dimensions that
+belong to one product—such as an Arduino board, M5Stack case or cable—in that
+product's numbered file.
+
 ## M3 locking and water resistance
 
 Each carrier socket and selected corner tab contains a 4.0 mm pocket for a
