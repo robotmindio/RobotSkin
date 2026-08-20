@@ -1,11 +1,10 @@
 include <rm_common.scad>
 
-// Grove cable clip carrier; the hex plug is printed into its underside.
 CABLE_W=7.5;
 CABLE_H=2.2;
 BASE=24;
 
-module cable_clip_carrier() {
+module grove_cable_clip_carrier() {
   carrier_mount() {
     difference() {
       translate([-BASE/2,-BASE/2,0]) rounded_box([BASE,BASE,4],2);
@@ -15,4 +14,4 @@ module cable_clip_carrier() {
   }
 }
 
-print_on_y_edge(BASE) cable_clip_carrier();
+print_on_y_edge(BASE) grove_cable_clip_carrier();

@@ -8,7 +8,7 @@ assert(PART=="hex_socket" || PART=="hex_plug" ||
 
 module hex_socket_coupon() {
   difference() {
-    translate([-14,-14,0]) rounded_box([28,28,RM_PANEL_T],1.5);
+    translate([-14,-14,0]) rounded_box([28,28,RM_PLATE_T],1.5);
     socket_pair();
   }
 }
@@ -22,23 +22,23 @@ module hex_plug_coupon() {
 module edge_male_coupon() {
   difference() {
     union() {
-      translate([-14,-10,0]) rounded_box([28,20,RM_PANEL_T],1);
-      male_edge(28,10);
+      translate([-15,-10,0]) rounded_box([30,20,RM_PLATE_T],1);
+      male_edge(30,10);
     }
-    male_edge_m3_cuts(28,10);
+    male_edge_m3_cuts(30,10);
   }
 }
 
 module edge_female_coupon() {
   difference() {
-    translate([-14,-10,0]) rounded_box([28,20,RM_PANEL_T],1);
-    female_edge_cuts(28,10);
+    translate([-15,-10,0]) rounded_box([30,20,RM_PLATE_T],1);
+    female_edge_cuts(30,10);
   }
 }
 
 module preview_90() {
   color("lightsteelblue") edge_female_coupon();
-  color("gold") translate([0,-10,10+RM_PANEL_T]) rotate([-90,0,0])
+  color("gold") translate([0,-10,10+RM_PLATE_T]) rotate([-90,0,0])
     edge_male_coupon();
 }
 

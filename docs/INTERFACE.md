@@ -1,52 +1,58 @@
-# Direct hex interface
+# RobotMind V1 interface
 
-## Carrier to panel
+## Coordinate system
 
-Every carrier uses the same progressive tapered hexagonal plug. There are no
-barbs, flexible tabs or separate connector parts.
+- All dimensions are millimetres.
+- `RM_UNIT=40` defines plate sizes.
+- Plates are 12 mm thick and accept carriers from either face.
+- Positive `RM_FIT` values loosen carrier and corner fits together.
 
-- Socket depth: 3.4 mm
-- Entry clearance: 0.24 mm
-- Final radial grip: 0.08 mm
-- Taper: 0.28 mm across the insertion depth
-- One integral plug for Grove carriers
-- Two identical plugs for Arduino UNO and AprilTag/beacon carriers
-- One optional M3 heat-set insert and lock through the center of each plug
+## Carrier interface
 
-The loose tip starts easily; only the final portion grips. The M3 is not needed
-for normal use. If permanent locking is wanted, heat an M3 insert into the
-4.0 mm central pocket, then install the screw through the carrier before the
-sensor. A 0.3 mm membrane keeps opposite sockets separated and sealed until
-an insert intentionally melts through it. Tune `RM_M3_INSERT_HOLE` for the
-chosen insert, plus `RM_HEX_ENTRY_CLEARANCE` and
-`RM_HEX_GRIP` after printing the separate plug and socket coupons.
+The universal carrier interface is one six-sided tapered plug:
 
-## Panel to panel
+- Socket pitch: 20 mm triangular lattice.
+- Hex width across flats: 16 mm.
+- Socket depth: 3.4 mm.
+- Entry clearance at `RM_FIT=0`: 0.10 mm radial.
+- Final grip at `RM_FIT=0`: 0.20 mm radial interference.
+- One plug per carrier; the hex prevents rotation.
+- Broad carrier bases bear moments against the plate surface.
 
-Every plate has the same direct joining geometry:
+The loose tip guides insertion and the final travel creates the press fit.
+There are no barbs, flexible snaps or secondary alignment plugs.
 
-- Integral rectangular tabs on the +X and +Y edges.
-- Open edge slots on the -X and -Y edges for 90° corners.
-- No printed connector, hinge, rail or corner piece.
+For permanent locking, install a nominal 5 mm M3 heat-set insert in the
+socket's 4.0 mm pocket, then pass an M3 screw through the carrier. The central
+0.3 mm membrane keeps an unused double-sided socket closed.
 
-Rotate an A plate 90° so its tabs enter the open slots of a B plate. One M3
-position per 42 mm edge unit passes through the female plate and threads into
-a 2.6 mm blind pilot in the male tab.
+## Plate interface
 
-The tabs locate the plates; the screws only clamp them. The 84 mm edge provides two screw positions. Screws are
-optional, and no heat-set insert or nut is required for the first prototypes.
+All plates use the same edge convention:
 
-## Printing and testing
+- Integral 6 mm tabs at 10 mm pitch on +X and +Y.
+- Matching open slots on -X and -Y.
+- Tabs enter slots from either plate face to form a 90° corner.
+- One optional M3 clamp per 40 mm of edge.
+- No flat 0° joint and no separate corner piece.
 
-Print these four separate files before a full panel:
+Plates are available in 40×40, 80×40 and 80×80 mm. Six 80×80 plates are the
+reference cube, but a complete cube closure must be verified with the corner
+coupons before committing to a long print run.
 
-1. fit_test_hex_socket.stl
-2. fit_test_hex_plug.stl
-3. plate_joint_male_test.stl
-4. plate_joint_female_test.stl
+## Ecosystem adapters
 
-The edge coupons test the 90° corner directly. All
-exports are already oriented for printing.
+- Grove carriers follow the five official 20/40/60 mm PCB envelopes.
+- The M5Stack carrier targets a 24×32 mm Unit envelope with open side rails.
+- The Technic adapter uses 4.9 mm holes on an 8 mm grid.
+- Arduino UNO and AprilTag use the same single plug as every small carrier.
 
-Use sealing washers and sealant around optional screws if the final cube must
-resist water.
+Compatibility adapters do not change the plate or hex interface.
+
+## Prototype order
+
+1. Print and tune the separate hex plug and socket coupons.
+2. Print and tune the separate male and female corner coupons.
+3. Test one Grove 20×20 carrier.
+4. Assemble a three-plate corner.
+5. Only then print 80×80 plates or a complete cube.
