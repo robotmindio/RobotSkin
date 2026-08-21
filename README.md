@@ -11,7 +11,7 @@ connectors press directly into the same ports without loose pins.
 ## V4 MVP
 
 - 40 mm structural unit and clean 10 mm mounting grid.
-- 8 mm solid panels in 40×40, 80×40, 80×80 and regular-hexagonal variants.
+- 8 mm solid panels in 40×40, 80×40 and 80×80 mm sizes.
 - Nine annular blind ports per face of a 40×40 panel.
 - Identical mounting access from either panel face.
 - Integral tapered pegs for tool-free mounting.
@@ -34,11 +34,6 @@ the panel and cannot pierce the opposite face.
 Print `fit_test_port.stl` and the three `fit_test_peg_*.stl` files first. The
 small and large pegs differ from nominal by 0.1 mm. Adjust `RM_FIT` in 0.05 mm
 steps and rebuild.
-
-`hex_panel_side_40.stl` is a regular flat-top hexagon with a 40 mm side. Its
-mounting ports and M3 pilots are unchanged and remain circular, so carriers
-still fit directly. The current flat and 90° links are for rectangular panel
-edges; hex-to-hex links need their own 120° connector design.
 
 Panels print flat. Print the flat connector with its pegs upward. Print the
 Grove carrier on the exported side orientation. The 90° connector may need
