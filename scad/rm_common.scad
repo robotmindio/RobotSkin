@@ -29,6 +29,7 @@ RM_M3_HEAD_DEPTH = 2;
 RM_GASKET_W = 5;
 RM_GASKET_T = 0.8;
 RM_GASKET_GROOVE = 0.4;
+RM_HEX_EDGE_MARGIN = RM_PORT_OD/2+2;
 
 function rm_port_od() = RM_PORT_OD+2*RM_FIT;
 function rm_port_boss_d() = RM_PORT_BOSS_D-2*RM_FIT;
@@ -97,6 +98,32 @@ module panel(size=[RM_UNIT,RM_UNIT]) {
     rounded_panel(size);
     face_port_cuts(size);
     face_port_cuts(size,true);
+  }
+}
+
+// Regular flat-top hexagon. Ports remain on the 10 mm grid and stay clear of
+// the sloped perimeter by at least one port radius plus 2 mm of material.
+function hex_port_allowed(x,y,side) =
+  abs(y) <= sqrt(3)*side/2-RM_HEX_EDGE_MARGIN &&
+  abs(x)+abs(y)/sqrt(3) <= side-2*RM_HEX_EDGE_MARGIN/sqrt(3);
+
+module hex_face_port_cuts(side=RM_UNIT, top=false) {
+  for(x=[-(side-RM_GRID):RM_GRID:side-RM_GRID],
+      y=[-(side-RM_GRID):RM_GRID:side-RM_GRID])
+    if(hex_port_allowed(x,y,side))
+      if(top)
+        translate([x,y,RM_PANEL_T]) mirror([0,0,1]) blind_port_cut();
+      else
+        translate([x,y,0]) blind_port_cut();
+}
+
+module hex_panel(side=RM_UNIT) {
+  assert(side%RM_UNIT == 0,
+         "Hex side length must be a whole 40 mm unit");
+  difference() {
+    cylinder(h=RM_PANEL_T,r=side,$fn=6);
+    hex_face_port_cuts(side);
+    hex_face_port_cuts(side,true);
   }
 }
 

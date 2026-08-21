@@ -8,11 +8,14 @@
 - Corner radius: 3 mm.
 - Blind pilot depth: 3 mm from either face.
 - Continuous centre membrane: 2 mm minimum.
-- Valid sizes: whole 40 mm multiples in X and Y.
+- Rectangular sizes: whole 40 mm multiples in X and Y.
+- Hexagonal sizes: regular flat-top hexagons with a side length in whole
+  40 mm multiples. Ports remain circular and on the 10 mm grid.
 
-A 40×40 panel has a 3×3 port grid on each face. An 80×80 panel has 7×7 ports.
-The first port centre remains 10 mm from every outer edge, leaving useful
-material around the blind recesses and clean panel borders.
+A 40×40 panel has a 3×3 port grid on each face. An 80×80 panel has a 7×7 port grid.
+For rectangular panels, the first port centre remains 10 mm from every outer
+edge. Hex panels omit grid positions that would leave less than 6 mm of
+material to a sloped edge.
 
 ## Annular mounting port
 
