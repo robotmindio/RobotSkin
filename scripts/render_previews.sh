@@ -17,5 +17,6 @@ render overview
 render flat
 render corner
 render grove
+render double
 
 echo "Rendered previews in $RENDER_DIR"

@@ -1,109 +1,181 @@
-// RobotMind V3 mechanical standard. All dimensions are millimetres.
+// RobotMind V4: solid, double-sided panels with one blind mounting interface.
+// All dimensions are millimetres.
 $fn = 32;
 
 RM_EPS = 0.1;
 RM_UNIT = 40;
-RM_GRID = 8;
-RM_PLATE_T = 3.2;
-RM_HOLE_D = 5.0;
+RM_GRID = 10;
+RM_PANEL_T = 8;
+RM_CORNER_R = 3;
 RM_FIT = 0; // positive is looser; tune in 0.05 mm steps
 
-RM_CORNER_R = 3;
-RM_PIN_HEAD_D = 8;
-RM_PIN_HEAD_T = 1.6;
-RM_PIN_STEM_D = 4.7-2*RM_FIT;
-RM_PIN_GRIP_D = 5.3-2*RM_FIT;
-RM_PIN_TIP_D = 4.2-2*RM_FIT;
-RM_PIN_SPLIT = 1.0;
-RM_PIN_STACK = 2*RM_PLATE_T;
-RM_PIN_TIP_LENGTH = 1.6;
+// One annular blind port. The ring accepts a tool-free peg; the centre boss
+// accepts an optional M3 screw without piercing the waterproof membrane.
+RM_PORT_OD = 8;
+RM_PORT_BOSS_D = 5;
+RM_PORT_DEPTH = 2.2;
+RM_PORT_PILOT_D = 2.7;
+RM_PORT_PILOT_DEPTH = 3;
+RM_PEG_ENTRY = 0.3;
+RM_PEG_GRIP = 0.1;
+RM_PEG_INNER_CLEARANCE = 0.3;
 
-assert(RM_UNIT%RM_GRID == 0, "The 40 mm unit must follow the 8 mm grid");
-assert(RM_PLATE_T > 0 && RM_HOLE_D+2*RM_FIT > 0,
-       "Plate and hole dimensions must stay positive");
-assert(RM_PIN_GRIP_D > RM_PIN_STEM_D && RM_PIN_STEM_D > RM_PIN_TIP_D,
-       "RM_FIT is outside the printable pin range");
-assert(RM_PIN_TIP_D > 0, "RM_FIT makes the push pin invalid");
+RM_LINK_T = 3.2;
+RM_LINK_LEG = 2*RM_GRID;
+RM_M3_CLEARANCE = 3.4;
+RM_M3_HEAD_D = 6.2;
+RM_M3_HEAD_DEPTH = 2;
 
-function rm_hole_d(delta=0) = RM_HOLE_D+2*RM_FIT+delta;
-function grid_count(span) = round(span/RM_GRID);
-function grid_position(i,span) = -span/2+RM_GRID/2+i*RM_GRID;
+RM_GASKET_W = 5;
+RM_GASKET_T = 0.8;
+RM_GASKET_GROOVE = 0.4;
+
+function rm_port_od() = RM_PORT_OD+2*RM_FIT;
+function rm_port_boss_d() = RM_PORT_BOSS_D-2*RM_FIT;
+function rm_pilot_d() = RM_PORT_PILOT_D+2*RM_FIT;
+function rm_peg_root_od(delta=0) = RM_PORT_OD+RM_PEG_GRIP-2*RM_FIT+delta;
+function rm_peg_tip_od(delta=0) = RM_PORT_OD-RM_PEG_ENTRY-2*RM_FIT+delta;
+function rm_peg_id() = RM_PORT_BOSS_D+RM_PEG_INNER_CLEARANCE+2*RM_FIT;
+function grid_count(span) = round(span/RM_GRID)-1;
+function grid_position(i,span) = -span/2+RM_GRID+i*RM_GRID;
+function link_anchor_positions(length) =
+  [for(cell=[0:round(length/RM_UNIT)-1], side=[-1,1])
+    -length/2+RM_UNIT/2+cell*RM_UNIT+side*RM_GRID];
+
+assert(RM_UNIT%RM_GRID == 0, "The unit must contain a whole mounting grid");
+assert(RM_PANEL_T > 2*RM_PORT_PILOT_DEPTH,
+       "Blind pilots need a continuous waterproof membrane");
+assert(rm_peg_root_od() > rm_port_od() &&
+       rm_port_od() > rm_peg_tip_od(),
+       "RM_FIT is outside the annular peg range");
+assert(rm_peg_id() > rm_port_boss_d() &&
+       rm_port_boss_d() > rm_pilot_d(),
+       "The port boss must separate peg and screw fits");
+assert(RM_GRID-RM_PORT_OD > 1,
+       "Mounting ports need enough material between them");
+assert(RM_GRID > RM_LINK_T,
+       "Perpendicular optional screws must not intersect");
 
 module rounded_box(size=[20,20,3], r=2) {
   linear_extrude(height=size[2])
     offset(r=r) offset(delta=-r) square([size[0],size[1]]);
 }
 
-module rounded_plate(size=[RM_UNIT,RM_UNIT], t=RM_PLATE_T,
+module rounded_panel(size=[RM_UNIT,RM_UNIT], t=RM_PANEL_T,
                      r=RM_CORNER_R) {
   translate([-size[0]/2,-size[1]/2,0]) rounded_box([size[0],size[1],t],r);
 }
 
-module hole_at(point=[0,0], t=RM_PLATE_T, d=rm_hole_d()) {
-  translate([point[0],point[1],-RM_EPS])
-    cylinder(h=t+2*RM_EPS,d=d);
+// Cut from a face at Z=0 into material extending in +Z.
+module blind_port_cut() {
+  union() {
+    difference() {
+      translate([0,0,-RM_EPS])
+        cylinder(h=RM_PORT_DEPTH+RM_EPS,d=rm_port_od());
+      translate([0,0,-2*RM_EPS])
+        cylinder(h=RM_PORT_DEPTH+3*RM_EPS,d=rm_port_boss_d());
+    }
+    translate([0,0,-RM_EPS])
+      cylinder(h=RM_PORT_PILOT_DEPTH+RM_EPS,d=rm_pilot_d());
+  }
 }
 
-module grid_holes(size=[RM_UNIT,RM_UNIT], t=RM_PLATE_T) {
-  for(ix=[0:grid_count(size[0])-1], iy=[0:grid_count(size[1])-1])
-    hole_at([grid_position(ix,size[0]),grid_position(iy,size[1])],t);
+module face_port_cuts(size=[RM_UNIT,RM_UNIT], top=false) {
+  for(ix=[0:grid_count(size[0])-1], iy=[0:grid_count(size[1])-1]) {
+    p=[grid_position(ix,size[0]),grid_position(iy,size[1])];
+    if(top)
+      translate([p[0],p[1],RM_PANEL_T]) mirror([0,0,1]) blind_port_cut();
+    else
+      translate([p[0],p[1],0]) blind_port_cut();
+  }
 }
 
-module plate(size=[RM_UNIT,RM_UNIT]) {
+module panel(size=[RM_UNIT,RM_UNIT]) {
   assert(size[0]%RM_UNIT == 0 && size[1]%RM_UNIT == 0,
-         "Plate dimensions must be whole 40 mm units");
+         "Panel dimensions must be whole 40 mm units");
   difference() {
-    rounded_plate(size);
-    grid_holes(size);
+    rounded_panel(size);
+    face_port_cuts(size);
+    face_port_cuts(size,true);
   }
 }
 
-// Four pins, two per plate, make a rigid coplanar seam. Mount below the
-// plates when the visible surface must stay flat.
-module flat_link() {
-  size=[2*RM_GRID,3*RM_GRID];
+// Every carrier and connector reuses this exact integral annular peg.
+module mount_peg(delta=0) {
   difference() {
-    rounded_plate(size,RM_PLATE_T,RM_CORNER_R);
-    for(x=[-RM_GRID/2,RM_GRID/2], y=[-RM_GRID,RM_GRID])
-      hole_at([x,y]);
+    cylinder(h=RM_PORT_DEPTH,
+             d1=rm_peg_root_od(delta),d2=rm_peg_tip_od(delta));
+    translate([0,0,-RM_EPS])
+      cylinder(h=RM_PORT_DEPTH+2*RM_EPS,d=rm_peg_id());
   }
 }
 
-// The same plate holes accept this plain inside bracket at 90 degrees.
-module angle_link() {
+// Cut from an exposed surface at Z=0 into a connector extending in +Z.
+module optional_screw_cut(depth=RM_LINK_T) {
+  translate([0,0,-RM_EPS])
+    cylinder(h=depth+2*RM_EPS,d=RM_M3_CLEARANCE);
+  translate([0,0,-RM_EPS])
+    cylinder(h=RM_M3_HEAD_DEPTH+RM_EPS,d=RM_M3_HEAD_D);
+}
+
+module flat_link(length=RM_UNIT) {
   width=3*RM_GRID;
-  leg=1.5*RM_GRID;
+  anchors=link_anchor_positions(length);
   difference() {
     union() {
-      translate([-width/2,-leg,0]) cube([width,leg,RM_PLATE_T]);
-      translate([-width/2,-RM_PLATE_T,0])
-        cube([width,RM_PLATE_T,leg]);
+      rounded_panel([width,length],RM_LINK_T,RM_CORNER_R);
+      for(x=[-RM_GRID,RM_GRID], y=anchors)
+        translate([x,y,RM_LINK_T]) mount_peg();
     }
-    for(x=[-RM_GRID,RM_GRID]) {
-      hole_at([x,-RM_GRID/2]);
-      translate([x,RM_EPS,RM_GRID/2]) rotate([90,0,0])
-        cylinder(h=RM_PLATE_T+2*RM_EPS,d=rm_hole_d());
-    }
+    for(x=[-RM_GRID,RM_GRID], y=anchors)
+      translate([x,y,0]) optional_screw_cut(RM_LINK_T+RM_PORT_DEPTH);
+    translate([-RM_GASKET_W/2,-length/2-RM_EPS,
+               RM_LINK_T-RM_GASKET_GROOVE])
+      cube([RM_GASKET_W,length+2*RM_EPS,
+            RM_GASKET_GROOVE+2*RM_EPS]);
   }
 }
 
-// One split pin joins any two RM_PLATE_T layers. The head and flexible tip
-// provide tool-free assembly; the same holes also accept M4 bolts.
-module push_pin(grip_delta=0) {
-  grip=RM_PIN_GRIP_D+grip_delta;
+module angle_link(length=RM_UNIT) {
+  anchors=link_anchor_positions(length);
   difference() {
     union() {
-      cylinder(h=RM_PIN_HEAD_T,d=RM_PIN_HEAD_D);
-      translate([0,0,RM_PIN_HEAD_T])
-        cylinder(h=RM_PIN_STACK-0.8,d=RM_PIN_STEM_D);
-      translate([0,0,RM_PIN_HEAD_T+RM_PIN_STACK-0.8])
-        cylinder(h=1,d1=RM_PIN_STEM_D,d2=grip);
-      translate([0,0,RM_PIN_HEAD_T+RM_PIN_STACK+0.2])
-        cylinder(h=RM_PIN_TIP_LENGTH-0.2,d1=grip,d2=RM_PIN_TIP_D);
+      translate([-length/2,-RM_LINK_LEG,0])
+        cube([length,RM_LINK_LEG,RM_LINK_T]);
+      translate([-length/2,-RM_LINK_T,0])
+        cube([length,RM_LINK_T,RM_LINK_LEG]);
+      for(x=anchors) {
+        translate([x,-RM_GRID,0]) rotate([180,0,0]) mount_peg();
+        translate([x,0,RM_GRID]) rotate([-90,0,0]) mount_peg();
+      }
     }
-    translate([-RM_PIN_SPLIT/2,-grip,
-               RM_PIN_HEAD_T+1.5])
-      cube([RM_PIN_SPLIT,2*grip,
-            RM_PIN_STACK+RM_PIN_TIP_LENGTH]);
+    for(x=anchors) {
+      translate([x,-RM_GRID,RM_LINK_T]) rotate([180,0,0])
+        optional_screw_cut(RM_LINK_T+RM_PORT_DEPTH);
+      translate([x,-RM_LINK_T,RM_GRID]) rotate([-90,0,0])
+        optional_screw_cut(RM_LINK_T+RM_PORT_DEPTH);
+    }
+    translate([-length/2-RM_EPS,-RM_GASKET_W,-RM_EPS])
+      cube([length+2*RM_EPS,RM_GASKET_W,
+            RM_GASKET_GROOVE+RM_EPS]);
+    translate([-length/2-RM_EPS,-RM_GASKET_GROOVE,-RM_EPS])
+      cube([length+2*RM_EPS,RM_GASKET_GROOVE+RM_EPS,
+            RM_GASKET_W+RM_EPS]);
   }
+}
+
+module flat_gasket(length=RM_UNIT) {
+  translate([-RM_GASKET_W/2,-length/2,0])
+    cube([RM_GASKET_W,length,RM_GASKET_T]);
+}
+
+module angle_gasket(length=RM_UNIT) {
+  union() {
+    translate([-length/2,-RM_GASKET_W,0])
+      cube([length,RM_GASKET_W,RM_GASKET_T]);
+    translate([-length/2,-RM_GASKET_T,0])
+      cube([length,RM_GASKET_T,RM_GASKET_W]);
+  }
+  // ponytail: edge seals target splashes; add molded 3-way corner boots only
+  // after a physical cube leak test proves they are needed.
 }

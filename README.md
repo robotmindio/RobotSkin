@@ -1,68 +1,83 @@
-# RobotMind V3 modular construction system
+# RobotMind V4 solid modular panels
 
-RobotMind is a simple 8 mm structural grid for robotics:
+RobotMind V4 is a double-sided construction surface for robotics:
 
-`plate + connector + push pins`
+`solid panel + integral pegs + optional M3 screws`
 
-Children can assemble it without tools. The same holes accept M4 bolts when a
-robot needs a permanent joint. Plain plates stay visually clean; small
-connectors make flat or 90° structures.
+Nothing passes through a panel. Every mounting port is blind on both faces,
+leaving a continuous 2 mm membrane in the centre. Carriers and panel
+connectors press directly into the same ports without loose pins.
 
-## V3 MVP
+## V4 MVP
 
-- 40 mm structural unit and 8 mm hole grid.
-- 3.2 mm plates with 5 mm nominal through-holes.
-- 40×40, 80×40 and 80×80 mm plates.
-- One split push pin for any two 3.2 mm layers.
-- One four-pin flat connector.
-- One four-pin 90° connector.
-- One Grove 20×20 carrier with the same grid interface.
-- One calibration control: `RM_FIT`. Positive values loosen every printed fit.
+- 40 mm structural unit and clean 10 mm mounting grid.
+- 8 mm solid panels in 40×40, 80×40 and 80×80 mm sizes.
+- Nine annular blind ports per face of a 40×40 panel.
+- Identical mounting access from either panel face.
+- Integral tapered pegs for tool-free mounting.
+- A blind M3 pilot inside every port for optional locking.
+- Full-edge flat and 90° connectors in 40 and 80 mm lengths.
+- Optional TPU gasket strips for panel seams.
+- Grove 20×20 carrier using the same two integral pegs.
+- One calibration control: `RM_FIT`. Positive values loosen printed fits.
 
-The grid is dimensionally close to Technic-style parts, but compatibility is
-not claimed until genuine parts have been tested. Grove compatibility belongs
-to carriers and does not change the structural interface.
+The annular port does two jobs without two interfaces: its outer groove holds
+the peg while its centre boss receives a short M3 screw. A screw ends inside
+the panel and cannot pierce the opposite face.
 
 ## Print and calibrate
-
-Build everything:
 
 ```bash
 ./scripts/build.sh
 ```
 
-Print `fit_test_holes.stl` and the three `fit_test_pin_*.stl` files first.
-The small and large pins differ from nominal by 0.1 mm. Set `RM_FIT=0.05` if
-the nominal fit is too tight or `RM_FIT=-0.05` if it is too loose, then
-rebuild.
+Print `fit_test_port.stl` and the three `fit_test_peg_*.stl` files first. The
+small and large pegs differ from nominal by 0.1 mm. Adjust `RM_FIT` in 0.05 mm
+steps and rebuild.
 
-All MVP parts print without supports. PETG, 0.20 mm layers and four perimeters
-are a reasonable prototype baseline. Print pins upright on their heads.
+Panels print flat. Print the flat connector with its pegs upward. Print the
+Grove carrier on the exported side orientation. The 90° connector may need
+small local supports under one peg direction; it deliberately remains one
+piece instead of adding an assembly.
+
+PETG, 0.20 mm layers and four perimeters are a reasonable prototype baseline.
+TPU is appropriate for the optional gasket strips.
 
 ## Assembly
 
-- Flat surface: place `flat_link` below the seam and use four push pins.
-- 90° corner: place `angle_link` inside the corner and use four push pins.
-- Permanent joint: replace any push pin with an M4 bolt and nut.
-- Grove: press a 20×20 board onto the four small pegs, leaving its cable at the
-  open side of the tray.
+- Payload: press two integral carrier pegs into any two compatible ports.
+- Locked payload: add short M3 screws through the peg centres.
+- Flat panels: place `flat_link` behind the seam and press both panels on it.
+- 90° panels: press both panels onto the two faces of `angle_link`.
+- Sealed seam: install the matching gasket in the connector groove first.
 
-The push pin is sized for exactly two `RM_PLATE_T` layers. Carriers and
-connectors therefore use the same 3.2 mm mounting flange.
+The flat and 90° connectors use two pegs per 40 mm panel edge. Their optional
+screws point out into separate blind panel pilots; perpendicular screws never
+meet inside the corner.
 
-Generate the overview and exploded assembly images with:
+## Water-resistance boundary
+
+Panel faces and every mounting pilot are blind, so water has no direct path
+through a panel. The connector gaskets cover flat and 90° seams continuously.
+This MVP targets rain and splashes, not certified immersion: the ends where
+three cube edges meet still require a physical leak test and probably a small
+moulded corner boot. No IP or `waterproof` claim should be made before that
+test.
+
+## Manufacturing
+
+The V4 exterior interface pulls from the two broad panel faces and uses no
+blind undercut. The 8 mm solid panel is the simplest FDM prototype, not final
+injection DFM; a mould engineer should core or split the body after resin,
+load and sealing tests freeze the interface. Draft, shrink, gates, ejectors
+and connector tooling remain process-specific.
+
+Shared dimensions and geometry live only in `scad/rm_common.scad`.
+
+## Assembly images
 
 ```bash
 ./scripts/render_previews.sh
 ```
 
-The PNG files are written to `renders/` from
-`scad/04_assembly_previews.scad`.
-
-## Product boundary
-
-V3 deliberately omits integral edge teeth, hex sockets, heat-set inserts,
-injection shells and payload adapters beyond the first Grove carrier. Validate
-the core connection before expanding the catalogue or starting mold DFM.
-
-`scad/rm_common.scad` is the only source of shared mechanical dimensions.
+The command regenerates the PNG files in `renders/` directly from OpenSCAD.
