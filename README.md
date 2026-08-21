@@ -50,6 +50,15 @@ are a reasonable prototype baseline. Print pins upright on their heads.
 The push pin is sized for exactly two `RM_PLATE_T` layers. Carriers and
 connectors therefore use the same 3.2 mm mounting flange.
 
+Generate the overview and exploded assembly images with:
+
+```bash
+./scripts/render_previews.sh
+```
+
+The PNG files are written to `renders/` from
+`scad/04_assembly_previews.scad`.
+
 ## Product boundary
 
 V3 deliberately omits integral edge teeth, hex sockets, heat-set inserts,
