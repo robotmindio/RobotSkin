@@ -5,19 +5,20 @@ RobotMind is a printable mechanical bus for sensors and small controllers:
 `electronics → carrier → universal hex mount → structural plate`
 
 Every carrier uses one identical hex plug. The press fit works without tools;
-an M3 screw and heat-set insert can lock a carrier permanently. Plates connect
-directly at 90° with integral tabs and open edge slots, without separate
-printed connectors.
+an M3 screw and heat-set insert can lock a carrier permanently. Every plate
+edge is identical and connects directly at 0° or 90°, without separate
+printed connectors or A/B plate types.
 
 ## V1 mechanical standard
 
 - 40 mm structural unit; plates are 40×40, 80×40 or 80×80 mm.
 - 20 mm triangular socket pitch.
 - 16 mm hex width across flats, leaving 4 mm nominal ligaments.
-- 5 mm engagement depth for both carrier and corner joints.
-- Progressive 7 mm corner tabs at 10 mm pitch.
+- 5 mm carrier engagement and 7 mm plate-to-plate engagement.
+- One 12×7 mm tongue and one cross socket per 40 mm of edge.
+- The same cross socket accepts a tongue coplanar or from either face at 90°.
 - One hex plug per carrier, including Arduino and AprilTag carriers.
-- Double-sided carrier sockets and corner slots.
+- Double-sided carrier sockets and plate-edge joints.
 - Optional M3 locking; screws are never required for normal assembly.
 - One calibration control: `RM_FIT`. Positive values loosen every printed fit.
 
@@ -30,7 +31,7 @@ printed connectors.
 - M5Stack Unit 24×32 mm carrier.
 - 8 mm-pitch Technic adapter with 4.9 mm holes.
 - Grove cable clip carrier.
-- Four separate fit-test coupons.
+- Three separate fit-test coupons.
 
 The M5Stack and Technic models are dimensional adapters, not certifications.
 Verify them against the specific device and genuine pins before a production
@@ -38,12 +39,11 @@ run. Measure electronics, connectors and antenna keep-outs before final use.
 
 ## Print and calibrate
 
-Start with these four files:
+Start with these three files:
 
 1. `fit_test_hex_socket.stl`
 2. `fit_test_hex_plug.stl`
-3. `plate_joint_male_test.stl`
-4. `plate_joint_female_test.stl`
+3. `plate_joint_test.stl` (print two copies)
 
 The default `RM_FIT=0` targets a calibrated Bambu Lab printer. If a fit is too
 tight, rebuild with `RM_FIT=0.05`; if loose, use `RM_FIT=-0.05`. Change only in
@@ -55,7 +55,8 @@ All exports are oriented for their recommended print position.
 ## SCAD library structure
 
 - `scad/rm_common.scad` is the V1 mechanical source of truth: plate grid,
-  carrier hex, corner joint, M3 hardware and print-orientation helpers.
+  carrier hex, hermaphroditic plate edge, M3 hardware and print-orientation
+  helpers.
 - `scad/rm_apriltag.scad` contains the tag dimensions and rails shared by the
   AprilTag insert and beacon carrier.
 - Numbered SCAD files contain only payload-specific geometry and defaults.
@@ -66,11 +67,12 @@ product's numbered file.
 
 ## M3 locking and water resistance
 
-Each carrier socket and selected corner tab contains a 4.0 mm pocket for a
+Each carrier socket and each edge tongue contains a 4.0 mm pocket for a
 nominal 5 mm M3 heat-set insert. A 0.3 mm membrane keeps opposite carrier
 sockets closed until an insert is installed. Inserts and screws remain
 optional; the progressive press fits carry normal assemblies without them.
-Dimensions remain configurable in `scad/rm_common.scad`.
+The edge screw locks 90° joints; coplanar joints rely on the press fit in this
+prototype. Dimensions remain configurable in `scad/rm_common.scad`.
 
 V1 is not IP-rated. Blind sockets preserve the plate wall, but corner seams
 and optional screws require sealing. A waterproof product needs a dedicated

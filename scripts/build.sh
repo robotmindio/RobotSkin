@@ -19,8 +19,7 @@ build plate_80x40 01_plates -D 'PLATE=[80,40]'
 build plate_80x80 01_plates -D 'PLATE=[80,80]'
 build fit_test_hex_socket 00_fit_tests -D 'PART="hex_socket"'
 build fit_test_hex_plug 00_fit_tests -D 'PART="hex_plug"'
-build plate_joint_male_test 00_fit_tests -D 'PART="edge_male"'
-build plate_joint_female_test 00_fit_tests -D 'PART="edge_female"'
+build plate_joint_test 00_fit_tests -D 'PART="edge"'
 
 build apriltag_insert 03_apriltag_insert
 build apriltag_beacon_carrier 04_apriltag_beacon_carrier

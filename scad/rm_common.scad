@@ -18,12 +18,14 @@ RM_HEX_PITCH = 20;
 RM_HEX_X = RM_HEX_PITCH;
 RM_HEX_Y = sqrt(3)/2*RM_HEX_PITCH;
 
-// Plate-to-plate 90° box joint: integral tabs enter open edge slots.
-RM_JOIN_PITCH = 10;
-RM_JOIN_LENGTH = 5;
-RM_JOIN_W = 7;
-RM_JOIN_ENTRY_CLEARANCE = 0.10+RM_FIT;
-RM_JOIN_GRIP = 0.15-RM_FIT;
+// One hermaphroditic plate edge: alternating tongues and cross sockets.
+// A socket accepts the same tongue coplanar or at 90 degrees.
+RM_JOIN_BAY = 20;
+RM_JOIN_LENGTH = 7;
+RM_JOIN_W = 12;
+RM_JOIN_H = 7;
+RM_JOIN_ENTRY_CLEARANCE = 0.15+RM_FIT;
+RM_JOIN_GRIP = 0.10-RM_FIT;
 RM_M3_CLEARANCE = 3.4;
 RM_M3_HEAD = 6.2;
 RM_M3_HEAD_DEPTH = 2.2;
@@ -90,79 +92,98 @@ module socket_pair() {
   bottom_socket_cut();
 }
 
-// Triangular lattice. Female edges reserve enough material for corner slots;
-// the 5.5 mm origin shift keeps the 20 mm pitch and centers the usable area.
+// Symmetric triangular lattice. The compact edge joint leaves the same margin
+// on all four sides, so there is no longer an A or B plate orientation.
 module dense_socket_grid(size=[2*RM_UNIT,2*RM_UNIT]) {
   rows=ceil(size[1]/RM_HEX_Y)+2;
   cols=ceil(size[0]/RM_HEX_X)+2;
-  female_margin=RM_PLATE_T+1;
-  male_margin=2;
-  origin=(female_margin-male_margin)/2;
+  edge_margin=RM_JOIN_H+2;
   for(row=[-rows:rows], col=[-cols:cols]) {
-    y=origin+row*RM_HEX_Y;
-    x=origin+(col + ((abs(row)%2)==1 ? 0.5 : 0))*RM_HEX_X;
-    if(x-RM_HEX_AF/2 >= -size[0]/2+female_margin &&
-       x+RM_HEX_AF/2 <= size[0]/2-male_margin &&
-       y-RM_HEX_R >= -size[1]/2+female_margin &&
-       y+RM_HEX_R <= size[1]/2-male_margin)
+    y=row*RM_HEX_Y;
+    x=(col + ((abs(row)%2)==1 ? 0.5 : 0))*RM_HEX_X;
+    if(x-RM_HEX_AF/2 >= -size[0]/2+edge_margin &&
+       x+RM_HEX_AF/2 <= size[0]/2-edge_margin &&
+       y-RM_HEX_R >= -size[1]/2+edge_margin &&
+       y+RM_HEX_R <= size[1]/2-edge_margin)
       translate([x,y,0]) socket_pair();
   }
 }
 
-function join_index(p,edge_len) =
-  round((p+edge_len/2-RM_JOIN_PITCH/2)/RM_JOIN_PITCH);
-function is_m3_join(p,edge_len) = join_index(p,edge_len)%4 == 1;
+function join_position(i,edge_len) =
+  -edge_len/2+RM_JOIN_BAY/2+i*RM_JOIN_BAY;
+function join_bays(edge_len) = round(edge_len/RM_JOIN_BAY);
+function is_join_tongue(i) = i%2 == 0;
 
-// Progressive tabs: a loose tip guides insertion and the root wedges firmly.
-module male_edge(edge_len, plate_half) {
+// Loose tips guide insertion; the final travel wedges in width and height.
+module uniform_edge_tongues(edge_len, plate_half) {
   root_w=RM_JOIN_W+2*RM_JOIN_GRIP;
   tip_w=RM_JOIN_W-2*RM_JOIN_ENTRY_CLEARANCE;
-  for(p=[-edge_len/2+RM_JOIN_PITCH/2:
-         RM_JOIN_PITCH:
-         edge_len/2-RM_JOIN_PITCH/2])
-    hull() {
-      translate([p-root_w/2,plate_half-RM_EPS/2,0])
-        cube([root_w,RM_EPS,RM_PLATE_T]);
-      translate([p-tip_w/2,plate_half+RM_JOIN_LENGTH-RM_EPS/2,0])
-        cube([tip_w,RM_EPS,RM_PLATE_T]);
-    }
+  root_h=RM_JOIN_H+2*RM_JOIN_GRIP;
+  tip_h=RM_JOIN_H-2*RM_JOIN_ENTRY_CLEARANCE;
+  for(i=[0:join_bays(edge_len)-1])
+    if(is_join_tongue(i))
+      hull() {
+        translate([join_position(i,edge_len)-root_w/2,
+                   plate_half-RM_EPS/2,
+                   (RM_PLATE_T-root_h)/2])
+          cube([root_w,RM_EPS,root_h]);
+        translate([join_position(i,edge_len)-tip_w/2,
+                   plate_half+RM_JOIN_LENGTH-RM_EPS/2,
+                   (RM_PLATE_T-tip_h)/2])
+          cube([tip_w,RM_EPS,tip_h]);
+      }
 }
 
-// Selected tabs accept the same 5 mm M3 heat-set insert as carrier sockets.
-module male_edge_insert_cuts(edge_len, plate_half) {
-  for(p=[-edge_len/2+RM_JOIN_PITCH/2:
-         RM_JOIN_PITCH:
-         edge_len/2-RM_JOIN_PITCH/2])
-    if(is_m3_join(p,edge_len))
-      translate([p,plate_half+RM_JOIN_LENGTH+RM_EPS,RM_PLATE_T/2])
+// One selected tongue per 40 mm accepts the standard M3 heat-set insert.
+module uniform_edge_insert_cuts(edge_len, plate_half) {
+  for(i=[0:join_bays(edge_len)-1])
+    if(is_join_tongue(i))
+      translate([join_position(i,edge_len),
+                 plate_half+RM_JOIN_LENGTH+RM_EPS,RM_PLATE_T/2])
         rotate([90,0,0])
           cylinder(h=RM_M3_INSERT_LENGTH+2*RM_EPS,
                    d=RM_M3_INSERT_HOLE,$fn=24);
 }
 
-// Female B edge (-Y): open slots accept tabs from either face at 90°.
-module female_edge_cuts(edge_len, plate_half) {
-  for(p=[-edge_len/2+RM_JOIN_PITCH/2:
-         RM_JOIN_PITCH:
-         edge_len/2-RM_JOIN_PITCH/2]) {
-    translate([p-RM_JOIN_W/2,
-               -plate_half-RM_EPS,-RM_EPS])
-      cube([RM_JOIN_W,
-            RM_PLATE_T+RM_EPS,
-            RM_JOIN_LENGTH+RM_EPS]);
-    translate([p-RM_JOIN_W/2,
-               -plate_half-RM_EPS,RM_PLATE_T-RM_JOIN_LENGTH])
-      cube([RM_JOIN_W,
-            RM_PLATE_T+RM_EPS,
-            RM_JOIN_LENGTH+RM_EPS]);
-    if(is_m3_join(p,edge_len)) {
-      translate([p,-plate_half+RM_PLATE_T/2,-RM_EPS])
+// Cross sockets accept a tongue from the edge (flat) or either face (90°).
+module uniform_edge_socket_cuts(edge_len, plate_half) {
+  for(i=[0:join_bays(edge_len)-1])
+    if(!is_join_tongue(i)) {
+      p=join_position(i,edge_len);
+      translate([p-RM_JOIN_W/2,
+                 plate_half-RM_JOIN_LENGTH,
+                 (RM_PLATE_T-RM_JOIN_H)/2])
+        cube([RM_JOIN_W,RM_JOIN_LENGTH+RM_EPS,RM_JOIN_H]);
+      translate([p-RM_JOIN_W/2,
+                 plate_half-(RM_PLATE_T+RM_JOIN_H)/2,-RM_EPS])
+        cube([RM_JOIN_W,RM_JOIN_H,RM_JOIN_LENGTH+RM_EPS]);
+      translate([p-RM_JOIN_W/2,
+                 plate_half-(RM_PLATE_T+RM_JOIN_H)/2,
+                 RM_PLATE_T-RM_JOIN_LENGTH])
+        cube([RM_JOIN_W,RM_JOIN_H,RM_JOIN_LENGTH+RM_EPS]);
+      translate([p,plate_half-RM_PLATE_T/2,-RM_EPS])
         cylinder(h=RM_PLATE_T+2*RM_EPS,d=RM_M3_CLEARANCE,$fn=24);
     }
-  }
 }
 
-// Identical plates: tabs on +X/+Y and 90° slots on -X/-Y.
+module plate_edge_tongues(size) {
+  for(a=[0:90:270])
+    rotate([0,0,a])
+      uniform_edge_tongues(a%180==0 ? size[0] : size[1],
+                           a%180==0 ? size[1]/2 : size[0]/2);
+}
+
+module plate_edge_cuts(size) {
+  for(a=[0:90:270])
+    rotate([0,0,a]) {
+      edge_len=a%180==0 ? size[0] : size[1];
+      plate_half=a%180==0 ? size[1]/2 : size[0]/2;
+      uniform_edge_socket_cuts(edge_len,plate_half);
+      uniform_edge_insert_cuts(edge_len,plate_half);
+    }
+}
+
+// Every side has the same hermaphroditic edge; there are no A/B plates.
 module plate(size=[2*RM_UNIT,2*RM_UNIT]) {
   assert(size[0] % RM_UNIT == 0 && size[1] % RM_UNIT == 0,
          "Plate dimensions must be whole 40 mm units");
@@ -170,14 +191,10 @@ module plate(size=[2*RM_UNIT,2*RM_UNIT]) {
     union() {
       translate([-size[0]/2,-size[1]/2,0])
         rounded_box([size[0],size[1],RM_PLATE_T],1.5);
-      male_edge(size[0],size[1]/2);
-      rotate([0,0,-90]) male_edge(size[1],size[0]/2);
+      plate_edge_tongues(size);
     }
     dense_socket_grid(size);
-    female_edge_cuts(size[0],size[1]/2);
-    rotate([0,0,-90]) female_edge_cuts(size[1],size[0]/2);
-    male_edge_insert_cuts(size[0],size[1]/2);
-    rotate([0,0,-90]) male_edge_insert_cuts(size[1],size[0]/2);
+    plate_edge_cuts(size);
   }
 }
 

@@ -5,7 +5,7 @@
 - All dimensions are millimetres.
 - `RM_UNIT=40` defines plate sizes.
 - Plates are 16 mm thick and accept carriers from either face.
-- Positive `RM_FIT` values loosen carrier and corner fits together.
+- Positive `RM_FIT` values loosen carrier and plate-edge fits together.
 
 ## Carrier interface
 
@@ -28,22 +28,24 @@ socket's 4.0 mm pocket, then pass an M3 screw through the carrier. The central
 
 ## Plate interface
 
-All plates use the same edge convention:
+Every side of every plate has the same hermaphroditic edge:
 
-- Progressive 7 mm tabs at 10 mm pitch on +X and +Y.
-- Tab engagement depth: 5 mm.
-- Matching open slots on -X and -Y.
-- Tabs enter slots from either plate face to form a 90° corner.
-- One optional M3 clamp and heat-set insert per 40 mm of edge.
-- No flat 0° joint and no separate corner piece.
+- One progressive 12×7 mm tongue and one cross socket per 40 mm.
+- Tongue engagement depth: 7 mm.
+- The cross socket opens at the edge and at both plate faces.
+- Identical edges connect coplanar at 0° or from either face at 90°.
+- One optional M3 clamp and heat-set insert per 40 mm for 90° joints.
+- No A/B orientation and no separate connector piece.
 
-Each tab starts undersize and wedges only during the final travel, so the
-corner holds without screws. Selected male tabs expose a 4.0×5 mm axial pocket
-for the same M3 heat-set insert used by carrier sockets.
+Mirroring occurs naturally when two edges face each other, aligning each
+tongue with the other plate's socket. A tongue starts undersize in width and
+height, then wedges only during the final travel. Its 4.0×5 mm axial pocket
+accepts the same M3 heat-set insert used by carrier sockets. Coplanar joints
+use the press fit alone in this prototype.
 
 Plates are available in 40×40, 80×40 and 80×80 mm. Six 80×80 plates are the
-reference cube, but a complete cube closure must be verified with the corner
-coupons before committing to a long print run.
+reference cube, but flat panels, a three-plate corner and complete cube closure
+must be verified with coupons before committing to a long print run.
 
 ## Ecosystem adapters
 
@@ -69,7 +71,7 @@ library unless a second independent object actually uses the same interface.
 ## Prototype order
 
 1. Print and tune the separate hex plug and socket coupons.
-2. Print and tune the separate male and female corner coupons.
+2. Print two copies of the universal edge coupon; test both 0° and 90°.
 3. Test one Grove 20×20 carrier.
 4. Assemble a three-plate corner.
 5. Only then print 80×80 plates or a complete cube.
