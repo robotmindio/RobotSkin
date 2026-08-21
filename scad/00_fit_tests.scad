@@ -6,20 +6,17 @@ assert(PART=="port" || PART=="peg_small" || PART=="peg_nominal" ||
        PART=="preview_90", "Unknown fit-test part");
 
 module port_coupon() {
+  coupon_t=RM_PORT_PILOT_DEPTH+2;
   difference() {
-    rounded_panel([20,20]);
+    cylinder(h=coupon_t,d=12);
     blind_port_cut();
-    translate([0,0,RM_PANEL_T]) mirror([0,0,1]) blind_port_cut();
   }
 }
 
 module peg_coupon(delta=0) {
-  difference() {
-    union() {
-      rounded_panel([16,16],RM_LINK_T,2);
-      translate([0,0,RM_LINK_T]) mount_peg(delta);
-    }
-    optional_screw_cut(RM_LINK_T+RM_PORT_DEPTH);
+  union() {
+    cylinder(h=RM_LINK_T,d=10);
+    translate([0,0,RM_LINK_T]) mount_peg(delta);
   }
 }
 
