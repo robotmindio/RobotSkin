@@ -1,43 +1,29 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-SCAD="$ROOT/scad"
-STL="$ROOT/stl"
-mkdir -p "$STL"
-find "$STL" -maxdepth 1 -type f -name '*.stl' -delete
+PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+SCAD_DIR="$PROJECT_DIR/scad"
+STL_DIR="$PROJECT_DIR/stl"
+mkdir -p "$STL_DIR"
+find "$STL_DIR" -maxdepth 1 -type f -name '*.stl' -delete
 
 build() {
   local output="$1" source="$2"
   shift 2
   echo "[OpenSCAD] $output"
-  openscad "$@" -o "$STL/$output.stl" "$SCAD/$source.scad"
+  openscad "$@" -o "$STL_DIR/$output.stl" "$SCAD_DIR/$source.scad"
 }
 
+build fit_test_holes 00_fit_tests -D 'PART="holes"'
+build fit_test_pin_small 00_fit_tests -D 'PART="pin_small"'
+build fit_test_pin_nominal 00_fit_tests -D 'PART="pin_nominal"'
+build fit_test_pin_large 00_fit_tests -D 'PART="pin_large"'
 build plate_40x40 01_plates -D 'PLATE=[40,40]'
 build plate_80x40 01_plates -D 'PLATE=[80,40]'
 build plate_80x80 01_plates -D 'PLATE=[80,80]'
-build injection_shell_a_40x40 09_injection_plate -D 'PLATE=[40,40]' -D 'SHELL="a"'
-build injection_shell_b_40x40 09_injection_plate -D 'PLATE=[40,40]' -D 'SHELL="b"'
-build injection_shell_a_80x40 09_injection_plate -D 'PLATE=[80,40]' -D 'SHELL="a"'
-build injection_shell_b_80x40 09_injection_plate -D 'PLATE=[80,40]' -D 'SHELL="b"'
-build injection_shell_a_80x80 09_injection_plate -D 'PLATE=[80,80]' -D 'SHELL="a"'
-build injection_shell_b_80x80 09_injection_plate -D 'PLATE=[80,80]' -D 'SHELL="b"'
-build fit_test_hex_socket 00_fit_tests -D 'PART="hex_socket"'
-build fit_test_hex_plug 00_fit_tests -D 'PART="hex_plug"'
-build plate_joint_test 00_fit_tests -D 'PART="edge"'
+build push_pin 02_connectors -D 'PART="pin"'
+build flat_link 02_connectors -D 'PART="flat"'
+build angle_link 02_connectors -D 'PART="angle"'
+build grove_20x20_carrier 03_grove_20x20_carrier
 
-build apriltag_insert 03_apriltag_insert
-build apriltag_beacon_carrier 04_apriltag_beacon_carrier
-build arduino_uno_carrier 05_arduino_uno_carrier
-build grove_cable_clip_carrier 06_grove_cable_clip_carrier
-build m5stack_unit_24x32_carrier 07_m5stack_unit_carrier
-build technic_8mm_adapter 08_technic_adapter
-
-build grove_carrier_20x20 02_grove_carriers -D 'PCB=[20,20]'
-build grove_carrier_20x40 02_grove_carriers -D 'PCB=[20,40]'
-build grove_carrier_20x60 02_grove_carriers -D 'PCB=[20,60]'
-build grove_carrier_40x40 02_grove_carriers -D 'PCB=[40,40]'
-build grove_carrier_40x60 02_grove_carriers -D 'PCB=[40,60]'
-
-echo "Built STLs in $STL"
+echo "Built STLs in $STL_DIR"
