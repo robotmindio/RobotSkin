@@ -51,9 +51,9 @@ TPU is appropriate for the optional gasket strips.
 - 90° panels: press both panels onto the two faces of `angle_link`.
 - Sealed seam: install the matching gasket in the connector groove first.
 
-The flat and 90° connectors use four pegs per 40 mm panel edge. Their optional
-screws point out into separate blind panel pilots; perpendicular screws never
-meet inside the corner.
+Flat connectors use four pegs per 40 mm panel edge. 90° connectors use two
+rows of four pegs on each face. Their optional screws point out into separate
+blind panel pilots; perpendicular screws never meet inside the corner.
 
 ## Water-resistance boundary
 

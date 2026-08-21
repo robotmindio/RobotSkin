@@ -36,8 +36,8 @@ Positive values therefore loosen both radial peg surfaces together.
 ## Panel connectors
 
 `flat_link(length)` bridges the back of a coplanar seam. `angle_link(length)`
-holds two panels at 90°. Both lengths use whole 40 mm units and place four pegs
-per panel per unit.
+holds two panels at 90°. Both lengths use whole 40 mm units. Flat links place
+four pegs per panel per unit; angle links place two rows of four pegs per face.
 
 The 90° peg and screw axes point away from the connector into their respective
 panels. Their 5 mm offsets exceed the 3.2 mm connector wall, so perpendicular

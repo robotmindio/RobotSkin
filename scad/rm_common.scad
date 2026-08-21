@@ -141,21 +141,22 @@ module flat_link(length=RM_UNIT) {
 
 module angle_link(length=RM_UNIT) {
   anchors=link_anchor_positions(length);
+  rows=[RM_EDGE_MARGIN,RM_EDGE_MARGIN+RM_GRID];
   difference() {
     union() {
       translate([-length/2,-RM_LINK_LEG,0])
         cube([length,RM_LINK_LEG,RM_LINK_T]);
       translate([-length/2,-RM_LINK_T,0])
         cube([length,RM_LINK_T,RM_LINK_LEG]);
-      for(x=anchors) {
-        translate([x,-RM_EDGE_MARGIN,0]) rotate([180,0,0]) mount_peg();
-        translate([x,0,RM_EDGE_MARGIN]) rotate([-90,0,0]) mount_peg();
+      for(x=anchors, row=rows) {
+        translate([x,-row,0]) rotate([180,0,0]) mount_peg();
+        translate([x,0,row]) rotate([-90,0,0]) mount_peg();
       }
     }
-    for(x=anchors) {
-      translate([x,-RM_EDGE_MARGIN,RM_LINK_T]) rotate([180,0,0])
+    for(x=anchors, row=rows) {
+      translate([x,-row,RM_LINK_T]) rotate([180,0,0])
         optional_screw_cut(RM_LINK_T+RM_PORT_DEPTH);
-      translate([x,-RM_LINK_T,RM_EDGE_MARGIN]) rotate([-90,0,0])
+      translate([x,-RM_LINK_T,row]) rotate([-90,0,0])
         optional_screw_cut(RM_LINK_T+RM_PORT_DEPTH);
     }
     translate([-length/2-RM_EPS,-RM_GASKET_W,-RM_EPS])
