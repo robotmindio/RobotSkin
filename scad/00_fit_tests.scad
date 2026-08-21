@@ -7,7 +7,10 @@ assert(PART=="hex_socket" || PART=="hex_plug" ||
 
 module hex_socket_coupon() {
   difference() {
-    translate([-14,-14,0]) rounded_box([28,28,RM_PLATE_T],1.5);
+    union() {
+      translate([-14,-14,0]) rounded_box([28,28,RM_PLATE_T],1.5);
+      socket_boss();
+    }
     socket_pair();
   }
 }

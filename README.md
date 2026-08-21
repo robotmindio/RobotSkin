@@ -1,4 +1,4 @@
-# RobotMind V1 modular construction system
+# RobotMind V2 modular construction system
 
 RobotMind is a printable mechanical bus for sensors and small controllers:
 
@@ -9,16 +9,16 @@ an M3 screw and heat-set insert can lock a carrier permanently. Every plate
 edge is identical and connects directly at 0° or 90°, without separate
 printed connectors or A/B plate types.
 
-## V1 mechanical standard
+## V2 mechanical standard
 
 - 40 mm structural unit; plates are 40×40, 80×40 or 80×80 mm.
 - 20 mm triangular socket pitch.
-- 16 mm hex width across flats, leaving 4 mm nominal ligaments.
-- 5 mm carrier engagement and 7 mm plate-to-plate engagement.
-- One 7×10 mm tongue and one cross socket per 40 mm of edge.
-- The same cross socket accepts a tongue coplanar or from either face at 90°.
+- 12 mm plate thickness and 16 mm hex width across flats.
+- 4 mm carrier engagement on either plate face.
+- One full-height 7×12×12 mm finger and one notch per 40 mm of edge.
+- The same cubic notch accepts the finger coplanar or at 90°.
 - One hex plug per carrier, including Arduino and AprilTag carriers.
-- Double-sided carrier sockets and plate-edge joints.
+- Double-sided carrier sockets and one identical joint on every plate edge.
 - Optional M3 locking; screws are never required for normal assembly.
 - One calibration control: `RM_FIT`. Positive values loosen every printed fit.
 
@@ -32,6 +32,7 @@ printed connectors or A/B plate types.
 - 8 mm-pitch Technic adapter with 4.9 mm holes.
 - Grove cable clip carrier.
 - Three separate fit-test coupons.
+- Complementary A/B injection-shell references for all three plate sizes.
 
 The M5Stack and Technic models are dimensional adapters, not certifications.
 Verify them against the specific device and genuine pins before a production
@@ -54,29 +55,35 @@ All exports are oriented for their recommended print position.
 
 ## SCAD library structure
 
-- `scad/rm_common.scad` is the V1 mechanical source of truth: plate grid,
+- `scad/rm_common.scad` is the V2 mechanical source of truth: plate grid,
   carrier hex, hermaphroditic plate edge, M3 hardware and print-orientation
   helpers.
 - `scad/rm_apriltag.scad` contains the tag dimensions and rails shared by the
   AprilTag insert and beacon carrier.
-- Numbered SCAD files contain only payload-specific geometry and defaults.
+- `scad/09_injection_plate.scad` exports the A/B shell references.
+- Other numbered SCAD files contain payload-specific geometry and defaults.
 
 Change a shared interface only in `rm_common.scad`. Keep dimensions that
 belong to one product—such as an Arduino board, M5Stack case or cable—in that
 product's numbered file.
 
-## M3 locking and water resistance
+## M3 locking and manufacturing
 
-Each carrier socket and each edge tongue contains a 4.0 mm pocket for a
-nominal 5 mm M3 heat-set insert. A 0.3 mm membrane keeps opposite carrier
-sockets closed until an insert is installed. Inserts and screws remain
-optional; the progressive press fits carry normal assemblies without them.
-The edge screw locks 90° joints; coplanar joints rely on the press fit in this
-prototype. Dimensions remain configurable in `scad/rm_common.scad`.
+The 4 mm web between opposite carrier sockets accepts one 4 mm M3 heat-set
+insert. Each plate finger also has a 4 mm insert pocket from either face.
+Inserts and screws remain optional; the progressive press fits carry normal
+assemblies without them. A 9 mm M3 washer bridges the edge notch when a flat
+or 90° joint needs permanent locking.
 
-V1 is not IP-rated. Blind sockets preserve the plate wall, but corner seams
-and optional screws require sealing. A waterproof product needs a dedicated
-gasketed edge profile rather than changes to the universal carrier interface.
+The normal FDM plate is monolithic and prints flat. Injection uses two
+complementary 6 mm shells with 2 mm skins, internal ribs and a perimeter rim.
+The finished plate has the same exterior interfaces as the printed version.
+The shell exports are design references: a mold engineer must add resin- and
+tool-specific draft, gates, ejectors and ultrasonic-weld details.
+
+V2 is not yet IP-rated. Welded shells can seal the plate body, but cube seams,
+carrier sockets and screws still require gaskets or plugs. Water resistance is
+a sealing variant, not a different mechanical bus.
 
 ## Build
 
@@ -84,5 +91,5 @@ gasketed edge profile rather than changes to the universal carrier interface.
 ./scripts/build.sh
 ```
 
-The script removes stale STL exports and rebuilds the complete V1 set in
+The script removes stale STL exports and rebuilds the complete V2 set in
 `stl/`.
