@@ -23,8 +23,8 @@ The only payload and connector interface is one concentric blind port:
 - Groove depth: 2.2 mm.
 - M3 pilot diameter: 2.7 mm nominal.
 - M3 pilot depth: 3 mm.
-- Integral peg entry: 0.3 mm diametric clearance.
-- Integral peg final grip: 0.1 mm diametric interference.
+- Integral peg entry: 0.2 mm diametric clearance.
+- Integral peg final grip: 0.2 mm diametric interference.
 
 Two annular pegs prevent payload rotation. The broad payload base carries the
 moment; the short pegs locate and retain it. A screw may pass through a peg
