@@ -22,8 +22,8 @@ RM_HEX_Y = sqrt(3)/2*RM_HEX_PITCH;
 // A socket accepts the same tongue coplanar or at 90 degrees.
 RM_JOIN_BAY = 20;
 RM_JOIN_LENGTH = 7;
-RM_JOIN_W = 12;
-RM_JOIN_H = 7;
+RM_JOIN_W = 7;
+RM_JOIN_H = 10;
 RM_JOIN_ENTRY_CLEARANCE = 0.15+RM_FIT;
 RM_JOIN_GRIP = 0.10-RM_FIT;
 RM_M3_CLEARANCE = 3.4;

@@ -15,7 +15,7 @@ printed connectors or A/B plate types.
 - 20 mm triangular socket pitch.
 - 16 mm hex width across flats, leaving 4 mm nominal ligaments.
 - 5 mm carrier engagement and 7 mm plate-to-plate engagement.
-- One 12×7 mm tongue and one cross socket per 40 mm of edge.
+- One 7×10 mm tongue and one cross socket per 40 mm of edge.
 - The same cross socket accepts a tongue coplanar or from either face at 90°.
 - One hex plug per carrier, including Arduino and AprilTag carriers.
 - Double-sided carrier sockets and plate-edge joints.

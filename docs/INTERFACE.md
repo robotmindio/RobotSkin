@@ -30,7 +30,7 @@ socket's 4.0 mm pocket, then pass an M3 screw through the carrier. The central
 
 Every side of every plate has the same hermaphroditic edge:
 
-- One progressive 12×7 mm tongue and one cross socket per 40 mm.
+- One progressive 7×10 mm tongue and one cross socket per 40 mm.
 - Tongue engagement depth: 7 mm.
 - The cross socket opens at the edge and at both plate faces.
 - Identical edges connect coplanar at 0° or from either face at 90°.
