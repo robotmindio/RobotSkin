@@ -12,7 +12,7 @@ connectors press directly into the same ports without loose pins.
 
 - 40 mm structural unit and clean 10 mm mounting grid.
 - 8 mm solid panels in 40×40, 80×40 and 80×80 mm sizes.
-- Nine annular blind ports per face of a 40×40 panel.
+- Nine hexagonal blind ports per face of a 40×40 panel.
 - Identical mounting access from either panel face.
 - Integral tapered pegs for tool-free mounting.
 - A blind M3 pilot inside every port for optional locking.
@@ -21,9 +21,9 @@ connectors press directly into the same ports without loose pins.
 - Grove 20×20 carrier using the same two integral pegs.
 - One calibration control: `RM_FIT`. Positive values loosen printed fits.
 
-The annular port does two jobs without two interfaces: its outer groove holds
-the peg while its centre boss receives a short M3 screw. A screw ends inside
-the panel and cannot pierce the opposite face.
+The hexagonal port does two jobs without two interfaces: its outer groove and
+peg prevent rotation, while its circular centre boss receives a short M3
+screw. A screw ends inside the panel and cannot pierce the opposite face.
 
 ## Print and calibrate
 

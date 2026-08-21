@@ -9,8 +9,9 @@ RM_PANEL_T = 8;
 RM_CORNER_R = 3;
 RM_FIT = 0; // positive is looser; tune in 0.05 mm steps
 
-// One annular blind port. The ring accepts a tool-free peg; the centre boss
-// accepts an optional M3 screw without piercing the waterproof membrane.
+// One hexagonal blind port. The hexagonal ring accepts a tool-free peg; the
+// circular centre boss accepts an optional M3 screw without piercing the
+// waterproof membrane.
 RM_PORT_OD = 8;
 RM_PORT_BOSS_D = 5;
 RM_PORT_DEPTH = 2.2;
@@ -47,7 +48,7 @@ assert(RM_PANEL_T > 2*RM_PORT_PILOT_DEPTH,
        "Blind pilots need a continuous waterproof membrane");
 assert(rm_peg_root_od() > rm_port_od() &&
        rm_port_od() > rm_peg_tip_od(),
-       "RM_FIT is outside the annular peg range");
+       "RM_FIT is outside the hexagonal peg range");
 assert(rm_peg_id() > rm_port_boss_d() &&
        rm_port_boss_d() > rm_pilot_d(),
        "The port boss must separate peg and screw fits");
@@ -71,7 +72,7 @@ module blind_port_cut() {
   union() {
     difference() {
       translate([0,0,-RM_EPS])
-        cylinder(h=RM_PORT_DEPTH+RM_EPS,d=rm_port_od());
+        cylinder(h=RM_PORT_DEPTH+RM_EPS,d=rm_port_od(),$fn=6);
       translate([0,0,-2*RM_EPS])
         cylinder(h=RM_PORT_DEPTH+3*RM_EPS,d=rm_port_boss_d());
     }
@@ -100,11 +101,11 @@ module panel(size=[RM_UNIT,RM_UNIT]) {
   }
 }
 
-// Every carrier and connector reuses this exact integral annular peg.
+// Every carrier and connector reuses this exact integral hexagonal peg.
 module mount_peg(delta=0) {
   difference() {
     cylinder(h=RM_PORT_DEPTH,
-             d1=rm_peg_root_od(delta),d2=rm_peg_tip_od(delta));
+             d1=rm_peg_root_od(delta),d2=rm_peg_tip_od(delta),$fn=6);
     translate([0,0,-RM_EPS])
       cylinder(h=RM_PORT_DEPTH+2*RM_EPS,d=rm_peg_id());
   }
