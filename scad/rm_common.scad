@@ -5,6 +5,7 @@ $fn = 32;
 RM_EPS = 0.1;
 RM_UNIT = 40;
 RM_GRID = 10;
+RM_EDGE_MARGIN = RM_GRID/2;
 RM_PANEL_T = 8;
 RM_CORNER_R = 3;
 RM_FIT = 0; // positive is looser; tune in 0.05 mm steps
@@ -37,13 +38,14 @@ function rm_pilot_d() = RM_PORT_PILOT_D+2*RM_FIT;
 function rm_peg_root_od(delta=0) = RM_PORT_OD+RM_PEG_GRIP-2*RM_FIT+delta;
 function rm_peg_tip_od(delta=0) = RM_PORT_OD-RM_PEG_ENTRY-2*RM_FIT+delta;
 function rm_peg_id() = RM_PORT_BOSS_D+RM_PEG_INNER_CLEARANCE+2*RM_FIT;
-function grid_count(span) = round(span/RM_GRID)-1;
-function grid_position(i,span) = -span/2+RM_GRID+i*RM_GRID;
+function grid_count(span) = floor((span-2*RM_EDGE_MARGIN)/RM_GRID)+1;
+function grid_position(i,span) = -span/2+RM_EDGE_MARGIN+i*RM_GRID;
 function link_anchor_positions(length) =
-  [for(cell=[0:round(length/RM_UNIT)-1], side=[-1,1])
-    -length/2+RM_UNIT/2+cell*RM_UNIT+side*RM_GRID];
+  [for(i=[0:grid_count(length)-1]) grid_position(i,length)];
 
 assert(RM_UNIT%RM_GRID == 0, "The unit must contain a whole mounting grid");
+assert(grid_count(RM_UNIT) == 4,
+       "The 40 mm unit must expose a 4x4 port grid");
 assert(RM_PANEL_T > 2*RM_PORT_PILOT_DEPTH,
        "Blind pilots need a continuous waterproof membrane");
 assert(rm_peg_root_od() > rm_port_od() &&
@@ -54,7 +56,7 @@ assert(rm_peg_id() > rm_port_boss_d() &&
        "The port boss must separate peg and screw fits");
 assert(RM_GRID-RM_PORT_OD > 1,
        "Mounting ports need enough material between them");
-assert(RM_GRID > RM_LINK_T,
+assert(RM_EDGE_MARGIN > RM_LINK_T,
        "Perpendicular optional screws must not intersect");
 
 module rounded_box(size=[20,20,3], r=2) {
@@ -125,10 +127,10 @@ module flat_link(length=RM_UNIT) {
   difference() {
     union() {
       rounded_panel([width,length],RM_LINK_T,RM_CORNER_R);
-      for(x=[-RM_GRID,RM_GRID], y=anchors)
+      for(x=[-RM_EDGE_MARGIN,RM_EDGE_MARGIN], y=anchors)
         translate([x,y,RM_LINK_T]) mount_peg();
     }
-    for(x=[-RM_GRID,RM_GRID], y=anchors)
+    for(x=[-RM_EDGE_MARGIN,RM_EDGE_MARGIN], y=anchors)
       translate([x,y,0]) optional_screw_cut(RM_LINK_T+RM_PORT_DEPTH);
     translate([-RM_GASKET_W/2,-length/2-RM_EPS,
                RM_LINK_T-RM_GASKET_GROOVE])
@@ -146,14 +148,14 @@ module angle_link(length=RM_UNIT) {
       translate([-length/2,-RM_LINK_T,0])
         cube([length,RM_LINK_T,RM_LINK_LEG]);
       for(x=anchors) {
-        translate([x,-RM_GRID,0]) rotate([180,0,0]) mount_peg();
-        translate([x,0,RM_GRID]) rotate([-90,0,0]) mount_peg();
+        translate([x,-RM_EDGE_MARGIN,0]) rotate([180,0,0]) mount_peg();
+        translate([x,0,RM_EDGE_MARGIN]) rotate([-90,0,0]) mount_peg();
       }
     }
     for(x=anchors) {
-      translate([x,-RM_GRID,RM_LINK_T]) rotate([180,0,0])
+      translate([x,-RM_EDGE_MARGIN,RM_LINK_T]) rotate([180,0,0])
         optional_screw_cut(RM_LINK_T+RM_PORT_DEPTH);
-      translate([x,-RM_LINK_T,RM_GRID]) rotate([-90,0,0])
+      translate([x,-RM_LINK_T,RM_EDGE_MARGIN]) rotate([-90,0,0])
         optional_screw_cut(RM_LINK_T+RM_PORT_DEPTH);
     }
     translate([-length/2-RM_EPS,-RM_GASKET_W,-RM_EPS])

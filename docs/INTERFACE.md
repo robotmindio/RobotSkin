@@ -10,9 +10,8 @@
 - Continuous centre membrane: 2 mm minimum.
 - Valid sizes: whole 40 mm multiples in X and Y.
 
-A 40×40 panel has a 3×3 port grid on each face. An 80×80 panel has 7×7 ports.
-The first port centre remains 10 mm from every outer edge, leaving useful
-material around the blind recesses and clean panel borders.
+A 40×40 panel has a 4×4 port grid on each face. An 80×80 panel has an 8×8 port
+grid. Port centres are 5 mm from every outer edge.
 
 ## Hexagonal mounting port
 
@@ -37,11 +36,11 @@ Positive values therefore loosen both radial peg surfaces together.
 ## Panel connectors
 
 `flat_link(length)` bridges the back of a coplanar seam. `angle_link(length)`
-holds two panels at 90°. Both lengths use whole 40 mm units and place two pegs
+holds two panels at 90°. Both lengths use whole 40 mm units and place four pegs
 per panel per unit.
 
 The 90° peg and screw axes point away from the connector into their respective
-panels. Their 10 mm offsets exceed the 3.2 mm connector wall, so perpendicular
+panels. Their 5 mm offsets exceed the 3.2 mm connector wall, so perpendicular
 hardware cannot intersect.
 
 Every link includes a shallow groove for its matching TPU gasket:

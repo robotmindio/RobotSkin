@@ -12,7 +12,7 @@ connectors press directly into the same ports without loose pins.
 
 - 40 mm structural unit and clean 10 mm mounting grid.
 - 8 mm solid panels in 40×40, 80×40 and 80×80 mm sizes.
-- Nine hexagonal blind ports per face of a 40×40 panel.
+- Sixteen hexagonal blind ports per face of a 40×40 panel.
 - Identical mounting access from either panel face.
 - Integral tapered pegs for tool-free mounting.
 - A blind M3 pilot inside every port for optional locking.
@@ -51,7 +51,7 @@ TPU is appropriate for the optional gasket strips.
 - 90° panels: press both panels onto the two faces of `angle_link`.
 - Sealed seam: install the matching gasket in the connector groove first.
 
-The flat and 90° connectors use two pegs per 40 mm panel edge. Their optional
+The flat and 90° connectors use four pegs per 40 mm panel edge. Their optional
 screws point out into separate blind panel pilots; perpendicular screws never
 meet inside the corner.
 
