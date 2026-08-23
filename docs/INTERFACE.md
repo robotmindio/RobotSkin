@@ -13,6 +13,11 @@
 A 40×40 panel has a 4×4 port grid on each face. An 80×80 panel has an 8×8 port
 grid. Port centres are 5 mm from every outer edge.
 
+The 8 mm thickness is not independent: the `rm_common.scad` assertion requires
+it to exceed two opposing blind M3 pilots plus the 2 mm membrane. A thinner,
+cheaper panel therefore means dropping the optional screw pilot, not shrinking
+clearances.
+
 ## Hexagonal mounting port
 
 The only payload and connector interface is one concentric blind port:
