@@ -24,11 +24,11 @@ Log every trial before changing the value:
 
 | Date | `RM_FIT` | Peg coupon | Insertion | Retention | Damage | Verdict |
 |---|---|---|---|---|---|---|
-| | 0.00 | small | | | | |
-| | 0.00 | nominal | | | | |
-| | 0.00 | large | | | | |
+| | 0.00 | nominal | firm thumb press | held | none | OK — single informal trial |
+| | | | | | | |
 
-Selected production value: `RM_FIT = ____`
+Selected production value: `RM_FIT = ____` (nominal 0.00 looks promising;
+needs repeated trials before freezing).
 
 ## Step 2 — Carrier cycle test
 
