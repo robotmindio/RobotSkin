@@ -30,7 +30,9 @@ exactly.
 ## Grammar
 
 1. Every hole is a Port; every protrusion is a Peg. There is no third way to
-   connect anything.
+   connect anything. Payload retention features (e.g. a Grove board's
+   alignment pins) live inside a carrier's envelope and are not system
+   interfaces; they never touch a Port.
 2. Any carrier mounts into any full face port of any panel, from either side,
    by hand. The only exceptions are the outermost top-face port lines
    flanking the female edges, which stay solid because the horizontal edge
