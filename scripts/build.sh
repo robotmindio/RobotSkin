@@ -28,5 +28,7 @@ build angle_gasket_40 02_connectors -D 'PART="angle_gasket"'
 build flat_link_80 02_connectors -D 'PART="flat"' -D 'LENGTH=80'
 build angle_link_80 02_connectors -D 'PART="angle"' -D 'LENGTH=80'
 build grove_20x20_carrier 03_grove_20x20_carrier
+build edge_coupon_male 05_edge_coupons -D 'PART="male"'
+build edge_coupon_female 05_edge_coupons -D 'PART="female"'
 
 echo "Built STLs in $STL_DIR"

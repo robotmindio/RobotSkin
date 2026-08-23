@@ -28,6 +28,11 @@ RM_M3_CLEARANCE = 3.4;
 RM_M3_HEAD_D = 6.2;
 RM_M3_HEAD_DEPTH = 2;
 
+// Edge interface. Male edges carry Pegs; female edges carry Ports drilled
+// into the narrow strip, both axes in the panel plane.
+RM_EDGE_PEG_L = 4;
+RM_EDGE_PILOT_DEPTH = 10;
+
 RM_GASKET_W = 5;
 RM_GASKET_T = 0.8;
 RM_GASKET_GROOVE = 0.4;
@@ -42,6 +47,8 @@ function grid_count(span) = floor((span-2*RM_EDGE_MARGIN)/RM_GRID)+1;
 function grid_position(i,span) = -span/2+RM_EDGE_MARGIN+i*RM_GRID;
 function link_anchor_positions(length) =
   [for(i=[0:grid_count(length)-1]) grid_position(i,length)];
+function edge_anchors(length) =
+  [for(m=[1:2:floor(length/RM_GRID)-1]) -length/2+m*RM_GRID];
 
 assert(RM_UNIT%RM_GRID == 0, "The unit must contain a whole mounting grid");
 assert(grid_count(RM_UNIT) == 4,
@@ -58,6 +65,10 @@ assert(RM_GRID-RM_PORT_OD > 1,
        "Mounting ports need enough material between them");
 assert(RM_EDGE_MARGIN > RM_LINK_T,
        "Perpendicular optional screws must not intersect");
+assert(RM_EDGE_PILOT_DEPTH > RM_EDGE_PEG_L,
+       "Edge ports must engage the whole edge peg");
+assert(RM_UNIT/2 > RM_PANEL_T/2+RM_EDGE_PILOT_DEPTH,
+       "Edge pilots must stay inside the panel span");
 
 module rounded_box(size=[20,20,3], r=2) {
   linear_extrude(height=size[2])
@@ -70,16 +81,18 @@ module rounded_panel(size=[RM_UNIT,RM_UNIT], t=RM_PANEL_T,
 }
 
 // Cut from a face at Z=0 into material extending in +Z.
-module blind_port_cut() {
+module blind_port_cut(depth=RM_PORT_DEPTH,
+                      pilot_d=rm_pilot_d(),
+                      pilot_depth=RM_PORT_PILOT_DEPTH) {
   union() {
     difference() {
       translate([0,0,-RM_EPS])
-        cylinder(h=RM_PORT_DEPTH+RM_EPS,d=rm_port_od(),$fn=6);
+        cylinder(h=depth+RM_EPS,d=rm_port_od(),$fn=6);
       translate([0,0,-2*RM_EPS])
-        cylinder(h=RM_PORT_DEPTH+3*RM_EPS,d=rm_port_boss_d());
+        cylinder(h=depth+3*RM_EPS,d=rm_port_boss_d());
     }
     translate([0,0,-RM_EPS])
-      cylinder(h=RM_PORT_PILOT_DEPTH+RM_EPS,d=rm_pilot_d());
+      cylinder(h=pilot_depth+RM_EPS,d=pilot_d);
   }
 }
 
@@ -104,13 +117,19 @@ module panel(size=[RM_UNIT,RM_UNIT]) {
 }
 
 // Every carrier and connector reuses this exact integral hexagonal peg.
-module mount_peg(delta=0) {
+module mount_peg(delta=0, h=RM_PORT_DEPTH) {
   difference() {
-    cylinder(h=RM_PORT_DEPTH,
+    cylinder(h=h,
              d1=rm_peg_root_od(delta),d2=rm_peg_tip_od(delta),$fn=6);
     translate([0,0,-RM_EPS])
-      cylinder(h=RM_PORT_DEPTH+2*RM_EPS,d=rm_peg_id());
+      cylinder(h=h+2*RM_EPS,d=rm_peg_id());
   }
+}
+
+// Edge port cut from a strip face at Z=0 into material extending in +Z.
+module edge_port_cut() {
+  blind_port_cut(depth=RM_EDGE_PEG_L,
+                 pilot_depth=RM_EDGE_PILOT_DEPTH);
 }
 
 // Cut from an exposed surface at Z=0 into a connector extending in +Z.
