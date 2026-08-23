@@ -12,8 +12,8 @@ connectors press directly into the same ports without loose pins.
 
 - 40 mm structural unit and clean 10 mm mounting grid.
 - 8 mm solid panels in 40×40, 80×40 and 80×80 mm sizes.
-- Sixteen hexagonal blind ports per face of a 40×40 panel (the outermost
-  top-face lines flanking the female edges stay solid for the edge bores).
+- Hexagonal blind port grids on both faces; the top-face lines flanking the
+  female edges stay solid because the horizontal edge bores pass beneath.
 - Integral tapered pegs for tool-free mounting.
 - Direct tool-free panel joins: male pegs on north/east edges press into
   female ports on south/west edges, with no spacer parts.
