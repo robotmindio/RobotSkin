@@ -12,9 +12,11 @@ connectors press directly into the same ports without loose pins.
 
 - 40 mm structural unit and clean 10 mm mounting grid.
 - 8 mm solid panels in 40×40, 80×40 and 80×80 mm sizes.
-- Sixteen hexagonal blind ports per face of a 40×40 panel.
-- Identical mounting access from either panel face.
+- Sixteen hexagonal blind ports per face of a 40×40 panel (the outermost
+  top-face lines flanking the female edges stay solid for the edge bores).
 - Integral tapered pegs for tool-free mounting.
+- Direct tool-free panel joins: male pegs on north/east edges press into
+  female ports on south/west edges, with no spacer parts.
 - A blind M3 pilot inside every port for optional locking.
 - Full-edge flat and 90° connectors in 40 and 80 mm lengths.
 - Optional TPU gasket strips for panel seams.
@@ -31,14 +33,16 @@ screw. A screw ends inside the panel and cannot pierce the opposite face.
 ./scripts/build.sh
 ```
 
-Print `fit_test_port.stl` and the three `fit_test_peg_*.stl` files first. The
-small and large pegs differ from nominal by 0.1 mm. Adjust `RM_FIT` in 0.05 mm
-steps and rebuild.
+Print `fit_test_port.stl`, the three `fit_test_peg_*.stl` files and the two
+`edge_coupon_*.stl` files first. The small and large pegs differ from nominal
+by 0.1 mm. Adjust `RM_FIT` in 0.05 mm steps and rebuild.
 
-Panels print flat. Print the flat connector with its pegs upward. Print the
-Grove carrier on the exported side orientation. The 90° connector may need
-small local supports under one peg direction; it deliberately remains one
-piece instead of adding an assembly.
+Panels print face down; their integral edge pegs are horizontal cantilevers,
+so add small local supports under the four exposed pegs or accept slight
+sag on the underside. Print the flat connector with its pegs upward. Print
+the Grove carrier and the edge coupons on the exported side orientation.
+The 90° connector may need small local supports under one peg direction; it
+deliberately remains one piece instead of adding an assembly.
 
 PETG, 0.20 mm layers and four perimeters are a reasonable prototype baseline.
 TPU is appropriate for the optional gasket strips.
@@ -47,6 +51,8 @@ TPU is appropriate for the optional gasket strips.
 
 - Payload: press two integral carrier pegs into any two compatible ports.
 - Locked payload: add short M3 screws through the peg centres.
+- Direct edge join: press a panel's male north/east edge into the matching
+  female edge of a neighbour, north-to-south and east-to-west.
 - Flat panels: place `flat_link` behind the seam and press both panels on it.
 - 90° panels: press both panels onto the two faces of `angle_link`.
 - Sealed seam: install the matching gasket in the connector groove first.
@@ -58,11 +64,12 @@ blind panel pilots; perpendicular screws never meet inside the corner.
 ## Water-resistance boundary
 
 Panel faces and every mounting pilot are blind, so water has no direct path
-through a panel. The connector gaskets cover flat and 90° seams continuously.
-This MVP targets rain and splashes, not certified immersion: the ends where
-three cube edges meet still require a physical leak test and probably a small
-moulded corner boot. No IP or `waterproof` claim should be made before that
-test.
+through a panel. Direct edge joints are structural alignment, not seals:
+water sealing comes from the connector gaskets, which cover flat and 90°
+seams continuously. This MVP targets rain and splashes, not certified
+immersion: the ends where three cube edges meet still require a physical
+leak test and probably a small moulded corner boot. No IP or `waterproof`
+claim should be made before that test.
 
 ## Manufacturing
 

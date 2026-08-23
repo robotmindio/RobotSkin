@@ -30,7 +30,17 @@ Log every trial before changing the value:
 Selected production value: `RM_FIT = ____` (nominal 0.00 looks promising;
 needs repeated trials before freezing).
 
-## Step 2 — Carrier cycle test
+## Step 2 — Edge coupons
+
+Print both `edge_coupon_*.stl` at the selected `RM_FIT`. The male coupon's
+pegs must press into the female coupon's bores by hand, align flush across
+the joint, and separate without galling.
+
+| Date | `RM_FIT` | Insertion | Flush? | Damage | Verdict |
+|---|---|---|---|---|---|
+| | | | | | |
+
+## Step 3 — Carrier cycle test
 
 Mount one two-peg Grove carrier into one port pair and remove it repeatedly.
 
@@ -40,7 +50,7 @@ Mount one two-peg Grove carrier into one port pair and remove it repeatedly.
 
 Target: 50 clean cycles.
 
-## Steps 3–4 — Panel joints
+## Steps 4–5 — Panel joints
 
 Join two panels flat and at 90° with pegs only, then repeat with short M3
 screws through the peg centres.
@@ -50,19 +60,21 @@ screws through the peg centres.
 | Flat seam | | | |
 | 90° corner | | | |
 
-## Step 5 — Gasket spray test
+## Step 6 — Edge joint and gasket spray test
 
-Install TPU gaskets on one flat seam and one gasketed corner. Spray the
-assembly and inspect the interior.
+Join two panels through their integral edges. Install TPU gaskets on one
+flat seam and one gasketed corner. Spray the assemblies and inspect the
+interiors.
 
 | Coupon | Duration | Interior dry? | Notes |
 |---|---|---|---|
+| Edge joint | | | |
 | Flat seam | | | |
 | Corner | | | |
 
 No `waterproof` or IP claim may be published until this row passes.
 
-## Step 6 — Three-panel corner
+## Step 7 — Three-panel corner
 
 Assemble the three-panel corner before any complete cube.
 
