@@ -29,9 +29,11 @@ RM_M3_HEAD_D = 6.2;
 RM_M3_HEAD_DEPTH = 2;
 
 // Edge interface. Male edges carry Pegs; female edges carry Ports drilled
-// into the narrow strip, both axes in the panel plane.
+// into the narrow strip, both axes in the panel plane. North and east edges
+// are male, south and west edges are female.
 RM_EDGE_PEG_L = 4;
 RM_EDGE_PILOT_DEPTH = 10;
+RM_EDGE_T = 12; // local strip thickness giving the hexagonal port real walls
 
 RM_GASKET_W = 5;
 RM_GASKET_T = 0.8;
