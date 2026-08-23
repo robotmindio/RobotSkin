@@ -10,6 +10,7 @@ render() {
   local name="$1"
   openscad --autocenter --viewall --projection=ortho \
     --imgsize=1400,1000 --colorscheme=Tomorrow \
+    --csglimit=2000000 \
     -D "SCENE=\"$name\"" -o "$RENDER_DIR/$name.png" "$SCENE"
 }
 
