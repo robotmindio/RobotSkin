@@ -16,9 +16,10 @@ exactly.
 
 | Term | Definition | Naming pattern |
 |---|---|---|
-| **Panel** | Structural surface. Sizes are whole Units. | `panel_<W>x<H>` — e.g. `panel_1x1`, `panel_2x1` |
-| **Carrier** | Holds a payload onto face ports using its integral pegs. | `carrier_<payload>` — e.g. `carrier_grove` |
-| **Cord** | Optional TPU seal sitting in a groove at a seam. | `cord_<joint>_<length>` |
+| **Panel** | Structural surface. Sizes are whole Units. | `panel_<Wmm>x<Hmm>` — e.g. `panel_40x40`, `panel_80x40` |
+| **Link** | Bridges panel seams: flat behind coplanar seams, angle inside 90° corners. | `<joint>_link_<length>` — e.g. `flat_link_40`, `angle_link_80` |
+| **Carrier** | Holds a payload onto face ports using its integral pegs. | `<payload>_carrier` — e.g. `grove_20x20_carrier` |
+| **Gasket** | Optional TPU seal sitting in a groove at a seam. | `gasket_<joint>_<length>` — e.g. `flat_gasket_40` |
 
 ## Units
 
@@ -30,10 +31,13 @@ exactly.
 
 1. Every hole is a Port; every protrusion is a Peg. There is no third way to
    connect anything.
-2. Any carrier mounts into any face port of any panel, from either side,
-   by hand.
+2. Any carrier mounts into any full face port of any panel, from either side,
+   by hand. The only exceptions are the outermost top-face port lines
+   flanking the female edges, which stay solid because the horizontal edge
+   bores pass through that band.
 3. Panels join directly edge-to-edge: north and east edges male, south and
-   west edges female. No inter-panel spacer parts exist.
+   west edges female. No inter-panel spacer parts exist; links reinforce
+   seams but never space panels apart.
 4. Screws through peg centres are optional locks, never required for
    assembly, and never pierce a membrane.
 5. Everything assembles and disassembles by hand alone.
