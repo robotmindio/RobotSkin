@@ -28,12 +28,13 @@ RM_M3_CLEARANCE = 3.4;
 RM_M3_HEAD_D = 6.2;
 RM_M3_HEAD_DEPTH = 2;
 
-// Edge interface. Male edges carry Pegs; female edges carry Ports drilled
-// into the narrow strip, both axes in the panel plane. North and east edges
-// are male, south and west edges are female.
+// Edge interface. North and east edges are male and carry Pegs; south and
+// west edges are female and carry Ports drilled into an interior rib, both
+// axes in the panel plane and centred RM_EDGE_T/2 above the exterior face.
 RM_EDGE_PEG_L = 4;
 RM_EDGE_PILOT_DEPTH = 10;
 RM_EDGE_T = 12; // local strip thickness giving the hexagonal port real walls
+RM_EDGE_RIB = RM_EDGE_PEG_L + 2;
 
 RM_GASKET_W = 5;
 RM_GASKET_T = 0.8;
@@ -71,6 +72,8 @@ assert(RM_EDGE_PILOT_DEPTH > RM_EDGE_PEG_L,
        "Edge ports must engage the whole edge peg");
 assert(RM_UNIT/2 > RM_PANEL_T/2+RM_EDGE_PILOT_DEPTH,
        "Edge pilots must stay inside the panel span");
+assert(RM_EDGE_T-RM_PORT_OD >= 4,
+       "Edge bores need 2 mm walls on every side");
 
 module rounded_box(size=[20,20,3], r=2) {
   linear_extrude(height=size[2])
@@ -98,13 +101,19 @@ module blind_port_cut(depth=RM_PORT_DEPTH,
   }
 }
 
+// Face ports. The outermost top-face lines flanking the female edges stay
+// solid: the horizontal edge bores pass through that band and any face port
+// cut there would open a face-to-interior leak path. The opposite face keeps
+// a complete grid, and the edge bores themselves take the seam hardware.
 module face_port_cuts(size=[RM_UNIT,RM_UNIT], top=false) {
   for(ix=[0:grid_count(size[0])-1], iy=[0:grid_count(size[1])-1]) {
-    p=[grid_position(ix,size[0]),grid_position(iy,size[1])];
-    if(top)
-      translate([p[0],p[1],RM_PANEL_T]) mirror([0,0,1]) blind_port_cut();
-    else
-      translate([p[0],p[1],0]) blind_port_cut();
+    if(!top || (ix>0 && iy>0)) {
+      p=[grid_position(ix,size[0]),grid_position(iy,size[1])];
+      if(top)
+        translate([p[0],p[1],RM_PANEL_T]) mirror([0,0,1]) blind_port_cut();
+      else
+        translate([p[0],p[1],0]) blind_port_cut();
+    }
   }
 }
 
@@ -112,10 +121,27 @@ module panel(size=[RM_UNIT,RM_UNIT]) {
   assert(size[0]%RM_UNIT == 0 && size[1]%RM_UNIT == 0,
          "Panel dimensions must be whole 40 mm units");
   difference() {
-    rounded_panel(size);
+    union() {
+      rounded_panel(size);
+      // Interior ribs thicken the female edges around their edge ports.
+      translate([-size[0]/2,-size[1]/2,RM_PANEL_T])
+        cube([size[0],RM_EDGE_RIB,RM_EDGE_T-RM_PANEL_T]);
+      translate([-size[0]/2,-size[1]/2,RM_PANEL_T])
+        cube([RM_EDGE_RIB,size[1],RM_EDGE_T-RM_PANEL_T]);
+    }
     face_port_cuts(size);
     face_port_cuts(size,true);
+    for(x=edge_anchors(size[0]))
+      translate([x,-size[1]/2,RM_EDGE_T/2]) rotate([-90,0,0]) edge_port_cut();
+    for(y=edge_anchors(size[1]))
+      translate([-size[0]/2,y,RM_EDGE_T/2]) rotate([0,90,0]) edge_port_cut();
   }
+  for(x=edge_anchors(size[0]))
+    translate([x,size[1]/2,RM_EDGE_T/2]) rotate([-90,0,0])
+      mount_peg(h=RM_EDGE_PEG_L);
+  for(y=edge_anchors(size[1]))
+    translate([size[0]/2,y,RM_EDGE_T/2]) rotate([0,90,0])
+      mount_peg(h=RM_EDGE_PEG_L);
 }
 
 // Every carrier and connector reuses this exact integral hexagonal peg.

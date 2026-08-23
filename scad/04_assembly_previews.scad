@@ -1,9 +1,10 @@
 include <rm_common.scad>
 use <03_grove_20x20_carrier.scad>
 
-SCENE="overview"; // overview, flat, corner, grove or double
+SCENE="overview"; // overview, flat, corner, grove, double or edges
 assert(SCENE=="overview" || SCENE=="flat" || SCENE=="corner" ||
-       SCENE=="grove" || SCENE=="double", "Unknown preview scene");
+       SCENE=="grove" || SCENE=="double" || SCENE=="edges",
+       "Unknown preview scene");
 
 PANEL_COLOR=[0.60,0.72,0.84];
 LINK_COLOR=[1.00,0.68,0.05];
@@ -72,8 +73,20 @@ module double_scene() {
       grove_20x20_carrier();
 }
 
+// Two panels joined north-edge-to-south-edge, plus an exploded pair showing
+// the integral edge pegs and edge ports.
+module edge_scene() {
+  color(PANEL_COLOR) {
+    panel();
+    translate([0,RM_UNIT,0]) panel();
+    translate([70,-RM_UNIT/2,0]) panel();
+    translate([70,RM_UNIT/2+RM_UNIT+10,0]) panel();
+  }
+}
+
 if(SCENE=="overview") overview_scene();
 if(SCENE=="flat") flat_scene();
 if(SCENE=="corner") corner_scene();
 if(SCENE=="grove") grove_scene();
 if(SCENE=="double") double_scene();
+if(SCENE=="edges") edge_scene();
