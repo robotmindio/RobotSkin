@@ -28,9 +28,9 @@ into the same face ports without loose pins.
 ./scripts/build.sh
 ```
 
-Print `fit_test_port.stl`, the three `fit_test_peg_*.stl` files and two
-`edge_coupon.stl` copies first. The small and large pegs differ from nominal
-by 0.1 mm. Adjust `RM_FIT` in 0.05 mm steps and rebuild.
+Print `fit_test_port.stl`, the three `fit_test_peg_*.stl` files, one
+`edge_coupon.stl` and one `corner_coupon.stl` first. The small and large pegs
+differ from nominal by 0.1 mm. Adjust `RM_FIT` in 0.05 mm steps and rebuild.
 
 Panels print face down; the edge tabs are horizontal cantilevers, so add
 small local supports under the exposed tabs. Coupons print on the exported
@@ -45,8 +45,9 @@ PETG, 0.20 mm layers and four perimeters are a reasonable prototype baseline.
 - Locked payload: add short M3 screws through the peg centres.
 - Flat seam: butt two panels; their battlements interleave as-is. Never
   twist a panel 90° relative to its neighbour.
-- 90° corner: fold a panel up about the shared edge; the same battlements
-  engage through the fold.
+- 90° corner: fold the `corner_coupon` and see. The fold may hold or slip;
+  the result decides whether corners need one extra part. Follow
+  docs/CALIBRATION.md and log the outcome before building boxes.
 - Closed boxes: fold five walls, drop the lid last. Wall-to-wall vertical
   seams are still being validated; see docs/CALIBRATION.md before relying
   on a full cube.

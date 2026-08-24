@@ -7,19 +7,18 @@ exactly.
 
 | Term | Definition |
 |---|---|
-| **Port** | The only hole in the system: blind hexagon with an optional M3 pilot. Lives on panel and carrier **faces**, and on panel **edges**. |
-| **Peg** | The only protrusion in the system: integral tapered hexagon with a centre bore for the optional M3 screw. |
-| **Face** | Either broad surface of a panel. Ports face outward on both. |
-| **Edge** | A narrow side strip of a panel. Male edges carry pegs; female edges carry ports. |
+| **Port** | The only hole in the system: blind hexagon with an optional M3 pilot. Lives on panel **faces**, and carriers press into it. |
+| **Peg** | The only protrusion in the system: integral tapered hexagon with a centre bore for the optional M3 lock. |
+| **Face** | Either broad surface of a panel. Both faces carry the same full port grid. |
+| **Edge** | A narrow side of a panel. Every panel carries the same battlement edge on every side: tabs at even anchor lines, sockets at odd, alternating around the perimeter. |
 
 ## Parts (what gets printed)
 
 | Term | Definition | Naming pattern |
 |---|---|---|
-| **Panel** | Structural surface. Sizes are whole Units. | `panel_<Wmm>x<Hmm>` — e.g. `panel_40x40`, `panel_80x40` |
-| **Link** | Bridges panel seams: flat behind coplanar seams, angle inside 90° corners. | `<joint>_link_<length>` — e.g. `flat_link_40`, `angle_link_80` |
+| **Panel** | Structural surface with identical edges on all sides and identical port grids on both faces. | `panel_<Wmm>x<Hmm>` — e.g. `panel_40x40`, `panel_80x80` |
 | **Carrier** | Holds a payload onto face ports using its integral pegs. | `<payload>_carrier` — e.g. `grove_20x20_carrier` |
-| **Gasket** | Optional TPU seal sitting in a groove at a seam. | `gasket_<joint>_<length>` — e.g. `flat_gasket_40` |
+| **Coupon** | Calibration and concept-test prints, not system parts. | `<test>_coupon` — e.g. `edge_coupon`, `corner_coupon` |
 
 ## Units
 
@@ -29,20 +28,22 @@ exactly.
 
 ## Grammar
 
-1. Every hole is a Port; every protrusion is a Peg. There is no third way to
-   connect anything. Payload retention features (e.g. a Grove board's
-   alignment pins) live inside a carrier's envelope and are not system
-   interfaces; they never touch a Port.
-2. Any carrier mounts into any full face port of any panel, from either side,
-   by hand. The only exceptions are the outermost top-face port lines
-   flanking the female edges, which stay solid because the horizontal edge
-   bores pass through that band.
-3. Panels join directly edge-to-edge: north and east edges male, south and
-   west edges female. No inter-panel spacer parts exist; links reinforce
-   seams but never space panels apart.
-4. Screws through peg centres are optional locks, never required for
-   assembly, and never pierce a membrane.
-5. Everything assembles and disassembles by hand alone.
+1. Every hole is a Port; every protrusion is a Peg. There is no third way
+   to connect anything. Payload geometry lives inside a carrier's envelope
+   and is not a system interface.
+2. Any carrier mounts into any face port of any panel, from either side, by
+   hand. The full grid is identical on both faces, so there is no special
+   case.
+3. Panels join directly edge-to-edge through their battlements. Any edge
+   mates the opposing edge of any neighbour with a 180° flip; a 90° in-plane
+   twist does not mate and must never be forced.
+4. A 90° corner — a fold about a shared edge, or two walls meeting — is an
+   open problem, not a solved one. The rest of this system does not depend
+   on it; the corner coupon exists to resolve it.
+5. Panels press together by hand. An optional M3 screw through the centre of
+   the pegs locks a joint or a carrier, but nothing in the system requires
+   it.
+6. Everything assembles and disassembles by hand alone.
 
 The grammar is the product: when a new idea needs a second connection
 primitive, the idea is redesigned, not the rule.

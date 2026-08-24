@@ -1,4 +1,4 @@
-# RobotMind V4 mechanical interface
+# RobotMind mechanical interface
 
 ## Panel
 
@@ -10,35 +10,32 @@
 - Continuous centre membrane: 2 mm minimum.
 - Valid sizes: whole 40 mm multiples in X and Y.
 
-The bottom face of every panel carries a complete port grid: 4×4 on a 40×40
-panel, 8×8 on an 80×80 panel. Port centres are 5 mm from every outer edge.
-The top face carries the same grid minus its outermost lines flanking the
-female edges (see Panel edges below): 3×3 full ports remain on a 40×40
-panel. Screws and carriers reach every region of the top face through the
-edge bores or the remaining grid.
+Both faces carry the same complete port grid: 4×4 on a 40×40 panel, 8×8 on
+an 80×80 panel. Port centres are 5 mm from every outer edge. There is no
+face with fewer ports; the two faces are interchangeable.
 
-The 8 mm thickness is not independent: the `rm_common.scad` assertion requires
-it to exceed two opposing blind M3 pilots plus the 2 mm membrane. A thinner,
-cheaper panel therefore means dropping the optional screw pilot, not shrinking
-clearances.
+The 8 mm thickness exists to keep two opposing blind M3 pilots from meeting
+through the 2 mm membrane. A thinner panel means dropping the optional screw
+pilot, not shrinking clearances.
 
 ## Panel edges
 
-Panels join directly edge-to-edge with no spacer parts:
+Every panel carries the same battlement edge on all four sides:
 
-- North and east edges are male: integral Pegs, 4 mm long, centred in the
-  strip at every second grid line (±10 mm on a 1 U edge).
-- South and west edges are female: horizontal edge Ports drilled inward,
-  same hexagon and M3 pilot profile as face Ports but 10 mm deep.
-- A 6 mm wide interior Rib thickens each female edge to 12 mm local
-  thickness so the horizontal bores keep real walls inside the 8 mm panel.
-- Mating is N-to-S and E-to-W; peg axes and bore axes align across any
-  tessellation because anchors sit between mounting columns.
+- Tabs, 6 mm wide, 3 mm thick, centred in the panel thickness, proud of the
+  face by 4 mm.
+- Sockets, the same width and thickness, 4 mm deep.
+- On each edge, tabs occupy the even grid lines and sockets the odd, or the
+  reverse; the arrangement rotates around the perimeter so that any edge
+  mates the opposing edge of any neighbour.
+- Two panels mate edge-to-edge when one leads with tabs where the other leads
+  with sockets. This works across any tessellation and under a 180° flip.
+- A 90° in-plane twist does not mate. Dimensions are chosen so the tabs and
+  sockets merely collide; never force it.
 
-The bores pass beneath the top-face port band adjacent to female edges, so
-that band stays solid rather than opening a face-to-interior leak path. The
-opposite face keeps its complete grid. Edge joints are structural only:
-sealing still comes from a Link and Gasket across the seam.
+Because the edge is identical on all four sides, there is no north/east or
+south/west specialisation. A panel has no top, no bottom and no preferred
+orientation for joining.
 
 ## Hexagonal mounting port
 
@@ -62,33 +59,33 @@ Positive values therefore loosen both radial peg surfaces together.
 
 ## Panel connectors
 
-`flat_link(length)` bridges the back of a coplanar seam. `angle_link(length)`
-holds two panels at 90°. Both lengths use whole 40 mm units. Flat links place
-four pegs per panel per unit; angle links place two rows of four pegs per face.
+There are none. Joints are direct panel-to-panel, so a seam can be crossed
+with no spacer part. The battlement arrangement is what makes this possible,
+and it is the only edge hardware.
 
-The 90° peg and screw axes point away from the connector into their respective
-panels. Their 5 mm offsets exceed the 3.2 mm connector wall, so perpendicular
-hardware cannot intersect.
+## 90° corners and fastening
 
-Every link includes a shallow groove for its matching TPU gasket:
-
-- Gasket width: 5 mm.
-- Gasket nominal thickness: 0.8 mm.
-- Connector groove depth: 0.4 mm.
-
-The 0.4 mm protrusion supplies initial compression. Material hardness and
-final compression require physical leak coupons.
+- **Corner state:** a 90° fold between two edges or a two-wall corner is an
+  open build question. The `corner_coupon` probe is the current instrument;
+  once it returns, this section either declares corners free or introduces
+  the one corner part the observed failure demands. No corner geometry is
+  assumed in the meantime.
+- **Fastening:** pegs are press-fit by design. Where a joint or carrier must
+  be demountable, an optional M3 screw threads through the peg centre into
+  the blind pilot. For repeated service, the pilot can seat a metal heat-set
+  insert that supplies the thread; the screw then engages metal instead of
+  plastic. The insert seat itself is a future version of the pilot, not
+  present in this one's geometry.
 
 ## Source ownership
 
-- `rm_common.scad`: panel, port, peg, both connectors, both gaskets, the
-  edge interface and every shared mechanical dimension.
-- `00_fit_tests.scad`: fit coupons and assembly checks only.
-- `01_panels.scad`: panel export parameters only.
-- `02_connectors.scad`: connector export parameters only.
-- `03_grove_20x20_carrier.scad`: Grove envelope and board retention only.
-- `04_assembly_previews.scad`: non-manufacturing presentation scenes only.
-- `05_edge_coupons.scad`: 1 U male and female edge coupons only.
+- `scad/source/rm_common.scad`: panel, port, peg, battlements, shared dims.
+- `scad/source/panels.scad`: panel export parameters only.
+- `scad/source/grove_carrier.scad`: Grove envelope and board retention only.
+- `scad/source/previews.scad`: non-manufacturing presentation scenes only.
+- `scad/test/fit_tests.scad`: port and peg fit coupons only.
+- `scad/test/edge_coupons.scad`: hermaphrodite battlement coupon only.
+- `scad/test/corner_coupon.scad`: 90° fold probe only.
 
 Payload dimensions never belong in `rm_common.scad`. A second mechanical
 interface should not be introduced unless the hexagonal port physically cannot
@@ -98,8 +95,8 @@ serve the use case.
 
 1. Tune one port and the three peg coupons.
 2. Mount and remove one two-peg carrier 50 times.
-3. Join two panels flat and at 90° without screws.
-4. Repeat both joints with short M3 screws.
-5. Join two panels through their integral edges; then test one gasketed flat
-   seam and one gasketed corner under spray.
-6. Build a three-panel corner before attempting a complete cube.
+3. Join two panels flat, edge-to-edge, by hand, with battlements alone.
+4. Print and fold the corner coupon; record in docs/CALIBRATION.md whether
+   a 90° corner holds or slips.
+5. Act on the corner result, then test optional M3 locking through peg
+   centres on the real joints.
