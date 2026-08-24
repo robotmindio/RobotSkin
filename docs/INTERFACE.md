@@ -20,3 +20,4 @@ screws make a joint permanent.
 Flat joins mount on the plate face across an edge seam. Angle joins mount in
 the inside corner: one leg on the floor face and one on the wall face. The
 shallow join grooves hold silicone for permanent splash-resistant seams.
+Each join uses every one of the eight port columns along its full edge.

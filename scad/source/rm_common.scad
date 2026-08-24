@@ -20,7 +20,8 @@ RM_JOIN_T = 4;
 RM_JOIN_L = RM_PLATE;
 
 function port_position(i) = -RM_PLATE/2 + RM_PORT_INSET + i*RM_GRID;
-function join_columns() = [-25,-5,5,25];
+// Full-edge joins use every plate column; no skipped connector rows.
+function join_columns() = [for(i=[0:7]) port_position(i)];
 function peg_root_od() = RM_PORT_OD + RM_PEG_GRIP;
 function peg_tip_od() = RM_PORT_OD - RM_PEG_ENTRY;
 
