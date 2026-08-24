@@ -8,7 +8,7 @@ mkdir -p "$RENDER_DIR"
 
 for scene in overview port flat angle; do
   openscad --autocenter --viewall --projection=ortho --imgsize=1400,1000 \
-    --colorscheme=Tomorrow -D "SCENE=\"$scene\"" \
+    --colorscheme=Tomorrow --csglimit=2000000 -D "SCENE=\"$scene\"" \
     -o "$RENDER_DIR/$scene.png" "$SCENE"
 done
 

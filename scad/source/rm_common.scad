@@ -6,31 +6,39 @@ RM_PLATE = 80;
 RM_GRID = 10;
 RM_PLATE_T = 8;
 RM_PORT_INSET = 5;
+RM_PORT_COUNT = 8;
 RM_PORT_OD = 8;
 RM_PORT_DEPTH = 2.2;
 RM_INSERT_BORE = 3.4; // pilot for a 4.0 mm-OD M3x3x4 heat-set insert
 RM_INSERT_OD = 4.0;
 RM_INSERT_DEPTH = 3;
+RM_PORT_BOSS_D = 5.0;
 RM_PEG_ENTRY = 0.2;
 RM_PEG_GRIP = 0.2;
-RM_PEG_BORE = 4.2;   // clears the seated insert
+RM_PEG_BORE = RM_PORT_BOSS_D + 0.3; // clears the boss and seated insert
 RM_M3_CLEARANCE = 3.4;
 RM_M3_HEAD_D = 6.2;
 RM_JOIN_T = 4;
 RM_JOIN_L = RM_PLATE;
 
 function port_position(i) = -RM_PLATE/2 + RM_PORT_INSET + i*RM_GRID;
-// Full-edge joins use every plate column; no skipped connector rows.
-function join_columns() = [for(i=[0:7]) port_position(i)];
+function port_indices() = [0:RM_PORT_COUNT-1];
+function join_columns() = [for(i=port_indices()) port_position(i)];
 function peg_root_od() = RM_PORT_OD + RM_PEG_GRIP;
 function peg_tip_od() = RM_PORT_OD - RM_PEG_ENTRY;
 
 assert(RM_PLATE_T - 2*RM_INSERT_DEPTH >= 2,
        "Opposing blind insert bores need a centre membrane");
+assert(RM_PLATE == 2*RM_PORT_INSET + (RM_PORT_COUNT-1)*RM_GRID,
+       "The full plate grid must terminate at both edges");
 assert(peg_root_od() > RM_PORT_OD && RM_PORT_OD > peg_tip_od(),
        "Peg needs a lead-in and final grip");
 assert(RM_INSERT_OD > RM_INSERT_BORE,
        "The heat-set insert needs deliberate melt-press interference");
+assert(RM_PORT_BOSS_D > RM_INSERT_OD,
+       "The insert needs a supporting centre boss");
+assert(RM_PEG_BORE > RM_PORT_BOSS_D,
+       "The peg must clear the centre boss");
 
 module rounded_box(size=[20,20,3], r=2) {
   linear_extrude(height=size[2])
@@ -38,12 +46,17 @@ module rounded_box(size=[20,20,3], r=2) {
 }
 
 module blind_port_cut() {
-  translate([0,0,-RM_EPS]) cylinder(h=RM_PORT_DEPTH+RM_EPS,d=RM_PORT_OD,$fn=6);
+  difference() {
+    translate([0,0,-RM_EPS])
+      cylinder(h=RM_PORT_DEPTH+RM_EPS,d=RM_PORT_OD,$fn=6);
+    translate([0,0,-2*RM_EPS])
+      cylinder(h=RM_PORT_DEPTH+3*RM_EPS,d=RM_PORT_BOSS_D);
+  }
   translate([0,0,-RM_EPS]) cylinder(h=RM_INSERT_DEPTH+RM_EPS,d=RM_INSERT_BORE);
 }
 
 module plate_port_cuts(top=false) {
-  for(x=[0:7], y=[0:7])
+  for(x=port_indices(), y=port_indices())
     if(top)
       translate([port_position(x),port_position(y),RM_PLATE_T])
         mirror([0,0,1]) blind_port_cut();

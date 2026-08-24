@@ -1,6 +1,7 @@
 # RobotMind modular sensor system
 
-RobotMind has one connection rule: a blind hex port accepts a hollow hex peg.
+RobotMind has one connection rule: an annular blind hex port accepts a hollow
+hex peg around its centre boss.
 Press parts together by hand; install M3×3×4 heat-set inserts and M3 screws
 through the peg centres when the joint must be permanent.
 
@@ -35,5 +36,5 @@ neutral-cure silicone before tightening the screws. This is not an IP rating.
 
 This writes `overview.png`, `port.png`, `flat.png`, and `angle.png` to
 `renders/`. The port view shows the 4.0 mm-OD brass insert seated by melt-press
-interference in the 3.4 mm blind pilot; insert it from the exposed plate face
-before mounting a join or plaque.
+interference in the 3.4 mm blind pilot; the boss supports it for the full 3 mm
+depth. Insert it from the exposed plate face before mounting a join or plaque.
