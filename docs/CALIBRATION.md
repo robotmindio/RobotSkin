@@ -17,12 +17,21 @@ logging the measurement that motivated it.
 ## Step 1 — Port and peg fit (`RM_FIT`)
 
 Print `fit_test_port.stl` and the three `fit_test_peg_*.stl` coupons at
-`RM_FIT=0`. Each coupon is a minimal 1×1 (40 mm) flat square system tile:
+`RM_FIT=0`. Each coupon is a minimal 20×20 mm flat square system tile:
 the port coupon carries one real blind port with the insert seat; each peg
 coupon is a flat tile with the real integral male proud of the face and a
 full-depth centre bore, so an M3 screw passes the whole tile. Each peg must
 insert with firm thumb pressure, rotate-lock against the hex, and pull out
 without deforming the port.
+
+Each coupon is engraved with a letter clear of the feature:
+
+| Coupon | Letter |
+|---|---|
+| port | P |
+| peg small (−0.1) | S |
+| peg nominal | N |
+| peg large (+0.1) | L |
 
 Log every trial before changing the value:
 
