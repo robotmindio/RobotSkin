@@ -42,7 +42,8 @@ peg centre; it must pass through the peg and seat without binding.
 ## Step 3 — Insert seat
 
 Press a 4.0 mm M3 brass knurled heat-set insert into the bore of a port
-coupon (or any panel port). It must melt-press to the printed bore, sit
+coupon. The coupon's bore is through so the insert presses in from the face
+and can be pushed out for reuse. It must melt-press to the printed bore, sit
 retained after cooling, and take an M3 screw with ordinary hand torque.
 
 | Date | Insert od / bore | Melt-press holds? | Torque | Verdict |
@@ -52,9 +53,10 @@ retained after cooling, and take an M3 screw with ordinary hand torque.
 ## Step 4 — Flat panel seam
 
 Print the `seam_coupon.stl` (one slab carrying the four coupling bores) and
-one `flat_link_40.stl`. Seat M3×3×4 inserts in the coupon bores, lay the link
-over the seam line, and run two M3 screws through the link holes into the
-seated inserts on each side. The seam must hold under hand force with no slop.
+one `flat_link_40.stl`. The coupon bores are through; seat M3×3×4 inserts
+pressed from the face, lay the link over the seam line, and run two M3
+screws through the link holes into the seated inserts on each side. The seam
+must hold under hand force with no slop.
 
 | Joint | Printed | Seated inserts? | Holds? | Notes |
 |---|---|---|---|---|

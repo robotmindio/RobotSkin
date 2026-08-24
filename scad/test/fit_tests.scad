@@ -9,6 +9,9 @@ module port_coupon() {
   difference() {
     cylinder(h=coupon_t,d=12);
     blind_port_cut();
+    // full-depth seat so the insert presses through and pushes out for
+    // reuse; a real panel keeps the blind bottom, this coupon is for swap
+    translate([0,0,-RM_EPS]) cylinder(h=coupon_t+2*RM_EPS,d=RM_INSERT_BORE);
   }
 }
 
