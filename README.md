@@ -37,6 +37,10 @@ Print `fit_test_port.stl` and the three `fit_test_peg_*.stl` files first.
 The small and large pegs differ from nominal by 0.1 mm. Adjust `RM_FIT` in
 0.05 mm steps and rebuild.
 
+The `seam_coupon.stl` and one `flat_link_40.stl` validate the bolted seam
+coupling: seat M3×3×4 inserts in the coupon bores and run M3 screws through
+the link into them.
+
 Panels print face down; the edge is a clean butt, no cantilevered features,
 so panels print support-free. The Grove carrier prints on the exported side
 orientation. Links print flat, features up, support-free.

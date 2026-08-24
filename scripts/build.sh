@@ -27,6 +27,7 @@ if [ $? -ne 0 ]; then
 fi
 echo "PASS"
 rm -f "$STL_DIR/_grid_test.stl"
+build seam_coupon "$TEST_DIR/seam_coupon.scad"
 build panel_40x40 "$SRC_DIR/panels.scad" -D 'PANEL=[40,40]'
 build panel_80x40 "$SRC_DIR/panels.scad" -D 'PANEL=[80,40]'
 build panel_80x80 "$SRC_DIR/panels.scad" -D 'PANEL=[80,80]'

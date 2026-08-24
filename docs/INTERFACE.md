@@ -79,6 +79,7 @@ For demountable links, the pegs press into the same bores without an insert.
 - `scad/source/grove_carrier.scad`: Grove envelope and board retention only.
 - `scad/source/previews.scad`: non-manufacturing presentation scenes only.
 - `scad/test/fit_tests.scad`: port and peg fit coupons only.
+- `scad/test/seam_coupon.scad`: flat-link coupling seat probe only.
 
 Payload dimensions never belong in `rm_common.scad`. A second mechanical
 interface should not be introduced unless the hexagonal port physically cannot

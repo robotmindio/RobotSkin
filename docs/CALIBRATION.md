@@ -51,13 +51,14 @@ retained after cooling, and take an M3 screw with ordinary hand torque.
 
 ## Step 4 — Flat panel seam
 
-Print one `flat_link_40`. Butt two panels edge-to-edge, drop the link over
-the seam, drive two M3 screws from each side through the link and into the
-seated inserts. The seam must hold under hand force with no slop.
+Print the `seam_coupon.stl` (one slab carrying the four coupling bores) and
+one `flat_link_40.stl`. Seat M3×3×4 inserts in the coupon bores, lay the link
+over the seam line, and run two M3 screws through the link holes into the
+seated inserts on each side. The seam must hold under hand force with no slop.
 
-| Joint | Link | Seated inserts? | Holds? | Notes |
+| Joint | Printed | Seated inserts? | Holds? | Notes |
 |---|---|---|---|---|
-| Flat seam | flat_link_40 | | | |
+| Flat seam | seam_coupon + flat_link_40 | | | |
 
 ## Step 5 — Corner fold
 
