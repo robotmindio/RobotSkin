@@ -24,5 +24,6 @@ build panel_80x40 "$SRC_DIR/panels.scad" -D 'PANEL=[80,40]'
 build panel_80x80 "$SRC_DIR/panels.scad" -D 'PANEL=[80,80]'
 build grove_20x20_carrier "$SRC_DIR/grove_carrier.scad"
 build edge_coupon "$TEST_DIR/edge_coupons.scad"
+build corner_coupon "$TEST_DIR/corner_coupon.scad"
 
 echo "Built STLs in $STL_DIR"

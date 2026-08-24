@@ -106,11 +106,15 @@ module panel(size=[RM_UNIT,RM_UNIT]) {
   difference() {
     union() {
       rounded_panel(size);
-      edge_run_x(size[0], hh, 1, 0);   // north leads with a tab
-      edge_run_x(size[0], -hh, -1, 1); // south leads with a socket
-      edge_run_y(size[1], hw, 1, 1);   // east leads with a socket
-      edge_run_y(size[1], -hw, -1, 0); // west leads with a tab
+      edge_tabs_x(size[0], hh, 1, 0);   // north leads with a tab
+      edge_tabs_x(size[0], -hh, -1, 1); // south leads with a socket
+      edge_tabs_y(size[1], hw, 1, 1);   // east leads with a socket
+      edge_tabs_y(size[1], -hw, -1, 0); // west leads with a tab
     }
+    edge_sockets_x(size[0], hh, 1, 0);   // north sockets at odd lines
+    edge_sockets_x(size[0], -hh, -1, 1); // south sockets at even lines
+    edge_sockets_y(size[1], hw, 1, 1);   // east sockets at even lines
+    edge_sockets_y(size[1], -hw, -1, 0); // west sockets at odd lines
     face_port_cuts(size);
     face_port_cuts(size,true);
   }
@@ -137,6 +141,10 @@ module optional_screw_cut(depth=RM_PANEL_T) {
 // Battlement primitives. phase 0 puts tabs on even grid indices, phase 1 on
 // odd indices. Edges running along X sit at y=y0 and open toward sy; edges
 // along Y sit at x=x0 and open toward sx.
+// Tabs are solids added to the panel; sockets are blind recesses cut into
+// the same edge at the opposite parity. A socket always opens at the edge
+// face (y0) and reaches INTO the panel body, i.e. in the -sy direction for
+// an edge whose features point +sy.
 module _tab(x, y0, sy) {
   translate([x-RM_TAB_W/2,
              sy>0 ? y0 : y0-RM_TAB_PROUD,
@@ -146,27 +154,35 @@ module _tab(x, y0, sy) {
 
 module _socket(x, y0, sy) {
   translate([x-rm_socket_w()/2,
-             sy>0 ? y0-RM_TAB_PROUD-RM_EPS : y0-RM_EPS,
+             sy>0 ? y0-RM_TAB_PROUD-RM_EPS : y0,
              (RM_PANEL_T-RM_TAB_T)/2])
     cube([rm_socket_w(),RM_TAB_PROUD+2*RM_EPS,RM_TAB_T]);
 }
 
-module edge_run_x(length, y0, sy, phase) {
+module edge_tabs_x(length, y0, sy, phase) {
   for(i=[0:grid_count(length)-1])
     if(i%2 == phase)
       _tab(grid_position(i,length),y0,sy);
-    else
+}
+
+module edge_sockets_x(length, y0, sy, phase) {
+  for(i=[0:grid_count(length)-1])
+    if(i%2 != phase)
       _socket(grid_position(i,length),y0,sy);
 }
 
-module edge_run_y(length, x0, sx, phase) {
+module edge_tabs_y(length, x0, sx, phase) {
   for(i=[0:grid_count(length)-1])
     if(i%2 == phase)
       translate([sx>0 ? x0 : x0-RM_TAB_PROUD,
                  grid_position(i,length)-RM_TAB_W/2,
                  (RM_PANEL_T-RM_TAB_T)/2])
         cube([RM_TAB_PROUD,RM_TAB_W,RM_TAB_T]);
-    else
+}
+
+module edge_sockets_y(length, x0, sx, phase) {
+  for(i=[0:grid_count(length)-1])
+    if(i%2 != phase)
       translate([sx>0 ? x0-RM_TAB_PROUD-RM_EPS : x0-RM_EPS,
                  grid_position(i,length)-rm_socket_w()/2,
                  (RM_PANEL_T-RM_TAB_T)/2])
