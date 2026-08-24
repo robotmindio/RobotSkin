@@ -18,4 +18,5 @@ build flat_join "$SRC_DIR/flat_join.scad"
 build angle_join "$SRC_DIR/angle_join.scad"
 build grove_plaque "$SRC_DIR/grove_plaque.scad"
 
+"$PROJECT_DIR/scripts/render_previews.sh"
 echo "Built STLs in $STL_DIR"

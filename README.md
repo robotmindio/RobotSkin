@@ -17,6 +17,8 @@ The first printed set is intentionally only four parts:
 ./scripts/build.sh
 ```
 
+The build also regenerates the assembly previews in `renders/`.
+
 Print one plate and one Grove plaque first. The plaque pegs should enter with
 firm thumb pressure, resist rotation, and remove without damaging the port.
 Tune `RM_PEG_ENTRY` and `RM_PEG_GRIP` only after recording a physical trial.
