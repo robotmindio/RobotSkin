@@ -1,8 +1,8 @@
 # RobotMind calibration record
 
-Every dimension in `rm_common.scad` is a hypothesis until a printed part says
-otherwise. Record physical results here; do not tune geometry without logging
-the measurement that motivated it.
+Every dimension in `rm_common.scad` is a hypothesis until a printed part
+says otherwise. Record physical results here; do not tune geometry without
+logging the measurement that motivated it.
 
 ## Baseline
 
@@ -16,80 +16,73 @@ the measurement that motivated it.
 
 ## Step 1 — Port and peg fit (`RM_FIT`)
 
-Print `fit_test_port.stl` plus all three `fit_test_peg_*.stl` coupons at
-`RM_FIT=0`. Test each peg by hand: it must insert with firm thumb pressure,
-rotate-lock against the hex, and pull out without deforming the port.
+Print `fit_test_port.stl` and the three `fit_test_peg_*.stl` coupons at
+`RM_FIT=0`. The port coupon contains the full blind hexagon ring and bore.
+Each peg must insert with firm thumb pressure, rotate-lock against the hex,
+and pull out without deforming the port.
 
 Log every trial before changing the value:
 
 | Date | `RM_FIT` | Peg coupon | Insertion | Retention | Damage | Verdict |
 |---|---|---|---|---|---|---|
-| | 0.00 | nominal | firm thumb press | held | none | OK — single informal trial |
 | | | | | | | |
 
-Selected production value: `RM_FIT = ____` (nominal 0.00 looks promising;
-needs repeated trials before freezing).
+Selected production value: `RM_FIT = 0.00` nominal; tune in 0.05 mm steps
+only after a repeated-trial record exists.
 
-## Step 2 — Edge coupons
+## Step 2 — Peg bore and M3 pass-through
 
-Print one `edge_coupon.stl` (contains both mating halves, A and B) at the
-selected `RM_FIT`. The two halves must press together by hand, align flush
-across the joint, and separate without galling. Test both flat
-orientations; then flip one half 180° and retest.
+Mount any two-peg carrier to a port pair. Run a short M3 screw through one
+peg centre; it must pass through the peg and seat without binding.
 
-| Date | `RM_FIT` | Insertion | Flush? | Damage | Verdict |
-|---|---|---|---|---|---|
-| | | | | | |
-
-## Step 3 — Carrier cycle test
-
-Mount one two-peg Grove carrier into one port pair and remove it repeatedly.
-
-| Cycles completed | Pegs worn? | Ports worn? | Still retained? |
+| Carrier | Peg bore threads? | Binds? | Verdict |
 |---|---|---|---|
-| | | | |
+| grove_20x20_carrier | | | |
 
-Target: 50 clean cycles.
+## Step 3 — Insert seat
 
-## Step 4 — Flat panel joints
+Press a 4.0 mm M3 brass knurled heat-set insert into the bore of a port
+coupon (or any panel port). It must melt-press to the printed bore, sit
+retained after cooling, and take an M3 screw with ordinary hand torque.
 
-Join two panels edge-to-edge, flat, with battlements only, then repeat with
-short M3 screws through the peg centres.
-
-| Joint | Pegs only holds? | M3 locks cleanly? | Notes |
-|---|---|---|---|
-| Flat seam | | | |
-
-## Step 5 — Corner fold probe
-
-Print one `corner_coupon.stl`. Fold its two leaves to 90°: the teeth either
-keep the angle or slip apart.
-
-| Date | `RM_FIT` | Engaged? | Slips? | Verdict |
+| Date | Insert od / bore | Melt-press holds? | Torque | Verdict |
 |---|---|---|---|---|
 | | | | | |
 
-The result picks the corner strategy:
+## Step 4 — Flat panel seam
 
-- Engages: corners fold with no extra part. Document the fold licence and
-  continue; a cube is then a genuine build with no new catalogue entry.
-- Slips: corners need one male part per corner. Design the corner gusset on
-  its own geometry, with its own coupon, before any cube claim.
+Print one `flat_link_40`. Butt two panels edge-to-edge, drop the link over
+the seam, drive two M3 screws from each side through the link and into the
+seated inserts. The seam must hold under hand force with no slop.
 
-## Step 6 — M3 locking on real joints
+| Joint | Link | Seated inserts? | Holds? | Notes |
+|---|---|---|---|---|
+| Flat seam | flat_link_40 | | | |
 
-Repeat the flat seam and any corner joint with short M3 screws through the
-peg centres. Confirm the screw threads into the plastic pilot without
-stripping at hand torque, for ten consecutive cycles.
+## Step 5 — Corner fold
 
-| Joint | Threads? | Survives 10 cycles? | Notes |
-|---|---|---|---|
-| Flat seam | | | |
+Print one `angle_link_40`. Offer it across the 90° corner of two panels and
+join with the inner row screws on both faces. Confirm a working 90° corner
+with no gap at the fold.
+
+| Date | Link | Engaged? | Gap? | Verdict |
+|---|---|---|---|---|
+| | | | | |
+
+## Step 6 — Load cycling
+
+Bolt a flat seam and an angle corner together, then flex them across the
+useful torque range for ten cycles. Confirm the inserts stay seated and the
+screws stay tight.
+
+| Joint | Survives 10 cycles? | Notes |
+|---|---|---|
+| Flat seam | | |
 
 ## Step 7 — Three-panel flat junction
 
-Assemble three panels in a T before any more complex build. Confirm the
-battlement parity holds at corner junctions, not just along straight seams.
+Assemble three panels in T flat, with the third panel bearing a carrier, and
+confirm the seams square and the whole is rigid under load.
 
 | Assembled? | Alignment acceptable? | Notes |
 |---|---|---|

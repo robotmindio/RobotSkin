@@ -2,23 +2,25 @@
 
 RobotMind is a double-sided construction system for robotics:
 
-`solid panel + integral pegs + hermaphrodite edges + optional M3 screws`
+`blind panel grid + integral pegs + bolted link brackets + optional M3 screws`
 
-Nothing passes through a panel. Every mounting port is blind on both faces,
-leaving a continuous membrane in the centre. Panels join each other directly
-through identical battlement edges — no connector parts exist. Carriers press
-into the same face ports without loose pins.
+Nothing passes through a panel. Every mounting port is a blind hexagon with a
+concentric bore; the bore seats an M3 brass heat-set insert when the joint
+must be bolted, and the peg press of a carrier needs no insert at all.
+Panels butt edge-to-edge and a flat or angle link bracket carries the seam.
 
 ## System MVP
 
 - 40 mm structural unit and clean 10 mm mounting grid.
 - 8 mm solid panels in 40×40, 80×40 and 80×80 mm sizes.
 - Sixteen hexagonal blind ports per face of a 40×40 panel, identical on
-  both faces.
-- Identical hermaphrodite battlements on all four edges: any edge mates any
-  edge of any neighbour, flat or folded to 90°, with no extra parts.
+  both faces; each port has a concentric 3 mm blind bore for an insert.
+- Clean panel edges: a seam is a direct butt with no edge hardware.
+- Four linked joints: `flat_link_40`, `flat_link_80`, `angle_link_40`,
+  `angle_link_80` for coplanar seams and 90° corners.
 - Integral tapered pegs for tool-free carrier mounting.
-- A blind M3 pilot inside every port for optional locking.
+- A blind 3.4×3.0 mm bore inside every port for an M3 brass heat-set insert
+  (optional locking).
 - One Grove 20×20 carrier using the same two integral pegs.
 - One calibration control: `RM_FIT`. Positive values loosen printed fits.
 
@@ -28,29 +30,29 @@ into the same face ports without loose pins.
 ./scripts/build.sh
 ```
 
-Print `fit_test_port.stl`, the three `fit_test_peg_*.stl` files, one
-`edge_coupon.stl` and one `corner_coupon.stl` first. The small and large pegs
-differ from nominal by 0.1 mm. Adjust `RM_FIT` in 0.05 mm steps and rebuild.
+The script also runs the grid-alignment check, which fails the build if any
+link hole lands off a panel port centre.
 
-Panels print face down; the edge tabs are horizontal cantilevers, so add
-small local supports under the exposed tabs. Coupons print on the exported
-side orientation, features up, support-free. The Grove carrier prints on the
-exported side orientation.
+Print `fit_test_port.stl` and the three `fit_test_peg_*.stl` files first.
+The small and large pegs differ from nominal by 0.1 mm. Adjust `RM_FIT` in
+0.05 mm steps and rebuild.
+
+Panels print face down; the edge is a clean butt, no cantilevered features,
+so panels print support-free. The Grove carrier prints on the exported side
+orientation. Links print flat, features up, support-free.
 
 PETG, 0.20 mm layers and four perimeters are a reasonable prototype baseline.
 
 ## Assembly
 
-- Payload: press two integral carrier pegs into any two face ports.
-- Locked payload: add short M3 screws through the peg centres.
-- Flat seam: butt two panels; their battlements interleave as-is. Never
-  twist a panel 90° relative to its neighbour.
-- 90° corner: fold the `corner_coupon` and see. The fold may hold or slip;
-  the result decides whether corners need one extra part. Follow
-  docs/CALIBRATION.md and log the outcome before building boxes.
-- Closed boxes: fold five walls, drop the lid last. Wall-to-wall vertical
-  seams are still being validated; see docs/CALIBRATION.md before relying
-  on a full cube.
+- Carrier: press two integral carrier pegs into any two face ports.
+- Locked carrier: add short M3 screws through the peg centres.
+- Flat seam: butt two panels along the 20 mm seam line; seat M3 inserts in
+  the seam-adjacent ports and bolt a `flat_link` over the seam.
+- 90° corner: butt two panels at a fold; seat inserts in the inner port rows
+  and bolt an `angle_link` in the inner corner.
+- Box: build the five walls with flat links on flat seams and angle links on
+  corners; drop the lid last.
 
 ## Manufacturing
 

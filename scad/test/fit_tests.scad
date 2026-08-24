@@ -5,7 +5,7 @@ assert(PART=="port" || PART=="peg_small" || PART=="peg_nominal" ||
        PART=="peg_large", "Unknown fit-test part");
 
 module port_coupon() {
-  coupon_t=RM_PORT_PILOT_DEPTH+2;
+  coupon_t=RM_INSERT_DEPTH+2;
   difference() {
     cylinder(h=coupon_t,d=12);
     blind_port_cut();
