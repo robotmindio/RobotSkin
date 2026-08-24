@@ -2,10 +2,12 @@ include <rm_common.scad>
 use <plate_8x8.scad>
 use <flat_join.scad>
 use <angle_join.scad>
+use <outer_angle_join.scad>
 use <grove_plaque.scad>
 
-SCENE = "overview"; // overview, port, flat, angle
-assert(SCENE=="overview" || SCENE=="port" || SCENE=="flat" || SCENE=="angle",
+SCENE = "overview"; // overview, port, flat, angle, outer_angle
+assert(SCENE=="overview" || SCENE=="port" || SCENE=="flat" || SCENE=="angle" ||
+       SCENE=="outer_angle",
        "Unknown preview scene");
 
 PLATE_COLOR = [0.60,0.72,0.84];
@@ -21,7 +23,8 @@ module overview_scene() {
   color(PLATE_COLOR) translate([-55,0,0]) plate_8x8();
   color(JOIN_COLOR) translate([45,-30,0]) flat_join();
   color(JOIN_COLOR) translate([45,35,0]) angle_join();
-  color(PLAQUE_COLOR) translate([105,-10,0]) grove_plaque();
+  color(JOIN_COLOR) translate([145,30,0]) outer_angle_join();
+  color(PLAQUE_COLOR) translate([105,-20,0]) grove_plaque();
 }
 
 module port_scene() {
@@ -48,7 +51,14 @@ module angle_scene() {
   color(JOIN_COLOR) translate([0,40,RM_PLATE_T]) angle_join();
 }
 
+module outer_angle_scene() {
+  color(PLATE_COLOR) plate_8x8();
+  color(PLATE_COLOR) translate([0,40,48]) rotate([-90,0,0]) plate_8x8();
+  color(JOIN_COLOR) translate([0,48,0]) outer_angle_join();
+}
+
 if(SCENE=="overview") overview_scene();
 if(SCENE=="port") port_scene();
 if(SCENE=="flat") flat_scene();
 if(SCENE=="angle") angle_scene();
+if(SCENE=="outer_angle") outer_angle_scene();

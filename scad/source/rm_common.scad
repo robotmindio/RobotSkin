@@ -89,6 +89,14 @@ module forward_peg() {
   translate([0,-RM_EPS,0]) rotate([-90,0,0]) mount_peg();
 }
 
+module upward_peg() {
+  translate([0,0,-RM_EPS]) mount_peg();
+}
+
+module backward_peg() {
+  translate([0,RM_EPS,0]) rotate([90,0,0]) mount_peg();
+}
+
 module top_screw_cut() {
   translate([0,0,-RM_PORT_DEPTH-RM_EPS])
     cylinder(h=RM_JOIN_T+RM_PORT_DEPTH+2*RM_EPS,d=RM_M3_CLEARANCE);
@@ -99,5 +107,18 @@ module side_screw_cut() {
   translate([0,-RM_JOIN_T-RM_EPS,0]) rotate([-90,0,0])
     cylinder(h=RM_JOIN_T+RM_EPS,d=RM_M3_CLEARANCE);
   translate([0,-RM_JOIN_T-RM_EPS,0]) rotate([-90,0,0])
+    cylinder(h=2+RM_EPS,d=RM_M3_HEAD_D);
+}
+
+module bottom_screw_cut() {
+  translate([0,0,-RM_JOIN_T-RM_EPS])
+    cylinder(h=RM_JOIN_T+RM_PORT_DEPTH+2*RM_EPS,d=RM_M3_CLEARANCE);
+  translate([0,0,-RM_JOIN_T-RM_EPS]) cylinder(h=2+RM_EPS,d=RM_M3_HEAD_D);
+}
+
+module backward_screw_cut() {
+  translate([0,RM_JOIN_T+RM_EPS,0]) rotate([90,0,0])
+    cylinder(h=RM_JOIN_T+RM_EPS,d=RM_M3_CLEARANCE);
+  translate([0,RM_JOIN_T+RM_EPS,0]) rotate([90,0,0])
     cylinder(h=2+RM_EPS,d=RM_M3_HEAD_D);
 }

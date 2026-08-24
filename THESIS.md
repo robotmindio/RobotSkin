@@ -10,7 +10,8 @@ waterproof as practical.
 
 1. **8×8 plate** — the sole structural surface and mounting grid.
 2. **Flat join** — joins two plates edge-to-edge.
-3. **90° join** — joins two plates at a right angle.
+3. **90° join** — joins two plates at a right angle; an explicitly approved
+   exterior variant uses the same port and peg interface.
 4. **Grove sensor plaque** — mounts a Grove sensor on a plate.
 
 Every future part must reuse this interface. Do not add a new connector,

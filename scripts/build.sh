@@ -16,6 +16,7 @@ build() {
 build plate_8x8 "$SRC_DIR/plate_8x8.scad"
 build flat_join "$SRC_DIR/flat_join.scad"
 build angle_join "$SRC_DIR/angle_join.scad"
+build outer_angle_join "$SRC_DIR/outer_angle_join.scad"
 build grove_plaque "$SRC_DIR/grove_plaque.scad"
 
 "$PROJECT_DIR/scripts/render_previews.sh"

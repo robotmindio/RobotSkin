@@ -11,6 +11,7 @@ The first printed set is intentionally only four parts:
 2. `flat_join` — joins two full plate edges coplanar.
 3. `angle_join` — joins two full plate edges at 90°.
 4. `grove_plaque` — a generic 20 mm Grove board plaque.
+5. `outer_angle_join` — joins a 90° corner from its exterior.
 
 ## Print and calibrate
 
@@ -34,7 +35,7 @@ neutral-cure silicone before tightening the screws. This is not an IP rating.
 ./scripts/render_previews.sh
 ```
 
-This writes `overview.png`, `port.png`, `flat.png`, and `angle.png` to
-`renders/`. The port view shows the 4.0 mm-OD brass insert seated by melt-press
+This writes `overview.png`, `port.png`, `flat.png`, `angle.png`, and
+`outer_angle.png` to `renders/`. The port view shows the 4.0 mm-OD brass insert seated by melt-press
 interference in the 3.4 mm blind pilot; the boss supports it for the full 3 mm
 depth. Insert it from the exposed plate face before mounting a join or plaque.
