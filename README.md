@@ -1,26 +1,26 @@
-# RobotMind modular sensor + beacon ecosystem
+# RobotMind modular sensor system
 
-One mechanical interface connects every payload to every mount:
+RobotMind has one connection rule: a blind hex port accepts a hollow hex peg.
+Press parts together by hand; install M3×3×4 heat-set inserts and M3 screws
+through the peg centres when the joint must be permanent.
 
-`module → carrier / beacon housing → slide-in rail → dock → robot, wall, or plate`
+The first printed set is intentionally only four parts:
 
-The Rev A MVP deliberately contains only the common interface and its first
-real users: a universal dock, a Grove 20×20 carrier, a flat AprilTag/beacon
-housing, and an M3 mounting plate. The rail is a longitudinal dovetail pair;
-the same geometry is used by every carrier and every dock.
+1. `plate_8x8` — 80×80 mm, double-sided 8×8 mounting grid.
+2. `flat_join` — joins two full plate edges coplanar.
+3. `angle_join` — joins two full plate edges at 90°.
+4. `grove_plaque` — a generic 20 mm Grove board plaque.
 
-## Print first
+## Print and calibrate
 
 ```bash
 ./scripts/build.sh
 ```
 
-Print `dock_fit_test.stl` before any full part. Adjust `RM_CLEARANCE` in
-`scad/source/rm_common.scad` by 0.05 mm steps: it should slide by hand with
-no perceptible vertical rock. Then print one dock and the Grove carrier.
+Print `fit_test.stl` first. The peg should enter with firm thumb pressure,
+resist rotation, and remove without damaging the port. Tune `RM_PEG_ENTRY`
+and `RM_PEG_GRIP` only after recording a physical trial.
 
-The dock is bolted down through four M3 holes. The supplied mounting plate is
-the plain robot/wall base; it does not introduce another payload interface.
-
-`beacon_flat.scad` has a provisional 28×45×8 mm board cavity. Measure the
-actual PCB, antenna keep-out, and connector before printing it as a final part.
+Ports are blind on both plate faces, retaining a 2 mm centre membrane. For a
+permanent splash-resistant seam, fill the join's shallow underside groove with
+neutral-cure silicone before tightening the screws. This is not an IP rating.

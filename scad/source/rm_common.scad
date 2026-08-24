@@ -1,67 +1,77 @@
-// RobotMind Rev A: one slide-in interface for every payload carrier.
-// Dimensions are mm; tune clearance on a short fit coupon before full prints.
+// RobotMind's sole interface: blind hex port, hollow hex peg, optional M3 lock.
 $fn = 32;
 
 RM_EPS = 0.1;
-RM_CLEARANCE = 0.28;
+RM_PLATE = 80;
+RM_GRID = 10;
+RM_PLATE_T = 8;
+RM_PORT_INSET = 5;
+RM_PORT_OD = 8;
+RM_PORT_DEPTH = 2.2;
+RM_INSERT_BORE = 3.4; // for an M3x3x4 heat-set insert
+RM_INSERT_DEPTH = 3;
+RM_PEG_ENTRY = 0.2;
+RM_PEG_GRIP = 0.2;
+RM_PEG_BORE = 4.2;   // clears the seated insert
 RM_M3_CLEARANCE = 3.4;
+RM_M3_HEAD_D = 6.2;
+RM_JOIN_T = 4;
+RM_JOIN_L = RM_PLATE;
 
-RM_DOCK_W = 32;
-RM_DOCK_L = 36;
-RM_DOCK_H = 8;
-RM_RAIL_X = 10;
-RM_RAIL_ROOT = 4.8;
-RM_RAIL_HEAD = 7.0;
-RM_RAIL_H = 3.0;
-RM_RAIL_L = 30;
+function port_position(i) = -RM_PLATE/2 + RM_PORT_INSET + i*RM_GRID;
+function join_columns() = [-25,-5,5,25];
+function peg_root_od() = RM_PORT_OD + RM_PEG_GRIP;
+function peg_tip_od() = RM_PORT_OD - RM_PEG_ENTRY;
 
-assert(RM_RAIL_HEAD > RM_RAIL_ROOT, "Rail must retain the carrier");
-assert(RM_DOCK_H > RM_RAIL_H, "Dock needs material below the rail");
-assert(RM_RAIL_L + 2*RM_CLEARANCE < RM_DOCK_L,
-       "Rail needs an open insertion end and rear stop");
+assert(RM_PLATE_T - 2*RM_INSERT_DEPTH >= 2,
+       "Opposing blind insert bores need a centre membrane");
+assert(peg_root_od() > RM_PORT_OD && RM_PORT_OD > peg_tip_od(),
+       "Peg needs a lead-in and final grip");
 
 module rounded_box(size=[20,20,3], r=2) {
   linear_extrude(height=size[2])
     offset(r=r) offset(delta=-r) square([size[0],size[1]]);
 }
 
-// The profile is narrow at the carrier root and wider at its free end.
-module rail_profile(root=RM_RAIL_ROOT, head=RM_RAIL_HEAD, h=RM_RAIL_H) {
-  polygon(points=[[-root/2,0], [root/2,0], [head/2,h], [-head/2,h]]);
+module blind_port_cut() {
+  translate([0,0,-RM_EPS]) cylinder(h=RM_PORT_DEPTH+RM_EPS,d=RM_PORT_OD,$fn=6);
+  translate([0,0,-RM_EPS]) cylinder(h=RM_INSERT_DEPTH+RM_EPS,d=RM_INSERT_BORE);
 }
 
-// Runs along +Y and projects below Z=0. Carriers place this at their underside.
-module male_rail(length=RM_RAIL_L) {
-  translate([0,-length/2,0]) rotate([-90,0,0])
-    linear_extrude(height=length) rail_profile();
+module plate_port_cuts(top=false) {
+  for(x=[0:7], y=[0:7])
+    if(top)
+      translate([port_position(x),port_position(y),RM_PLATE_T])
+        mirror([0,0,1]) blind_port_cut();
+    else
+      translate([port_position(x),port_position(y),0]) blind_port_cut();
 }
 
-module male_interface() {
-  for(x=[-RM_RAIL_X,RM_RAIL_X])
-    translate([x,0,0]) male_rail();
-}
-
-// Matching void, open at the front (-Y); material at +Y is the hard stop.
-module rail_channel(length=RM_RAIL_L+2*RM_CLEARANCE) {
-  translate([0,-RM_DOCK_L/2-RM_EPS,RM_DOCK_H+RM_EPS]) rotate([-90,0,0])
-    linear_extrude(height=length)
-      rail_profile(RM_RAIL_ROOT+2*RM_CLEARANCE,
-                   RM_RAIL_HEAD+2*RM_CLEARANCE,
-                   RM_RAIL_H+RM_EPS);
-}
-
-module universal_dock() {
+module plate_8x8() {
   difference() {
-    translate([-RM_DOCK_W/2,-RM_DOCK_L/2,0])
-      rounded_box([RM_DOCK_W,RM_DOCK_L,RM_DOCK_H],3);
-    for(x=[-RM_RAIL_X,RM_RAIL_X]) translate([x,0,0]) rail_channel();
-    for(x=[-11,11], y=[-11,11])
-      translate([x,y,-RM_EPS]) cylinder(h=RM_DOCK_H+2*RM_EPS,d=RM_M3_CLEARANCE);
+    translate([-RM_PLATE/2,-RM_PLATE/2,0])
+      rounded_box([RM_PLATE,RM_PLATE,RM_PLATE_T],3);
+    plate_port_cuts();
+    plate_port_cuts(top=true);
   }
 }
 
-// Place a carrier's Z=0 plane at the dock surface; its rails fill the recess.
-function docked_carrier_z() = RM_DOCK_H;
-// Centre position after the rail reaches the rear stop.
-function docked_carrier_y() = -RM_DOCK_L/2 - RM_EPS +
-                              RM_RAIL_L/2 + 2*RM_CLEARANCE;
+module mount_peg() {
+  difference() {
+    cylinder(h=RM_PORT_DEPTH,d1=peg_root_od(),d2=peg_tip_od(),$fn=6);
+    translate([0,0,-RM_EPS]) cylinder(h=RM_PORT_DEPTH+2*RM_EPS,d=RM_PEG_BORE);
+  }
+}
+
+module top_screw_cut() {
+  translate([0,0,-RM_PORT_DEPTH-RM_EPS])
+    cylinder(h=RM_JOIN_T+RM_PORT_DEPTH+2*RM_EPS,d=RM_M3_CLEARANCE);
+  translate([0,0,RM_JOIN_T-2]) cylinder(h=2+RM_EPS,d=RM_M3_HEAD_D);
+}
+
+module side_screw_cut() {
+  translate([0,-RM_JOIN_T-RM_EPS,0]) rotate([-90,0,0])
+    cylinder(h=RM_JOIN_T+RM_EPS,d=RM_M3_CLEARANCE);
+  translate([0,-RM_JOIN_T-RM_EPS,0]) rotate([-90,0,0])
+    cylinder(h=2+RM_EPS,d=RM_M3_HEAD_D);
+}

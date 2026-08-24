@@ -1,19 +1,21 @@
-# RobotMind mechanical interface
+# RobotMind interface
 
-All carriers use the same two longitudinal dovetail rails on their underside.
-All docks use the matching two through-channels, open at the insertion end.
+The plate is 80×80×8 mm with an 8×8, 10 mm-pitch port grid. Port centres are
+5 mm from the edges. Both faces are identical.
 
-| Dimension | Value |
+| Feature | Dimension |
 |---|---:|
-| Dock footprint | 32 × 36 mm |
-| Dock height | 8 mm |
-| Rail centres | ±10 mm |
-| Rail root / head | 4.8 / 7.0 mm |
-| Rail depth | 3.0 mm |
-| Nominal fit clearance | 0.28 mm per side |
+| Hex port, corner-to-corner | 8.0 mm |
+| Hex depth | 2.2 mm |
+| Insert bore | 3.4 mm × 3.0 mm blind |
+| Centre membrane | 2.0 mm |
+| Peg root / tip | 8.2 / 7.8 mm |
+| Peg depth | 2.2 mm |
 
-The carrier slides from the open dock end along +Y until the rear stop. Its
-underside rests on the dock surface and the widened rail head is captured below
-it, resisting lift. The four M3 holes fasten the dock to its host. Tune only
-`RM_CLEARANCE`, and validate it with `dock_fit_test` before changing the
-shared geometry.
+The root interference gives hand assembly. A hollow peg leaves clearance for
+an M3 screw to reach an insert seated in the plate port. A pair of pegs stops
+rotation; screws make a joint permanent.
+
+Flat joins mount on the plate face across an edge seam. Angle joins mount in
+the inside corner: one leg on the floor face and one on the wall face. The
+shallow join grooves hold silicone for permanent splash-resistant seams.

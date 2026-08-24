@@ -14,10 +14,10 @@ build() {
   openscad -o "$STL_DIR/$output.stl" "$source"
 }
 
-build dock_fit_test "$TEST_DIR/dock_fit_test.scad"
-build universal_dock "$SRC_DIR/universal_dock.scad"
-build grove_20x20_carrier "$SRC_DIR/grove_carrier.scad"
-build beacon_flat "$SRC_DIR/beacon_flat.scad"
-build mount_plate "$SRC_DIR/mount_plate.scad"
+build fit_test "$TEST_DIR/fit_test.scad"
+build plate_8x8 "$SRC_DIR/plate_8x8.scad"
+build flat_join "$SRC_DIR/flat_join.scad"
+build angle_join "$SRC_DIR/angle_join.scad"
+build grove_plaque "$SRC_DIR/grove_plaque.scad"
 
 echo "Built STLs in $STL_DIR"

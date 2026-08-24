@@ -1,9 +1,8 @@
-# RobotMind calibration record
+# RobotMind calibration
 
-Print `dock_fit_test.stl` at `RM_CLEARANCE=0.28` first. The male rails should
-slide through the dock channels without forcing, vertical rock, or cracking.
-Change clearance only in 0.05 mm steps and record the result.
+Print `fit_test.stl` before any full part. Test the real hollow peg in the
+real blind port and record the result before changing fit dimensions.
 
-| Date | Material | `RM_CLEARANCE` | Slides | Rock | Verdict |
-|---|---|---:|---|---|---|
-| | | 0.28 | | | |
+| Date | Material | Entry | Grip | Damage | Verdict |
+|---|---|---|---|---|---|
+| | | | | | |

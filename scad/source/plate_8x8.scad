@@ -1,2 +1,2 @@
 include <rm_common.scad>
-universal_dock();
+plate_8x8();
