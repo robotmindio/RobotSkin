@@ -8,7 +8,8 @@ RM_PLATE_T = 8;
 RM_PORT_INSET = 5;
 RM_PORT_OD = 8;
 RM_PORT_DEPTH = 2.2;
-RM_INSERT_BORE = 3.4; // for an M3x3x4 heat-set insert
+RM_INSERT_BORE = 3.4; // pilot for a 4.0 mm-OD M3x3x4 heat-set insert
+RM_INSERT_OD = 4.0;
 RM_INSERT_DEPTH = 3;
 RM_PEG_ENTRY = 0.2;
 RM_PEG_GRIP = 0.2;
@@ -27,6 +28,8 @@ assert(RM_PLATE_T - 2*RM_INSERT_DEPTH >= 2,
        "Opposing blind insert bores need a centre membrane");
 assert(peg_root_od() > RM_PORT_OD && RM_PORT_OD > peg_tip_od(),
        "Peg needs a lead-in and final grip");
+assert(RM_INSERT_OD > RM_INSERT_BORE,
+       "The heat-set insert needs deliberate melt-press interference");
 
 module rounded_box(size=[20,20,3], r=2) {
   linear_extrude(height=size[2])

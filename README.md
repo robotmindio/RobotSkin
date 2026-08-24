@@ -24,3 +24,14 @@ Tune `RM_PEG_ENTRY` and `RM_PEG_GRIP` only after recording a physical trial.
 Ports are blind on both plate faces, retaining a 2 mm centre membrane. For a
 permanent splash-resistant seam, fill the join's shallow underside groove with
 neutral-cure silicone before tightening the screws. This is not an IP rating.
+
+## Preview the system
+
+```bash
+./scripts/render_previews.sh
+```
+
+This writes `overview.png`, `port.png`, `flat.png`, and `angle.png` to
+`renders/`. The port view shows the 4.0 mm-OD brass insert seated by melt-press
+interference in the 3.4 mm blind pilot; insert it from the exposed plate face
+before mounting a join or plaque.
