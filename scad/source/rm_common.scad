@@ -15,9 +15,10 @@ RM_FIT = 0; // positive is looser; tune in 0.05 mm steps
 // central bore seats an M3 brass heat-set insert for bolted links.
 RM_PORT_OD = 8;       // hexagon corner-to-corner
 RM_PORT_DEPTH = 2.2;  // hex ring depth
-RM_INSERT_OD = 4.0;   // M3 brass knurled heat-set insert, outer diameter
+RM_INSERT_OD = 4.0;   // brass heat-set insert outer diameter, 4.0 mm
 RM_INSERT_BORE = 3.4; // printed blind bore for the insert (melt-press fit)
-RM_INSERT_DEPTH = 3.0;// blind bore depth; 2x this must stay under panel thickness
+RM_INSERT_DEPTH = 3.0;// bore depth == insert body length, seats flush
+RM_INSERT_PART = "M3x3x4"; // M3 thread, 3 mm body, 4.0 mm OD — owns this seat
 RM_PEG_BORE = RM_INSERT_OD+0.2; // peg centre bore clears a seated insert
 RM_PEG_ENTRY = 0.2;
 RM_PEG_GRIP = 0.2;
