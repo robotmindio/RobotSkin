@@ -8,9 +8,9 @@ module angle_join() {
       translate([-RM_JOIN_L/2,0,0]) rotate([90,0,0])
         rounded_box([RM_JOIN_L,24,RM_JOIN_T],3);
       for(x=join_columns(), y=[-15,-5])
-        translate([x,y,0]) rotate([180,0,0]) mount_peg();
+        translate([x,y,0]) downward_peg();
       for(x=join_columns(), z=[5,15])
-        translate([x,0,z]) rotate([-90,0,0]) mount_peg();
+        translate([x,0,z]) forward_peg();
     }
     for(x=join_columns(), y=[-15,-5]) translate([x,y,0]) top_screw_cut();
     for(x=join_columns(), z=[5,15])

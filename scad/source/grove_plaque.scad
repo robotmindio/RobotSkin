@@ -5,7 +5,7 @@ module grove_plaque() {
   difference() {
     union() {
       translate([-14,-14,0]) rounded_box([28,28,3],3);
-      for(x=[-5,5]) translate([x,0,0]) rotate([180,0,0]) mount_peg();
+      for(x=[-5,5]) translate([x,0,0]) downward_peg();
     }
     for(x=[-5,5]) translate([x,0,0]) top_screw_cut();
     for(x=[-8,8], y=[-8,8])

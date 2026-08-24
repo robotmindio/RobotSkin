@@ -3,7 +3,6 @@ set -euo pipefail
 
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 SRC_DIR="$PROJECT_DIR/scad/source"
-TEST_DIR="$PROJECT_DIR/scad/test"
 STL_DIR="$PROJECT_DIR/stl"
 mkdir -p "$STL_DIR"
 find "$STL_DIR" -maxdepth 1 -type f -name '*.stl' -delete
@@ -14,7 +13,6 @@ build() {
   openscad -o "$STL_DIR/$output.stl" "$source"
 }
 
-build fit_test "$TEST_DIR/fit_test.scad"
 build plate_8x8 "$SRC_DIR/plate_8x8.scad"
 build flat_join "$SRC_DIR/flat_join.scad"
 build angle_join "$SRC_DIR/angle_join.scad"
