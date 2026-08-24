@@ -27,3 +27,4 @@ Each join uses every one of the eight port columns along its full edge.
 `outer_angle_join` mounts below the floor and outside the wall. Its pegs use
 the same port dimensions but sit 13 and 23 mm from the exterior corner, rather
 than the inside join's 5 and 15 mm rows; the 8 mm shift clears plate thickness.
+It has matching shallow silicone grooves on its floor and wall contact faces.

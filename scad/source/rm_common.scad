@@ -2,6 +2,7 @@
 $fn = 32;
 
 RM_EPS = 0.1;
+RM_FIT = 0; // positive loosens port, boss, peg, and heat-set pilot together
 RM_PLATE = 80;
 RM_GRID = 10;
 RM_PLATE_T = 8;
@@ -20,24 +21,35 @@ RM_M3_CLEARANCE = 3.4;
 RM_M3_HEAD_D = 6.2;
 RM_JOIN_T = 4;
 RM_JOIN_L = RM_PLATE;
+RM_SEAL_W = 3;
+RM_SEAL_D = 0.9;
+RM_JOIN_EDGE_MARGIN = 5;
 
 function port_position(i) = -RM_PLATE/2 + RM_PORT_INSET + i*RM_GRID;
 function port_indices() = [0:RM_PORT_COUNT-1];
 function join_columns() = [for(i=port_indices()) port_position(i)];
-function peg_root_od() = RM_PORT_OD + RM_PEG_GRIP;
-function peg_tip_od() = RM_PORT_OD - RM_PEG_ENTRY;
+function inner_join_rows() = [for(i=[0:1]) RM_PORT_INSET+i*RM_GRID];
+function outer_join_rows() = [for(row=inner_join_rows()) RM_PLATE_T+row];
+function join_leg(rows) = max(rows)+RM_PORT_OD/2+RM_JOIN_EDGE_MARGIN;
+function port_od() = RM_PORT_OD+2*RM_FIT;
+function insert_bore() = RM_INSERT_BORE+2*RM_FIT;
+function port_boss_d() = RM_PORT_BOSS_D-2*RM_FIT;
+function peg_root_od() = RM_PORT_OD+RM_PEG_GRIP-2*RM_FIT;
+function peg_tip_od() = RM_PORT_OD-RM_PEG_ENTRY-2*RM_FIT;
+function peg_bore() = RM_PEG_BORE+2*RM_FIT;
 
 assert(RM_PLATE_T - 2*RM_INSERT_DEPTH >= 2,
        "Opposing blind insert bores need a centre membrane");
 assert(RM_PLATE == 2*RM_PORT_INSET + (RM_PORT_COUNT-1)*RM_GRID,
        "The full plate grid must terminate at both edges");
-assert(peg_root_od() > RM_PORT_OD && RM_PORT_OD > peg_tip_od(),
+assert(RM_FIT >= 0 && RM_FIT <= 0.2, "RM_FIT must stay within 0..0.20 mm");
+assert(peg_root_od() > port_od() && port_od() > peg_tip_od(),
        "Peg needs a lead-in and final grip");
-assert(RM_INSERT_OD > RM_INSERT_BORE,
+assert(RM_INSERT_OD > insert_bore(),
        "The heat-set insert needs deliberate melt-press interference");
-assert(RM_PORT_BOSS_D > RM_INSERT_OD,
+assert(port_boss_d() > RM_INSERT_OD,
        "The insert needs a supporting centre boss");
-assert(RM_PEG_BORE > RM_PORT_BOSS_D,
+assert(peg_bore() > port_boss_d(),
        "The peg must clear the centre boss");
 
 module rounded_box(size=[20,20,3], r=2) {
@@ -48,11 +60,11 @@ module rounded_box(size=[20,20,3], r=2) {
 module blind_port_cut() {
   difference() {
     translate([0,0,-RM_EPS])
-      cylinder(h=RM_PORT_DEPTH+RM_EPS,d=RM_PORT_OD,$fn=6);
+      cylinder(h=RM_PORT_DEPTH+RM_EPS,d=port_od(),$fn=6);
     translate([0,0,-2*RM_EPS])
-      cylinder(h=RM_PORT_DEPTH+3*RM_EPS,d=RM_PORT_BOSS_D);
+      cylinder(h=RM_PORT_DEPTH+3*RM_EPS,d=port_boss_d());
   }
-  translate([0,0,-RM_EPS]) cylinder(h=RM_INSERT_DEPTH+RM_EPS,d=RM_INSERT_BORE);
+  translate([0,0,-RM_EPS]) cylinder(h=RM_INSERT_DEPTH+RM_EPS,d=insert_bore());
 }
 
 module plate_port_cuts(top=false) {
@@ -76,7 +88,7 @@ module plate_8x8() {
 module mount_peg() {
   difference() {
     cylinder(h=RM_PORT_DEPTH,d1=peg_root_od(),d2=peg_tip_od(),$fn=6);
-    translate([0,0,-RM_EPS]) cylinder(h=RM_PORT_DEPTH+2*RM_EPS,d=RM_PEG_BORE);
+    translate([0,0,-RM_EPS]) cylinder(h=RM_PORT_DEPTH+2*RM_EPS,d=peg_bore());
   }
 }
 
