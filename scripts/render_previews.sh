@@ -2,7 +2,7 @@
 set -euo pipefail
 
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-SCENE="$PROJECT_DIR/scad/04_assembly_previews.scad"
+SCENE="$PROJECT_DIR/scad/source/previews.scad"
 RENDER_DIR="$PROJECT_DIR/renders"
 mkdir -p "$RENDER_DIR"
 
@@ -15,10 +15,9 @@ render() {
 }
 
 render overview
-render flat
+render pair
 render corner
 render grove
-render double
-render edges
+render cube
 
 echo "Rendered previews in $RENDER_DIR"

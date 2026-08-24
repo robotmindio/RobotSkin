@@ -1,4 +1,4 @@
-include <rm_common.scad>
+include <../source/rm_common.scad>
 
 PART="port"; // port, peg_small, peg_nominal or peg_large
 assert(PART=="port" || PART=="peg_small" || PART=="peg_nominal" ||
@@ -13,9 +13,10 @@ module port_coupon() {
 }
 
 module peg_coupon(delta=0) {
+  base=3.2;
   union() {
-    cylinder(h=RM_LINK_T,d=10);
-    translate([0,0,RM_LINK_T]) mount_peg(delta);
+    cylinder(h=base+0.2,d=10); // overlap fuses handle and peg into one solid
+    translate([0,0,base]) mount_peg(delta);
   }
 }
 

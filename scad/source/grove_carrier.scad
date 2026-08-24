@@ -5,7 +5,7 @@ module grove_20x20_carrier() {
   clearance=0.35+RM_FIT;
   wall=1.6;
   wall_h=3;
-  floor=RM_LINK_T;
+  floor=3.2;
   peg_d=1.9-2*RM_FIT;
   pocket=[pcb[0]+2*clearance,pcb[1]+2*clearance];
   outer=[pocket[0]+2*wall,pocket[1]+2*wall];
