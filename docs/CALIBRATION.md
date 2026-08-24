@@ -17,9 +17,12 @@ logging the measurement that motivated it.
 ## Step 1 — Port and peg fit (`RM_FIT`)
 
 Print `fit_test_port.stl` and the three `fit_test_peg_*.stl` coupons at
-`RM_FIT=0`. The port coupon contains the full blind hexagon ring and bore.
-Each peg must insert with firm thumb pressure, rotate-lock against the hex,
-and pull out without deforming the port.
+`RM_FIT=0`. The port coupon carries the full blind hexagon ring and a
+through centre bore; each peg coupon is a square 12 mm grip carrying the
+real integral hex frustum with a full-depth centre bore, so an M3 screw
+passes the whole way through. Each peg must insert with firm thumb
+pressure, rotate-lock against the hex, and pull out without deforming the
+port.
 
 Log every trial before changing the value:
 
