@@ -30,10 +30,9 @@ RM_PLATE_R = 3;
 RM_JOIN_T = 4;
 RM_JOIN_PORTS = 2;
 RM_JOIN_L = RM_JOIN_PORTS*RM_GRID;
-RM_JOIN_LEG = RM_JOIN_L;
-RM_JOIN_PANEL_R = 1.5;
-RM_SEAL_W = 3;
-RM_SEAL_D = 0.9;
+RM_JOIN_LEG = 3*RM_GRID;
+RM_FLAT_JOIN_W = 4*RM_GRID;
+RM_JOIN_PANEL_R = 3;
 RM_PLAQUE_SIZE = 28;
 RM_PLAQUE_T = 3;
 RM_PLAQUE_R = 3;
@@ -58,11 +57,12 @@ RM_TEST_INSERT_PITCH = 14;
 function port_position(i) = -RM_PLATE/2 + RM_PORT_INSET + i*RM_GRID;
 function port_indices() = [0:RM_PORT_COUNT-1];
 function join_columns() = [for(i=[0:RM_JOIN_PORTS-1]) (i-(RM_JOIN_PORTS-1)/2)*RM_GRID];
-function flat_peg_rows() = [-RM_PORT_INSET,RM_PORT_INSET];
-function inner_floor_rows() = [RM_PORT_INSET+RM_GRID];
-function inner_wall_rows() = [RM_PLATE_T+RM_PORT_INSET];
-function outer_floor_rows() = [RM_PLATE_T+RM_PORT_INSET];
-function outer_wall_rows() = [RM_PLATE_T+RM_PORT_INSET];
+function flat_peg_rows() = [-RM_PORT_INSET-RM_GRID,-RM_PORT_INSET,
+                             RM_PORT_INSET,RM_PORT_INSET+RM_GRID];
+function inner_floor_rows() = [RM_PORT_INSET,RM_PORT_INSET+RM_GRID];
+function inner_wall_rows() = [for(row=inner_floor_rows()) RM_PLATE_T+row];
+function outer_floor_rows() = inner_wall_rows();
+function outer_wall_rows() = inner_wall_rows();
 function octagon_d(af) = af/cos(22.5);
 function port_af(fit=RM_PORT_FIT) = RM_PORT_AF+2*fit;
 function insert_bore(fit=RM_PORT_FIT) = RM_INSERT_BORE+fit;
@@ -198,12 +198,10 @@ module backward_screw_cut() {
     cylinder(h=RM_M3_HEAD_DEPTH+RM_EPS,d=RM_M3_HEAD_D);
 }
 
-// Rounded long edges preserve the design language; full square end faces tile.
+// Grove-style rounding applies only to the planar outline; contact faces stay flat.
 module join_panel(min_row, max_row) {
-  translate([-RM_JOIN_L/2,min_row,RM_JOIN_T]) rotate([0,90,0])
-    linear_extrude(height=RM_JOIN_L)
-      offset(r=RM_JOIN_PANEL_R) offset(delta=-RM_JOIN_PANEL_R)
-        square([RM_JOIN_T,max_row-min_row]);
+  translate([-RM_JOIN_L/2,min_row,0])
+    rounded_box([RM_JOIN_L,max_row-min_row,RM_JOIN_T],RM_JOIN_PANEL_R);
 }
 
 // Equal-length legs keep the 90-degree body visually symmetric.
@@ -222,14 +220,12 @@ module flat_join() {
   peg_rows = flat_peg_rows();
   difference() {
     union() {
-      join_panel(-RM_JOIN_L/2,RM_JOIN_L/2);
+      join_panel(-RM_FLAT_JOIN_W/2,RM_FLAT_JOIN_W/2);
       for(x=join_columns(), y=peg_rows)
         translate([x,y,0]) downward_peg();
     }
     for(x=join_columns(), y=peg_rows)
       translate([x,y,0]) top_screw_cut();
-    translate([-RM_JOIN_L/2,-RM_SEAL_W/2,-RM_EPS])
-      cube([RM_JOIN_L,RM_SEAL_W,RM_SEAL_D+RM_EPS]);
   }
 }
 
@@ -248,10 +244,6 @@ module angle_join() {
       translate([x,y,0]) top_screw_cut();
     for(x=join_columns(), z=wall_rows)
       translate([x,0,z]) side_screw_cut();
-    translate([-RM_JOIN_L/2,-RM_SEAL_W/2,-RM_EPS])
-      cube([RM_JOIN_L,RM_SEAL_W,RM_SEAL_D+RM_EPS]);
-    translate([-RM_JOIN_L/2,-RM_JOIN_T-RM_EPS,-RM_SEAL_W/2])
-      cube([RM_JOIN_L,RM_SEAL_D+RM_EPS,RM_SEAL_W]);
   }
 }
 
@@ -270,10 +262,6 @@ module outer_angle_join() {
       translate([x,y,0]) bottom_screw_cut();
     for(x=join_columns(), z=wall_rows)
       translate([x,0,z]) backward_screw_cut();
-    translate([-RM_JOIN_L/2,-RM_PLATE_T-RM_SEAL_W/2,-RM_SEAL_D])
-      cube([RM_JOIN_L,RM_SEAL_W,RM_SEAL_D+RM_EPS]);
-    translate([-RM_JOIN_L/2,-RM_EPS,RM_PLATE_T-RM_SEAL_W/2])
-      cube([RM_JOIN_L,RM_SEAL_D+RM_EPS,RM_SEAL_W]);
   }
 }
 
