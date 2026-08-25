@@ -30,5 +30,6 @@ square planes, so one to four tiles butt together without gaps to span a
 
 `outer_angle_join` mounts below the floor and outside the wall. Its pegs use
 the same port dimensions but sit 13 mm from the exterior corner, rather than
-the inside join's 5 mm row; the 8 mm shift clears plate thickness.
+the inner join's 15 mm floor row and 13 mm wall row. The inner floor row moves
+one grid pitch inward so both legs remain visually balanced around the corner.
 It has matching shallow silicone grooves on its floor and wall contact faces.
