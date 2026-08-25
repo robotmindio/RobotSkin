@@ -30,9 +30,7 @@ RM_JOIN_L = RM_PLATE;
 RM_SEAL_W = 3;
 RM_SEAL_D = 0.9;
 RM_JOIN_EDGE_MARGIN = 5;
-RM_JOIN_RAIL_W = 4;
-RM_JOIN_PAD_AF = 8.8;
-RM_JOIN_BRIDGE_COUNT = 3;
+RM_JOIN_PANEL_R = 3;
 RM_PLAQUE_SIZE = 28;
 RM_PLAQUE_T = 3;
 RM_PLAQUE_R = 3;
@@ -61,8 +59,6 @@ function outer_floor_rows() = outer_join_rows();
 function outer_wall_rows() = outer_join_rows();
 function octagon_d(af) = af/cos(22.5);
 function join_leg(rows) = max(rows)+octagon_d(peg_root_af())/2+RM_JOIN_EDGE_MARGIN;
-function join_bridge_columns() = [for(i=[0:RM_JOIN_BRIDGE_COUNT-1])
-  -RM_JOIN_L/2+RM_JOIN_RAIL_W/2+i*(RM_JOIN_L-RM_JOIN_RAIL_W)/(RM_JOIN_BRIDGE_COUNT-1)];
 function port_af(fit=RM_PORT_FIT) = RM_PORT_AF+2*fit;
 function insert_bore(fit=RM_PORT_FIT) = RM_INSERT_BORE+fit;
 function port_boss_af(fit=RM_PORT_FIT) = RM_PORT_BOSS_AF-2*fit;
@@ -90,10 +86,6 @@ assert(peg_bore() > port_boss_af(),
        "The peg must clear the centre boss");
 assert(RM_PLAQUE_T >= RM_M3_HEAD_DEPTH,
        "The plaque must fully recess the specified screw head");
-assert(RM_M3_HEAD_D < RM_JOIN_PAD_AF,
-       "The join pad must retain material around the screw head");
-assert(RM_JOIN_BRIDGE_COUNT >= 2,
-       "The join lattice needs at least two bridge columns");
 
 module rounded_box(size, r) {
   linear_extrude(height=size[2])
@@ -186,16 +178,10 @@ module backward_screw_cut() {
     cylinder(h=RM_M3_HEAD_DEPTH+RM_EPS,d=RM_M3_HEAD_D);
 }
 
-// Repeated octagonal lock stations keep every join visually and structurally consistent.
-module join_ladder(rows, min_row, max_row) {
-  for(row=rows)
-    translate([-RM_JOIN_L/2,row-RM_JOIN_RAIL_W/2,0])
-      rounded_box([RM_JOIN_L,RM_JOIN_RAIL_W,RM_JOIN_T],RM_JOIN_RAIL_W/2);
-  for(x=join_columns(), row=rows)
-    translate([x,row,0]) octagonal_prism(RM_JOIN_T,RM_JOIN_PAD_AF);
-  for(x=join_bridge_columns())
-    translate([x-RM_JOIN_RAIL_W/2,min_row,0])
-      rounded_box([RM_JOIN_RAIL_W,max_row-min_row,RM_JOIN_T],RM_JOIN_RAIL_W/2);
+// One continuous panel joins every lock station and retains the silicone bead.
+module join_panel(min_row, max_row) {
+  translate([-RM_JOIN_L/2,min_row,0])
+    rounded_box([RM_JOIN_L,max_row-min_row,RM_JOIN_T],RM_JOIN_PANEL_R);
 }
 
 module flat_join() {
@@ -203,7 +189,7 @@ module flat_join() {
   leg = join_leg(inner_join_rows());
   difference() {
     union() {
-      join_ladder(peg_rows,-leg,leg);
+      join_panel(-leg,leg);
       for(x=join_columns(), y=peg_rows)
         translate([x,y,0]) downward_peg();
     }
@@ -221,8 +207,8 @@ module angle_join() {
   wall_leg = join_leg(wall_rows);
   difference() {
     union() {
-      join_ladder([for(row=floor_rows) -row],-floor_leg,0);
-      rotate([90,0,0]) join_ladder(wall_rows,0,wall_leg);
+      join_panel(-floor_leg,0);
+      rotate([90,0,0]) join_panel(0,wall_leg);
       for(x=join_columns(), y=[for(row=floor_rows) -row])
         translate([x,y,0]) downward_peg();
       for(x=join_columns(), z=wall_rows)
@@ -247,8 +233,8 @@ module outer_angle_join() {
   difference() {
     union() {
       translate([0,0,-RM_JOIN_T])
-        join_ladder([for(row=floor_rows) -row],-floor_leg,0);
-      translate([0,RM_JOIN_T,0]) rotate([90,0,0]) join_ladder(wall_rows,0,wall_leg);
+        join_panel(-floor_leg,0);
+      translate([0,RM_JOIN_T,0]) rotate([90,0,0]) join_panel(0,wall_leg);
       for(x=join_columns(), y=[for(row=floor_rows) -row])
         translate([x,y,0]) upward_peg();
       for(x=join_columns(), z=wall_rows)

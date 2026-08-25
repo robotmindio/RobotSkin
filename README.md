@@ -36,6 +36,9 @@ Ports are blind on both plate faces, retaining a 2 mm centre membrane. For a
 permanent splash-resistant seam, fill the join's shallow underside groove with
 neutral-cure silicone before tightening the screws. This is not an IP rating.
 
+Print [VOCABULARY.svg](docs/VOCABULARY.svg) at 100% for the part names and
+connection vocabulary.
+
 Print plates face down. Print the flat join and plaque peg-side up. Angle joins
 need local support below the peg row that is perpendicular to the print bed.
 

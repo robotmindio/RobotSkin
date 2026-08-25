@@ -23,8 +23,8 @@ Flat joins mount on the plate face across an edge seam. Angle joins mount in
 the inside corner: one leg on the floor face and one on the wall face. The
 shallow join grooves hold silicone for permanent splash-resistant seams.
 Each join uses every one of the eight port columns along its full edge.
-Joins use the same repeated octagonal lock station and narrow rail lattice,
-rather than a solid cover plate.
+Every join uses a continuous rounded panel that holds all its lock stations
+together and retains the silicone bead.
 
 `outer_angle_join` mounts below the floor and outside the wall. Its pegs use
 the same port dimensions but sit 13 and 23 mm from the exterior corner, rather
