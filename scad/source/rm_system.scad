@@ -2,7 +2,8 @@
 $fn = 32;
 
 RM_EPS = 0.1;
-RM_FIT = 0; // positive loosens port, boss, peg, and heat-set pilot together
+RM_PORT_FIT = 0; // positive loosens the female port and insert pilot
+RM_PEG_FIT = 0; // positive loosens the male peg; select this from the coupon
 RM_PLATE = 80;
 RM_GRID = 10;
 RM_PLATE_T = 8;
@@ -39,6 +40,14 @@ RM_PLAQUE_PEG_X = 5;
 RM_PLAQUE_SLOT_XY = 8;
 RM_PLAQUE_SLOT_LENGTH = 4;
 RM_PLAQUE_SLOT_D = 2.8;
+RM_TEST_MALE_FITS = [-0.10,-0.05,0,0.05,0.10];
+RM_TEST_PAD_SIZE = 12;
+RM_TEST_PAD_T = RM_JOIN_T;
+RM_TEST_PAD_R = 2;
+RM_TEST_PAD_PITCH = 14;
+RM_TEST_TILE_SIZE = 2*RM_GRID;
+RM_TEST_TILE_T = RM_PLATE_T;
+RM_TEST_TILE_R = 2;
 
 function port_position(i) = -RM_PLATE/2 + RM_PORT_INSET + i*RM_GRID;
 function port_indices() = [0:RM_PORT_COUNT-1];
@@ -54,18 +63,23 @@ function octagon_d(af) = af/cos(22.5);
 function join_leg(rows) = max(rows)+octagon_d(peg_root_af())/2+RM_JOIN_EDGE_MARGIN;
 function join_bridge_columns() = [for(i=[0:RM_JOIN_BRIDGE_COUNT-1])
   -RM_JOIN_L/2+RM_JOIN_RAIL_W/2+i*(RM_JOIN_L-RM_JOIN_RAIL_W)/(RM_JOIN_BRIDGE_COUNT-1)];
-function port_af() = RM_PORT_AF+2*RM_FIT;
-function insert_bore() = RM_INSERT_BORE+RM_FIT;
-function port_boss_af() = RM_PORT_BOSS_AF-2*RM_FIT;
-function peg_root_af() = RM_PORT_AF+RM_PEG_GRIP-2*RM_FIT;
-function peg_tip_af() = RM_PORT_AF-RM_PEG_ENTRY-2*RM_FIT;
-function peg_bore() = RM_PEG_BORE+2*RM_FIT;
+function port_af(fit=RM_PORT_FIT) = RM_PORT_AF+2*fit;
+function insert_bore(fit=RM_PORT_FIT) = RM_INSERT_BORE+fit;
+function port_boss_af(fit=RM_PORT_FIT) = RM_PORT_BOSS_AF-2*fit;
+function peg_root_af(fit=RM_PEG_FIT) = RM_PORT_AF+RM_PEG_GRIP-2*fit;
+function peg_tip_af(fit=RM_PEG_FIT) = RM_PORT_AF-RM_PEG_ENTRY-2*fit;
+function peg_bore(fit=RM_PEG_FIT) = RM_PEG_BORE+2*fit;
+function test_male_x(i) = (i-(len(RM_TEST_MALE_FITS)-1)/2)*RM_TEST_PAD_PITCH;
+function test_tile_positions() = [-RM_GRID/2,RM_GRID/2];
 
 assert(RM_PLATE_T - 2*RM_INSERT_DEPTH >= 2,
        "Opposing blind insert bores need a centre membrane");
 assert(RM_PLATE == 2*RM_PORT_INSET + (RM_PORT_COUNT-1)*RM_GRID,
        "The full plate grid must terminate at both edges");
-assert(RM_FIT >= 0 && RM_FIT <= 0.15, "RM_FIT must stay within 0..0.15 mm");
+assert(RM_PORT_FIT >= 0 && RM_PORT_FIT <= 0.15,
+       "RM_PORT_FIT must stay within 0..0.15 mm");
+assert(RM_PEG_FIT >= 0 && RM_PEG_FIT <= 0.10,
+       "RM_PEG_FIT must stay within 0..0.10 mm");
 assert(peg_root_af() > port_af() && port_af() > peg_tip_af(),
        "Peg needs a lead-in and final grip");
 assert(RM_INSERT_OD > insert_bore(),
@@ -90,17 +104,17 @@ module octagonal_prism(h, af) {
   cylinder(h=h,d=octagon_d(af),$fn=8);
 }
 
-module blind_port_cut() {
+module blind_port_cut(fit=RM_PORT_FIT) {
   difference() {
     translate([0,0,-RM_EPS])
-      octagonal_prism(RM_PORT_DEPTH+RM_EPS,port_af());
+      octagonal_prism(RM_PORT_DEPTH+RM_EPS,port_af(fit));
     translate([0,0,-2*RM_EPS])
-      octagonal_prism(RM_PORT_DEPTH+3*RM_EPS,port_boss_af());
+      octagonal_prism(RM_PORT_DEPTH+3*RM_EPS,port_boss_af(fit));
   }
-  translate([0,0,-RM_EPS]) cylinder(h=RM_INSERT_DEPTH+RM_EPS,d=insert_bore());
+  translate([0,0,-RM_EPS]) cylinder(h=RM_INSERT_DEPTH+RM_EPS,d=insert_bore(fit));
   translate([0,0,-RM_EPS])
     cylinder(h=RM_INSERT_LEAD+RM_EPS,
-             d1=RM_INSERT_OD+RM_INSERT_ENTRY_CLEARANCE,d2=insert_bore());
+             d1=RM_INSERT_OD+RM_INSERT_ENTRY_CLEARANCE,d2=insert_bore(fit));
 }
 
 module plate_port_cuts(top=false) {
@@ -121,27 +135,27 @@ module plate_8x8() {
   }
 }
 
-module mount_peg() {
+module mount_peg(fit=RM_PEG_FIT) {
   difference() {
-    cylinder(h=RM_PORT_DEPTH,d1=octagon_d(peg_root_af()),d2=octagon_d(peg_tip_af()),$fn=8);
-    translate([0,0,-RM_EPS]) cylinder(h=RM_PORT_DEPTH+2*RM_EPS,d=peg_bore());
+    cylinder(h=RM_PORT_DEPTH,d1=octagon_d(peg_root_af(fit)),d2=octagon_d(peg_tip_af(fit)),$fn=8);
+    translate([0,0,-RM_EPS]) cylinder(h=RM_PORT_DEPTH+2*RM_EPS,d=peg_bore(fit));
   }
 }
 
-module downward_peg() {
-  translate([0,0,RM_EPS]) rotate([180,0,0]) mount_peg();
+module downward_peg(fit=RM_PEG_FIT) {
+  translate([0,0,RM_EPS]) rotate([180,0,0]) mount_peg(fit);
 }
 
-module forward_peg() {
-  translate([0,-RM_EPS,0]) rotate([-90,0,0]) mount_peg();
+module forward_peg(fit=RM_PEG_FIT) {
+  translate([0,-RM_EPS,0]) rotate([-90,0,0]) mount_peg(fit);
 }
 
-module upward_peg() {
-  translate([0,0,-RM_EPS]) mount_peg();
+module upward_peg(fit=RM_PEG_FIT) {
+  translate([0,0,-RM_EPS]) mount_peg(fit);
 }
 
-module backward_peg() {
-  translate([0,RM_EPS,0]) rotate([90,0,0]) mount_peg();
+module backward_peg(fit=RM_PEG_FIT) {
+  translate([0,RM_EPS,0]) rotate([90,0,0]) mount_peg(fit);
 }
 
 module top_screw_cut(body_t=RM_JOIN_T) {
@@ -265,5 +279,30 @@ module grove_plaque() {
           translate([0,-RM_PLAQUE_SLOT_LENGTH/2]) circle(d=RM_PLAQUE_SLOT_D);
           translate([0,RM_PLAQUE_SLOT_LENGTH/2]) circle(d=RM_PLAQUE_SLOT_D);
         }
+  }
+}
+
+module tolerance_male_set() {
+  for(i=[0:len(RM_TEST_MALE_FITS)-1])
+    translate([test_male_x(i),0,0]) difference() {
+      union() {
+        translate([-RM_TEST_PAD_SIZE/2,-RM_TEST_PAD_SIZE/2,0])
+          rounded_box([RM_TEST_PAD_SIZE,RM_TEST_PAD_SIZE,RM_TEST_PAD_T],RM_TEST_PAD_R);
+        downward_peg(RM_TEST_MALE_FITS[i]);
+      }
+      top_screw_cut(RM_TEST_PAD_T);
+      if(i > 0)
+        for(mark=[1:i])
+          translate([-RM_TEST_PAD_SIZE/2+mark*2,-RM_TEST_PAD_SIZE/2,-RM_EPS])
+            cube([1,2,RM_TEST_PAD_T+2*RM_EPS]);
+    }
+}
+
+module tolerance_female_tile() {
+  difference() {
+    translate([-RM_TEST_TILE_SIZE/2,-RM_TEST_TILE_SIZE/2,0])
+      rounded_box([RM_TEST_TILE_SIZE,RM_TEST_TILE_SIZE,RM_TEST_TILE_T],RM_TEST_TILE_R);
+    for(x=test_tile_positions(), y=test_tile_positions())
+      translate([x,y,RM_TEST_TILE_T]) mirror([0,0,1]) blind_port_cut();
   }
 }
