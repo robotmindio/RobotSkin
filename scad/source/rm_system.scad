@@ -48,6 +48,11 @@ RM_TEST_PAD_PITCH = 14;
 RM_TEST_TILE_SIZE = 2*RM_GRID;
 RM_TEST_TILE_T = RM_PLATE_T;
 RM_TEST_TILE_R = 2;
+RM_TEST_INSERT_BORES = [3.75,3.80,3.85,3.90,3.95];
+RM_TEST_INSERT_PAD = 12;
+RM_TEST_INSERT_T = RM_PLATE_T;
+RM_TEST_INSERT_R = 2;
+RM_TEST_INSERT_PITCH = 14;
 
 function port_position(i) = -RM_PLATE/2 + RM_PORT_INSET + i*RM_GRID;
 function port_indices() = [0:RM_PORT_COUNT-1];
@@ -71,6 +76,7 @@ function peg_bore(fit=RM_PEG_FIT) = RM_PORT_BOSS_D+RM_PEG_BOSS_CLEARANCE;
 function peg_wall(af, fit=RM_PEG_FIT) = af/2-peg_bore(fit)/2;
 function test_male_x(i) = (i-(len(RM_TEST_MALE_FITS)-1)/2)*RM_TEST_PAD_PITCH;
 function test_tile_positions() = [-RM_GRID/2,RM_GRID/2];
+function test_insert_x(i) = (i-(len(RM_TEST_INSERT_BORES)-1)/2)*RM_TEST_INSERT_PITCH;
 
 assert(RM_PLATE_T - 2*RM_INSERT_DEPTH >= 2,
        "Opposing blind insert bores need a centre membrane");
@@ -102,17 +108,18 @@ module octagonal_prism(h, af) {
   cylinder(h=h,d=octagon_d(af),$fn=8);
 }
 
-module blind_port_cut(fit=RM_PORT_FIT) {
+module blind_port_cut(fit=RM_PORT_FIT, bore=undef) {
+  pilot = is_undef(bore) ? insert_bore(fit) : bore;
   difference() {
     translate([0,0,-RM_EPS])
       octagonal_prism(RM_PORT_DEPTH+RM_EPS,port_af(fit));
     translate([0,0,-2*RM_EPS])
       cylinder(h=RM_PORT_DEPTH+3*RM_EPS,d=port_boss_d(fit));
   }
-  translate([0,0,-RM_EPS]) cylinder(h=RM_INSERT_DEPTH+RM_EPS,d=insert_bore(fit));
+  translate([0,0,-RM_EPS]) cylinder(h=RM_INSERT_DEPTH+RM_EPS,d=pilot);
   translate([0,0,-RM_EPS])
     cylinder(h=RM_INSERT_LEAD+RM_EPS,
-             d1=insert_entry_d(),d2=insert_bore(fit));
+             d1=insert_entry_d(),d2=pilot);
 }
 
 module plate_port_cuts(top=false) {
@@ -305,5 +312,23 @@ module tolerance_female_tile() {
       rounded_box([RM_TEST_TILE_SIZE,RM_TEST_TILE_SIZE,RM_TEST_TILE_T],RM_TEST_TILE_R);
     for(x=test_tile_positions(), y=test_tile_positions())
       translate([x,y,RM_TEST_TILE_T]) mirror([0,0,1]) blind_port_cut();
+  }
+}
+
+// Five plate-equivalent female ports for heat-set insert interference testing.
+module tolerance_insert_set() {
+  length = RM_TEST_INSERT_PAD+(len(RM_TEST_INSERT_BORES)-1)*RM_TEST_INSERT_PITCH;
+  difference() {
+    translate([-length/2,-RM_TEST_INSERT_PAD/2,0])
+      rounded_box([length,RM_TEST_INSERT_PAD,RM_TEST_INSERT_T],RM_TEST_INSERT_R);
+    for(i=[0:len(RM_TEST_INSERT_BORES)-1]) {
+      translate([test_insert_x(i),0,RM_TEST_INSERT_T])
+        mirror([0,0,1]) blind_port_cut(bore=RM_TEST_INSERT_BORES[i]);
+      if(i > 0)
+        for(mark=[1:i])
+          translate([test_insert_x(i)-RM_TEST_INSERT_PAD/2+mark*2,
+                     -RM_TEST_INSERT_PAD/2,-RM_EPS])
+            cube([1,2,RM_TEST_INSERT_T+2*RM_EPS]);
+    }
   }
 }

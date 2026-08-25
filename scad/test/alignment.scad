@@ -23,6 +23,11 @@ assert(RM_TEST_MALE_FITS == [0,0.05,0.10,0.15,0.20],
        "Tolerance coupon must retain its documented five male fits");
 assert(test_tile_positions() == [-RM_GRID/2,RM_GRID/2],
        "Tolerance tile must retain its 2x2 nominal female grid");
+assert(RM_TEST_INSERT_BORES == [3.75,3.80,3.85,3.90,3.95],
+       "Insert coupon must retain its documented five pilot bores");
+for(bore=RM_TEST_INSERT_BORES)
+  assert(bore < RM_INSERT_OD && bore > RM_M3_CLEARANCE,
+         "Every insert coupon pilot must be below insert OD and above M3 clearance");
 for(fit=RM_TEST_MALE_FITS)
   assert(peg_root_af(fit) > port_af(0) && port_af(0) > peg_tip_af(fit),
          "Every coupon peg must fit the nominal female port");
