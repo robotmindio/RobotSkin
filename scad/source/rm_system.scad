@@ -23,9 +23,7 @@ RM_PEG_GRIP = 0.5;
 RM_PEG_MIN_WALL = 0.7;
 RM_M3_NOMINAL_D = 3.0;
 RM_M3_CLEARANCE = 3.4;
-RM_M3_HEAD_D = 6.2;
-RM_M3_HEAD_DEPTH = 2;
-RM_LOCK_SCREW_LENGTH = 7;
+RM_LOCK_SCREW_LENGTH = 6;
 RM_PLATE_R = 3;
 RM_JOIN_T = 4;
 RM_JOIN_PORTS = 2;
@@ -34,7 +32,7 @@ RM_JOIN_LEG = 3*RM_GRID;
 RM_FLAT_JOIN_W = 4*RM_GRID;
 RM_JOIN_PANEL_R = 3;
 RM_PLAQUE_SIZE = 28;
-RM_PLAQUE_T = 3;
+RM_PLAQUE_T = RM_JOIN_T;
 RM_PLAQUE_R = 3;
 RM_PLAQUE_PEG_X = 5;
 RM_PLAQUE_SLOT_XY = 8;
@@ -59,10 +57,12 @@ function port_indices() = [0:RM_PORT_COUNT-1];
 function join_columns() = [for(i=[0:RM_JOIN_PORTS-1]) (i-(RM_JOIN_PORTS-1)/2)*RM_GRID];
 function flat_peg_rows() = [-RM_PORT_INSET-RM_GRID,-RM_PORT_INSET,
                              RM_PORT_INSET,RM_PORT_INSET+RM_GRID];
+function flat_lock_rows() = [flat_peg_rows()[0],flat_peg_rows()[3]];
 function inner_floor_rows() = [RM_PORT_INSET,RM_PORT_INSET+RM_GRID];
 function inner_wall_rows() = [for(row=inner_floor_rows()) RM_PLATE_T+row];
 function outer_floor_rows() = inner_wall_rows();
 function outer_wall_rows() = inner_wall_rows();
+function outermost(rows) = rows[len(rows)-1];
 function octagon_d(af) = af/cos(22.5);
 function port_af(fit=RM_PORT_FIT) = RM_PORT_AF+2*fit;
 function insert_bore(fit=RM_PORT_FIT) = RM_INSERT_BORE+fit;
@@ -94,8 +94,9 @@ assert(peg_bore() > port_boss_d(),
        "The peg must clear the centre boss");
 assert(peg_wall(peg_tip_af()) >= RM_PEG_MIN_WALL,
        "Peg wall must remain at least RM_PEG_MIN_WALL thick at its tip");
-assert(RM_PLAQUE_T >= RM_M3_HEAD_DEPTH,
-       "The plaque must fully recess the specified screw head");
+assert(RM_LOCK_SCREW_LENGTH-RM_JOIN_T > 0 &&
+       RM_LOCK_SCREW_LENGTH-RM_JOIN_T < RM_INSERT_DEPTH,
+       "The lock screw must engage without bottoming in the blind insert");
 
 module rounded_box(size, r) {
   linear_extrude(height=size[2])
@@ -173,29 +174,21 @@ module backward_peg(fit=RM_PEG_FIT) {
 module top_screw_cut(body_t=RM_JOIN_T) {
   translate([0,0,-RM_PORT_DEPTH-RM_EPS])
     cylinder(h=body_t+RM_PORT_DEPTH+2*RM_EPS,d=RM_M3_CLEARANCE);
-  translate([0,0,body_t-RM_M3_HEAD_DEPTH])
-    cylinder(h=RM_M3_HEAD_DEPTH+RM_EPS,d=RM_M3_HEAD_D);
 }
 
 module side_screw_cut() {
   translate([0,-RM_JOIN_T-RM_EPS,0]) rotate([-90,0,0])
     cylinder(h=RM_JOIN_T+RM_EPS,d=RM_M3_CLEARANCE);
-  translate([0,-RM_JOIN_T-RM_EPS,0]) rotate([-90,0,0])
-    cylinder(h=RM_M3_HEAD_DEPTH+RM_EPS,d=RM_M3_HEAD_D);
 }
 
 module bottom_screw_cut() {
   translate([0,0,-RM_JOIN_T-RM_EPS])
     cylinder(h=RM_JOIN_T+RM_PORT_DEPTH+2*RM_EPS,d=RM_M3_CLEARANCE);
-  translate([0,0,-RM_JOIN_T-RM_EPS])
-    cylinder(h=RM_M3_HEAD_DEPTH+RM_EPS,d=RM_M3_HEAD_D);
 }
 
 module backward_screw_cut() {
   translate([0,RM_JOIN_T+RM_EPS,0]) rotate([90,0,0])
     cylinder(h=RM_JOIN_T+RM_EPS,d=RM_M3_CLEARANCE);
-  translate([0,RM_JOIN_T+RM_EPS,0]) rotate([90,0,0])
-    cylinder(h=RM_M3_HEAD_DEPTH+RM_EPS,d=RM_M3_HEAD_D);
 }
 
 // Grove-style rounding applies only to the planar outline; contact faces stay flat.
@@ -224,7 +217,7 @@ module flat_join() {
       for(x=join_columns(), y=peg_rows)
         translate([x,y,0]) downward_peg();
     }
-    for(x=join_columns(), y=peg_rows)
+    for(x=join_columns(), y=flat_lock_rows())
       translate([x,y,0]) top_screw_cut();
   }
 }
@@ -240,10 +233,10 @@ module angle_join() {
       for(x=join_columns(), z=wall_rows)
         translate([x,0,z]) forward_peg();
     }
-    for(x=join_columns(), y=[for(row=floor_rows) -row])
-      translate([x,y,0]) top_screw_cut();
-    for(x=join_columns(), z=wall_rows)
-      translate([x,0,z]) side_screw_cut();
+    for(x=join_columns()) {
+      translate([x,-outermost(floor_rows),0]) top_screw_cut();
+      translate([x,0,outermost(wall_rows)]) side_screw_cut();
+    }
   }
 }
 
@@ -258,10 +251,10 @@ module outer_angle_join() {
       for(x=join_columns(), z=wall_rows)
         translate([x,0,z]) backward_peg();
     }
-    for(x=join_columns(), y=[for(row=floor_rows) -row])
-      translate([x,y,0]) bottom_screw_cut();
-    for(x=join_columns(), z=wall_rows)
-      translate([x,0,z]) backward_screw_cut();
+    for(x=join_columns()) {
+      translate([x,-outermost(floor_rows),0]) bottom_screw_cut();
+      translate([x,0,outermost(wall_rows)]) backward_screw_cut();
+    }
   }
 }
 

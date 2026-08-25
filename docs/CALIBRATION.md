@@ -8,7 +8,7 @@ The male set has five separate samples, left to right: `RM_PEG_FIT` 0.00,
 ports. Each sample has zero to four edge marks to identify its left-to-right
 position. Select the loosest sample that remains firm and non-rotating, then
 set `RM_PEG_FIT` to that value for production parts. The female tile also
-checks the insert seat and M3×7 screw path.
+checks the insert seat and M3×6 screw path.
 
 Leave `RM_PORT_FIT` at 0.00 unless a separately printed female-port trial
 shows it is required; it changes the socket and insert pilot together.
@@ -23,3 +23,19 @@ does not visibly distort the port, and resists a screw pull/twist test. Set
 | Date | Material | `RM_PEG_FIT` | Entry | Grip | Rotation | Verdict |
 |---|---|---:|---|---|---|---|
 | | | 0.00 | | | | |
+
+## Connector release gate
+
+After choosing both fits, print one flat join, one angle join, and only enough
+plate geometry to exercise them. A connector design is ready for the first
+release only when:
+
+1. Every peg seats by hand without cracking or tools.
+2. A press-fit assembly can be removed and reinstalled ten times without
+   losing alignment.
+3. Four M3×6 screws clamp a join without bottoming, splitting, or visible
+   plate distortion.
+4. A locked flat join resists hand twisting and a locked angle holds 90°.
+
+Record failures here before changing geometry; do not add another connector
+type to work around an uncalibrated shared interface.

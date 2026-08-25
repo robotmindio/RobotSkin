@@ -6,11 +6,11 @@ hollow octagonal peg around its centre boss.
 `scad/source/rm_system.scad` is the single source of truth: all dimensions,
 the interface, and every part definition live there. `scad/parts/` contains
 only export entry points; the build discovers them automatically.
-Press parts together by hand; install M3×3×4 heat-set inserts and M3 screws
-through the peg centres when the joint must be permanent.
+Press parts together by hand; install M3×3×4 heat-set inserts and M3×6 screws
+at the marked through-holes when the joint must be permanent.
 
 The brass insert always goes in the plate's female port—not in a join. For a
-permanent joint, use one 4.0 mm-OD M3×3×4 insert and one M3×7 pan-head screw
+permanent joint, use one 4.0 mm-OD M3×3×4 insert and one M3×6 pan-head screw
 at every occupied lock station. See `docs/ASSEMBLY.md`.
 
 The first printed set has four product categories:
@@ -32,9 +32,9 @@ First run `./scripts/build_test_parts.sh`. Its five male samples establish
 `RM_PEG_FIT` against a nominal 2×2 female tile before you print production
 parts; see `docs/CALIBRATION.md`.
 
-Ports are blind on both plate faces, retaining a 2 mm centre membrane. For a
-permanent splash-resistant seam, fill the join's shallow underside groove with
-neutral-cure silicone before tightening the screws. This is not an IP rating.
+Ports are blind on both plate faces, retaining a 2 mm centre membrane. The
+first release makes no water-resistance claim; validate the dry mechanical
+interface before adding seals.
 
 Print [VOCABULARY.svg](docs/VOCABULARY.svg) at 100% for the part names and
 connection vocabulary.

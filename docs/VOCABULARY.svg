@@ -46,7 +46,7 @@
   <text x="92" y="198" class="h">Insert seat</text><text x="92" y="203" class="b">4.6 mm entry cup leading to a 3.7 mm brass-insert pilot.</text>
   <text x="14" y="218" class="h">Lock station</text><text x="14" y="223" class="b">One peg, its screw-clearance path, and its matching port.</text>
   <text x="14" y="231" class="h">Join panel</text><text x="14" y="236" class="b">The continuous orange surface holding every lock station together.</text>
-  <text x="14" y="244" class="h">Permanent lock</text><text x="14" y="249" class="b">A brass M3×3×4 insert in the plate port plus an M3×7 pan-head screw.</text>
+  <text x="14" y="244" class="h">Permanent lock</text><text x="14" y="249" class="b">A brass M3×3×4 insert in the plate port plus an M3×6 pan-head screw.</text>
   <text x="14" y="257" class="h">Press-fit assembly</text><text x="14" y="262" class="b">Peg inserted by hand without a screw; removable after fit calibration.</text>
   <line x1="12" y1="270" x2="198" y2="270" class="rule"/>
   <text x="12" y="278" class="s">Run the tolerance kit before production printing. Inner and outer angle joins are different parts.</text>

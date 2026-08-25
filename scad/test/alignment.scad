@@ -7,10 +7,15 @@ assert(join_columns() == [-RM_GRID/2,RM_GRID/2],
        "Join tile columns must land on two adjacent ports");
 assert(flat_peg_rows() == [-15,-5,5,15],
        "Flat join must have a two-by-two field on each plate");
+assert(flat_lock_rows() == [-15,15],
+       "Flat join must lock at the two rows farthest from the seam");
 assert(inner_floor_rows() == [5,15] && inner_wall_rows() == [13,23],
        "Inner angle must have a two-by-two field on each leg");
 assert(outer_floor_rows() == [13,23] && outer_wall_rows() == [13,23],
        "Outer angle must land on exterior floor and wall ports");
+assert(outermost(inner_floor_rows()) == 15 && outermost(inner_wall_rows()) == 23 &&
+       outermost(outer_floor_rows()) == 23 && outermost(outer_wall_rows()) == 23,
+       "Angle joins must lock at the row farthest from the corner");
 assert([for(row=inner_floor_rows()) RM_PLATE/2-row] == [edge_ports[7],edge_ports[6]],
        "Inner floor pegs must meet the floor edge ports");
 assert(inner_wall_rows() == [RM_PLATE_T+RM_PORT_INSET,RM_PLATE_T+RM_PORT_INSET+RM_GRID],

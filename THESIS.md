@@ -3,8 +3,8 @@
 RobotMind is a modular system for sensors and robotics that children and
 professionals can understand and use. It must stay as simple and coherent as
 possible while allowing parts to connect by hand and be fixed with screws when
-a permanent joint is needed. The assembled system should be as close to
-waterproof as practical.
+a permanent joint is needed. Water resistance is a later product goal, after
+the shared dry mechanical interface passes its release gate.
 
 ## Minimum first part set
 
