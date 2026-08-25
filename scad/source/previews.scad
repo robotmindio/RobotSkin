@@ -1,9 +1,4 @@
-include <rm_common.scad>
-use <plate_8x8.scad>
-use <flat_join.scad>
-use <angle_join.scad>
-use <outer_angle_join.scad>
-use <grove_plaque.scad>
+include <rm_system.scad>
 
 SCENE = "overview"; // overview, port, flat, angle, outer_angle
 assert(SCENE=="overview" || SCENE=="port" || SCENE=="flat" || SCENE=="angle" ||

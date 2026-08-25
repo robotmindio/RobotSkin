@@ -1,7 +1,11 @@
 # RobotMind modular sensor system
 
-RobotMind has one connection rule: an annular blind hex port accepts a hollow
-hex peg around its centre boss.
+RobotMind has one connection rule: an annular blind octagonal port accepts a
+hollow octagonal peg around its centre boss.
+
+`scad/source/rm_system.scad` is the single source of truth: all dimensions,
+the interface, and every part definition live there. The other source files
+only name the part to export.
 Press parts together by hand; install M3×3×4 heat-set inserts and M3 screws
 through the peg centres when the joint must be permanent.
 
@@ -39,5 +43,6 @@ need local support below the peg row that is perpendicular to the print bed.
 
 This writes `overview.png`, `port.png`, `flat.png`, `angle.png`, and
 `outer_angle.png` to `renders/`. The port view shows the 4.0 mm-OD brass insert seated by melt-press
-interference in the 3.4 mm blind pilot; the boss supports it for the full 3 mm
-depth. Insert it from the exposed plate face before mounting a join or plaque.
+interference in the 3.7 mm blind pilot; its entry chamfer guides the brass and
+the enlarged boss supports it for the full 3 mm depth. Insert it from the
+exposed plate face before mounting a join or plaque.

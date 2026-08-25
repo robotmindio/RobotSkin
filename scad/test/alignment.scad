@@ -1,4 +1,4 @@
-include <../source/rm_common.scad>
+include <../source/rm_system.scad>
 
 inner = inner_join_rows();
 outer = outer_join_rows();
@@ -8,8 +8,10 @@ assert(inner == [RM_PORT_INSET, RM_PORT_INSET+RM_GRID],
        "Inner join rows must land on the first two port rows");
 assert(outer == [for(row=inner) RM_PLATE_T+row],
        "Outer join rows must account for plate thickness");
-assert(join_leg(inner) >= max(inner)+RM_PORT_OD/2,
+assert(join_leg(inner) >= max(inner)+octagon_d(peg_root_af())/2,
        "Inner join leg must support every peg root");
-assert(join_leg(outer) >= max(outer)+RM_PORT_OD/2,
+assert(join_leg(outer) >= max(outer)+octagon_d(peg_root_af())/2,
        "Outer join leg must support every peg root");
+assert(RM_INSERT_DEPTH > RM_INSERT_LEAD && RM_INSERT_OD > insert_bore(),
+       "Female port must have an insert lead-in and interference");
 cube([1,1,1]);
