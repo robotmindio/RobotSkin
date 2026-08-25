@@ -28,7 +28,6 @@ RM_PLATE_R = 3;
 RM_JOIN_T = 4;
 RM_JOIN_PORTS = 2;
 RM_JOIN_L = RM_JOIN_PORTS*RM_GRID;
-RM_JOIN_LEG = 3*RM_GRID;
 RM_FLAT_JOIN_W = 4*RM_GRID;
 RM_JOIN_PANEL_R = 3;
 RM_PLAQUE_SIZE = 28;
@@ -208,15 +207,21 @@ module join_panel(min_row, max_row) {
     rounded_box([RM_JOIN_L,max_row-min_row,RM_JOIN_T],RM_JOIN_PANEL_R);
 }
 
-// Equal-length legs keep the 90-degree body visually symmetric.
 module corner_body(outer=false) {
   if(outer) {
-    translate([0,0,-RM_JOIN_T]) join_panel(-RM_JOIN_LEG,RM_JOIN_T);
-    translate([0,RM_JOIN_T,-RM_JOIN_T])
-      rotate([90,0,0]) join_panel(0,RM_JOIN_LEG+RM_JOIN_T);
+    translate([0,-RM_PLATE_T,-RM_JOIN_T]) join_panel(-RM_JOIN_L,0);
+    translate([-RM_JOIN_L/2,-RM_PLATE_T-RM_EPS,-RM_JOIN_T])
+      cube([RM_JOIN_L,RM_PLATE_T+RM_EPS,RM_JOIN_T+RM_EPS]);
+    translate([0,RM_JOIN_T,RM_PLATE_T])
+      rotate([90,0,0]) join_panel(0,RM_JOIN_L);
+    translate([-RM_JOIN_L/2,-RM_EPS,-RM_EPS])
+      cube([RM_JOIN_L,RM_JOIN_T+RM_EPS,RM_PLATE_T+2*RM_EPS]);
   } else {
-    join_panel(-RM_JOIN_LEG,0);
-    rotate([90,0,0]) join_panel(0,RM_JOIN_LEG);
+    join_panel(-RM_JOIN_L,0);
+    translate([0,0,RM_PLATE_T])
+      rotate([90,0,0]) join_panel(0,RM_JOIN_L);
+    translate([-RM_JOIN_L/2,-RM_JOIN_T,RM_JOIN_T])
+      cube([RM_JOIN_L,RM_JOIN_T,RM_PLATE_T-RM_JOIN_T]);
   }
 }
 

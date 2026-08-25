@@ -27,10 +27,13 @@ for(bore=RM_TEST_INSERT_BORES)
 for(fit=RM_TEST_MALE_FITS)
   assert(peg_root_af(fit) > port_af(0) && port_af(0) > peg_tip_af(fit),
          "Every coupon peg must fit the nominal female port");
-assert(RM_JOIN_LEG >= max(concat(inner_floor_rows(),inner_wall_rows(),
-                                  outer_floor_rows(),outer_wall_rows()))+
-       octagon_d(peg_root_af())/2,
-       "Symmetric corner legs must support every peg root");
+assert(inner_floor_rows() == [RM_PORT_INSET,RM_JOIN_L-RM_PORT_INSET] &&
+       inner_wall_rows() == [RM_PLATE_T+RM_PORT_INSET,
+                             RM_PLATE_T+RM_JOIN_L-RM_PORT_INSET],
+       "Both inner-angle faces must use the same 20 mm connector tile");
+assert(outer_floor_rows() == inner_wall_rows() &&
+       outer_wall_rows() == inner_wall_rows(),
+       "Both outer-angle faces must use the same offset connector tile");
 assert(RM_INSERT_DEPTH > RM_INSERT_LEAD && insert_entry_d() > RM_INSERT_OD &&
        RM_INSERT_OD > insert_bore(),
        "Female port needs a visible entry cup and an interference pilot");
