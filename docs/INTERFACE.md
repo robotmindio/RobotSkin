@@ -7,15 +7,15 @@ The plate is 80×80×8 mm with an 8×8, 10 mm-pitch port grid. Port centres are
 |---|---:|
 | Annular octagonal port, across flats | 8.0 mm |
 | Octagonal depth | 2.2 mm |
-| Insert pilot / insert | 3.7 mm × 3.0 mm / 4.0 mm OD M3×3×4 |
+| Insert entry / pilot / insert | 4.6 mm × 0.8 mm / 3.7 mm × 3.0 mm / 4.0 mm OD M3×3×4 |
 | Centre boss / peg clearance | 6.2 mm across flats / 6.6 mm |
 | Centre membrane | 2.0 mm |
 | Peg root / tip | 8.3 / 7.7 mm across flats |
 | Peg depth | 2.2 mm |
 
-The central boss carries the insert for its full 3 mm depth. A 0.6 mm entry
-chamfer opens the 3.7 mm pilot, so the brass can start straight from the
-exposed plate face before heat presses it into the interference fit. The peg
+The central boss carries the insert for its full 3 mm depth. A visible 4.6 mm,
+0.8 mm-deep entry cup leads into the 3.7 mm pilot, so the brass can start
+straight from the exposed plate face before heat presses it into the interference fit. The peg
 clears the boss, then its centre accepts an M3 screw. A pair of octagonal pegs
 stops rotation; screws make a joint permanent.
 

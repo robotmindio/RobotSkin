@@ -30,6 +30,7 @@ assert(join_leg(inner) >= max(inner)+octagon_d(peg_root_af())/2,
        "Inner join leg must support every peg root");
 assert(join_leg(outer) >= max(outer)+octagon_d(peg_root_af())/2,
        "Outer join leg must support every peg root");
-assert(RM_INSERT_DEPTH > RM_INSERT_LEAD && RM_INSERT_OD > insert_bore(),
-       "Female port must have an insert lead-in and interference");
+assert(RM_INSERT_DEPTH > RM_INSERT_LEAD && insert_entry_d() > RM_INSERT_OD &&
+       RM_INSERT_OD > insert_bore(),
+       "Female port needs a visible entry cup and an interference pilot");
 cube([1,1,1]);

@@ -14,8 +14,8 @@ RM_PORT_DEPTH = 2.2;
 RM_INSERT_BORE = 3.7; // pilot for a 4.0 mm-OD M3x3x4 heat-set insert
 RM_INSERT_OD = 4.0;
 RM_INSERT_DEPTH = 3;
-RM_INSERT_LEAD = 0.6;
-RM_INSERT_ENTRY_CLEARANCE = 0.3;
+RM_INSERT_LEAD = 0.8;
+RM_INSERT_ENTRY_CLEARANCE = 0.6;
 RM_PORT_BOSS_AF = 6.2;
 RM_PEG_ENTRY = 0.3;
 RM_PEG_GRIP = 0.3;
@@ -61,6 +61,7 @@ function octagon_d(af) = af/cos(22.5);
 function join_leg(rows) = max(rows)+octagon_d(peg_root_af())/2+RM_JOIN_EDGE_MARGIN;
 function port_af(fit=RM_PORT_FIT) = RM_PORT_AF+2*fit;
 function insert_bore(fit=RM_PORT_FIT) = RM_INSERT_BORE+fit;
+function insert_entry_d() = RM_INSERT_OD+RM_INSERT_ENTRY_CLEARANCE;
 function port_boss_af(fit=RM_PORT_FIT) = RM_PORT_BOSS_AF-2*fit;
 function peg_root_af(fit=RM_PEG_FIT) = RM_PORT_AF+RM_PEG_GRIP-2*fit;
 function peg_tip_af(fit=RM_PEG_FIT) = RM_PORT_AF-RM_PEG_ENTRY-2*fit;
@@ -80,7 +81,7 @@ assert(peg_root_af() > port_af() && port_af() > peg_tip_af(),
        "Peg needs a lead-in and final grip");
 assert(RM_INSERT_OD > insert_bore(),
        "The heat-set insert needs deliberate melt-press interference");
-assert(port_boss_af() > RM_INSERT_OD,
+assert(port_boss_af() > insert_entry_d(),
        "The insert needs a supporting centre boss");
 assert(peg_bore() > port_boss_af(),
        "The peg must clear the centre boss");
@@ -106,7 +107,7 @@ module blind_port_cut(fit=RM_PORT_FIT) {
   translate([0,0,-RM_EPS]) cylinder(h=RM_INSERT_DEPTH+RM_EPS,d=insert_bore(fit));
   translate([0,0,-RM_EPS])
     cylinder(h=RM_INSERT_LEAD+RM_EPS,
-             d1=RM_INSERT_OD+RM_INSERT_ENTRY_CLEARANCE,d2=insert_bore(fit));
+             d1=insert_entry_d(),d2=insert_bore(fit));
 }
 
 module plate_port_cuts(top=false) {
