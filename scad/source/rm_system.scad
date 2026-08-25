@@ -19,7 +19,7 @@ RM_INSERT_ENTRY_CLEARANCE = 0.6;
 RM_PORT_BOSS_D = 5.6;
 RM_PEG_BOSS_CLEARANCE = 0.3;
 RM_PEG_ENTRY = 0.22;
-RM_PEG_GRIP = 0.4;
+RM_PEG_GRIP = 0.5;
 RM_M3_NOMINAL_D = 3.0;
 RM_M3_CLEARANCE = 3.4;
 RM_M3_HEAD_D = 6.2;
@@ -39,7 +39,7 @@ RM_PLAQUE_PEG_X = 5;
 RM_PLAQUE_SLOT_XY = 8;
 RM_PLAQUE_SLOT_LENGTH = 4;
 RM_PLAQUE_SLOT_D = 2.8;
-RM_TEST_MALE_FITS = [-0.10,-0.05,0,0.05,0.10];
+RM_TEST_MALE_FITS = [0,0.05,0.10,0.15,0.20];
 RM_TEST_PAD_SIZE = 12;
 RM_TEST_PAD_T = RM_JOIN_T;
 RM_TEST_PAD_R = 2;
@@ -66,7 +66,7 @@ function insert_entry_d() = RM_INSERT_OD+RM_INSERT_ENTRY_CLEARANCE;
 function port_boss_d(fit=RM_PORT_FIT) = RM_PORT_BOSS_D-2*fit;
 function peg_root_af(fit=RM_PEG_FIT) = RM_PORT_AF+RM_PEG_GRIP-2*fit;
 function peg_tip_af(fit=RM_PEG_FIT) = RM_PORT_AF-RM_PEG_ENTRY-2*fit;
-function peg_bore(fit=RM_PEG_FIT) = RM_PORT_BOSS_D+RM_PEG_BOSS_CLEARANCE+2*fit;
+function peg_bore(fit=RM_PEG_FIT) = RM_PORT_BOSS_D+RM_PEG_BOSS_CLEARANCE;
 function peg_wall(af, fit=RM_PEG_FIT) = af/2-peg_bore(fit)/2;
 function test_male_x(i) = (i-(len(RM_TEST_MALE_FITS)-1)/2)*RM_TEST_PAD_PITCH;
 function test_tile_positions() = [-RM_GRID/2,RM_GRID/2];
@@ -77,8 +77,8 @@ assert(RM_PLATE == 2*RM_PORT_INSET + (RM_PORT_COUNT-1)*RM_GRID,
        "The full plate grid must terminate at both edges");
 assert(RM_PORT_FIT >= 0 && RM_PORT_FIT <= 0.15,
        "RM_PORT_FIT must stay within 0..0.15 mm");
-assert(RM_PEG_FIT >= 0 && RM_PEG_FIT <= 0.10,
-       "RM_PEG_FIT must stay within 0..0.10 mm");
+assert(RM_PEG_FIT >= 0 && RM_PEG_FIT <= 0.20,
+       "RM_PEG_FIT must stay within 0..0.20 mm");
 assert(peg_root_af() > port_af() && port_af() > peg_tip_af(),
        "Peg needs a lead-in and final grip");
 assert(RM_INSERT_OD > insert_bore(),

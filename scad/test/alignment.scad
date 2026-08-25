@@ -19,7 +19,7 @@ assert([for(row=inner_floor_rows()) RM_PLATE/2-row] == [edge_ports[7],edge_ports
        "Inner floor pegs must meet the floor edge ports");
 assert(inner_wall_rows() == [RM_PLATE_T+inner[0],RM_PLATE_T+inner[1]],
        "Inner wall pegs must meet the wall edge ports");
-assert(RM_TEST_MALE_FITS == [-0.10,-0.05,0,0.05,0.10],
+assert(RM_TEST_MALE_FITS == [0,0.05,0.10,0.15,0.20],
        "Tolerance coupon must retain its documented five male fits");
 assert(test_tile_positions() == [-RM_GRID/2,RM_GRID/2],
        "Tolerance tile must retain its 2x2 nominal female grid");
