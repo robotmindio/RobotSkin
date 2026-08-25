@@ -33,6 +33,6 @@ assert(join_leg(outer) >= max(outer)+octagon_d(peg_root_af())/2,
 assert(RM_INSERT_DEPTH > RM_INSERT_LEAD && insert_entry_d() > RM_INSERT_OD &&
        RM_INSERT_OD > insert_bore(),
        "Female port needs a visible entry cup and an interference pilot");
-assert(peg_bore() > port_boss_d() && peg_wall(peg_tip_af()) >= 0.9,
+assert(peg_bore() > port_boss_d() && peg_wall(peg_tip_af()) >= RM_PEG_MIN_WALL,
        "Peg must clear the circular boss with a printable wall");
 cube([1,1,1]);

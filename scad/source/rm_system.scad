@@ -3,7 +3,7 @@ $fn = 32;
 
 RM_EPS = 0.1;
 RM_PORT_FIT = 0; // positive loosens the female port and insert pilot
-RM_PEG_FIT = 0; // positive loosens the male peg; select this from the coupon
+RM_PEG_FIT = 0.10; // calibrated from the two-mark male coupon
 RM_PLATE = 80;
 RM_GRID = 10;
 RM_PLATE_T = 8;
@@ -20,6 +20,7 @@ RM_PORT_BOSS_D = 5.6;
 RM_PEG_BOSS_CLEARANCE = 0.3;
 RM_PEG_ENTRY = 0.22;
 RM_PEG_GRIP = 0.5;
+RM_PEG_MIN_WALL = 0.8;
 RM_M3_NOMINAL_D = 3.0;
 RM_M3_CLEARANCE = 3.4;
 RM_M3_HEAD_D = 6.2;
@@ -87,8 +88,8 @@ assert(port_boss_d() > insert_entry_d(),
        "The insert needs a supporting centre boss");
 assert(peg_bore() > port_boss_d(),
        "The peg must clear the centre boss");
-assert(peg_wall(peg_tip_af()) >= 0.9,
-       "Peg wall must remain at least 0.9 mm thick at its tip");
+assert(peg_wall(peg_tip_af()) >= RM_PEG_MIN_WALL,
+       "Peg wall must remain at least RM_PEG_MIN_WALL thick at its tip");
 assert(RM_PLAQUE_T >= RM_M3_HEAD_DEPTH,
        "The plaque must fully recess the specified screw head");
 

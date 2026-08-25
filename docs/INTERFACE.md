@@ -16,7 +16,7 @@ The plate is 80×80×8 mm with an 8×8, 10 mm-pitch port grid. Port centres are
 The circular central boss carries the insert for its full 3 mm depth. A visible 4.6 mm,
 0.8 mm-deep entry cup leads into the 3.7 mm pilot, so the brass can start
 straight from the exposed plate face before heat presses it into the interference fit. The peg
-clears the boss, then its centre accepts an M3 screw. Its thinnest wall is 0.9 mm;
+clears the boss, then its centre accepts an M3 screw. Its thinnest wall is 0.8 mm at the calibrated fit;
 a pair of octagonal pegs
 stops rotation; screws make a joint permanent.
 
