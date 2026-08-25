@@ -49,7 +49,7 @@ need local support below the peg row that is perpendicular to the print bed.
 ```
 
 This writes `overview.png`, `port.png`, `flat.png`, `angle.png`, and
-`outer_angle.png` to `renders/`. The port view shows the 4.0 mm-OD brass insert seated by melt-press
-interference in the 3.7 mm blind pilot; a visible 4.6 mm entry cup guides the brass and
-the enlarged boss supports it for the full 3 mm depth. Insert it from the
-exposed plate face before mounting a join or plaque.
+`outer_angle.png` to `renders/`. The port view is a cutaway of the assembled
+plate port, peg, and 4.0 mm-OD brass insert. The insert sits flush in the 3 mm
+blind pilot, leaving its M3 threaded centre open for the screw. Insert it from
+the exposed plate face before mounting a join or plaque.

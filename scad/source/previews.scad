@@ -11,7 +11,7 @@ PLAQUE_COLOR = [0.16,0.38,0.64];
 INSERT_COLOR = [0.72,0.42,0.08];
 
 module insert_demo() {
-  color(INSERT_COLOR) cylinder(h=RM_INSERT_DEPTH,d=RM_INSERT_OD);
+  color(INSERT_COLOR) heat_set_insert();
 }
 
 module overview_scene() {
@@ -23,13 +23,23 @@ module overview_scene() {
 }
 
 module port_scene() {
-  // Half section exposes the blind bore, then shows the insert's final seat.
+  // Half section shows the actual plate port, seated insert, and joined peg.
   color(PLATE_COLOR) intersection() {
     difference() {
       translate([-10,-10,0]) rounded_box([20,20,RM_PLATE_T],2);
       translate([0,0,RM_PLATE_T]) mirror([0,0,1]) blind_port_cut();
     }
     translate([-10,0,-RM_EPS]) cube([20,10,RM_PLATE_T+2*RM_EPS]);
+  }
+  color(JOIN_COLOR) intersection() {
+    difference() {
+      union() {
+        translate([-8,-8,RM_PLATE_T]) rounded_box([16,16,RM_JOIN_T],2);
+        translate([0,0,RM_PLATE_T]) downward_peg();
+      }
+      translate([0,0,RM_PLATE_T]) top_screw_cut();
+    }
+    translate([-10,0,-RM_EPS]) cube([20,10,RM_PLATE_T+RM_JOIN_T+2*RM_EPS]);
   }
   translate([0,0,RM_PLATE_T-RM_INSERT_DEPTH]) insert_demo();
 }

@@ -16,10 +16,11 @@ RM_INSERT_OD = 4.0;
 RM_INSERT_DEPTH = 3;
 RM_INSERT_LEAD = 0.8;
 RM_INSERT_ENTRY_CLEARANCE = 0.6;
-RM_PORT_BOSS_AF = 6.2;
-RM_PEG_ENTRY = 0.3;
-RM_PEG_GRIP = 0.3;
-RM_PEG_BORE = RM_PORT_BOSS_AF + 0.4; // clears the boss and seated insert
+RM_PORT_BOSS_D = 5.6;
+RM_PEG_BOSS_CLEARANCE = 0.3;
+RM_PEG_ENTRY = 0.22;
+RM_PEG_GRIP = 0.4;
+RM_M3_NOMINAL_D = 3.0;
 RM_M3_CLEARANCE = 3.4;
 RM_M3_HEAD_D = 6.2;
 RM_M3_HEAD_DEPTH = 2;
@@ -62,10 +63,11 @@ function join_leg(rows) = max(rows)+octagon_d(peg_root_af())/2+RM_JOIN_EDGE_MARG
 function port_af(fit=RM_PORT_FIT) = RM_PORT_AF+2*fit;
 function insert_bore(fit=RM_PORT_FIT) = RM_INSERT_BORE+fit;
 function insert_entry_d() = RM_INSERT_OD+RM_INSERT_ENTRY_CLEARANCE;
-function port_boss_af(fit=RM_PORT_FIT) = RM_PORT_BOSS_AF-2*fit;
+function port_boss_d(fit=RM_PORT_FIT) = RM_PORT_BOSS_D-2*fit;
 function peg_root_af(fit=RM_PEG_FIT) = RM_PORT_AF+RM_PEG_GRIP-2*fit;
 function peg_tip_af(fit=RM_PEG_FIT) = RM_PORT_AF-RM_PEG_ENTRY-2*fit;
-function peg_bore(fit=RM_PEG_FIT) = RM_PEG_BORE+2*fit;
+function peg_bore(fit=RM_PEG_FIT) = RM_PORT_BOSS_D+RM_PEG_BOSS_CLEARANCE+2*fit;
+function peg_wall(af, fit=RM_PEG_FIT) = af/2-peg_bore(fit)/2;
 function test_male_x(i) = (i-(len(RM_TEST_MALE_FITS)-1)/2)*RM_TEST_PAD_PITCH;
 function test_tile_positions() = [-RM_GRID/2,RM_GRID/2];
 
@@ -81,10 +83,12 @@ assert(peg_root_af() > port_af() && port_af() > peg_tip_af(),
        "Peg needs a lead-in and final grip");
 assert(RM_INSERT_OD > insert_bore(),
        "The heat-set insert needs deliberate melt-press interference");
-assert(port_boss_af() > insert_entry_d(),
+assert(port_boss_d() > insert_entry_d(),
        "The insert needs a supporting centre boss");
-assert(peg_bore() > port_boss_af(),
+assert(peg_bore() > port_boss_d(),
        "The peg must clear the centre boss");
+assert(peg_wall(peg_tip_af()) >= 0.9,
+       "Peg wall must remain at least 0.9 mm thick at its tip");
 assert(RM_PLAQUE_T >= RM_M3_HEAD_DEPTH,
        "The plaque must fully recess the specified screw head");
 
@@ -102,7 +106,7 @@ module blind_port_cut(fit=RM_PORT_FIT) {
     translate([0,0,-RM_EPS])
       octagonal_prism(RM_PORT_DEPTH+RM_EPS,port_af(fit));
     translate([0,0,-2*RM_EPS])
-      octagonal_prism(RM_PORT_DEPTH+3*RM_EPS,port_boss_af(fit));
+      cylinder(h=RM_PORT_DEPTH+3*RM_EPS,d=port_boss_d(fit));
   }
   translate([0,0,-RM_EPS]) cylinder(h=RM_INSERT_DEPTH+RM_EPS,d=insert_bore(fit));
   translate([0,0,-RM_EPS])
@@ -132,6 +136,15 @@ module mount_peg(fit=RM_PEG_FIT) {
   difference() {
     cylinder(h=RM_PORT_DEPTH,d1=octagon_d(peg_root_af(fit)),d2=octagon_d(peg_tip_af(fit)),$fn=8);
     translate([0,0,-RM_EPS]) cylinder(h=RM_PORT_DEPTH+2*RM_EPS,d=peg_bore(fit));
+  }
+}
+
+// Physical reference model: the insert occupies the plate's blind centre bore.
+module heat_set_insert() {
+  difference() {
+    cylinder(h=RM_INSERT_DEPTH,d=RM_INSERT_OD);
+    translate([0,0,-RM_EPS])
+      cylinder(h=RM_INSERT_DEPTH+2*RM_EPS,d=RM_M3_NOMINAL_D);
   }
 }
 

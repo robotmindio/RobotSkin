@@ -3,9 +3,10 @@
 ## Hardware
 
 Each occupied lock station uses one M3×3×4, 4.0 mm-OD brass heat-set insert
-and one M3×7 pan-head screw. The insert goes into the chamfered centre bore of
-the plate's female port. The join or Grove plaque only supplies peg guidance
-and a screw-clearance path.
+and one M3×7 pan-head screw. The insert is heat-set flush into the 3 mm-deep,
+blind centre bore of the plate's female port; it does not pass through the
+plate. Its M3 threaded centre remains open for the screw. The join or Grove
+plaque only supplies peg guidance and a screw-clearance path.
 
 ## Sequence
 
