@@ -7,14 +7,14 @@ assert(join_columns() == [-RM_GRID/2,RM_GRID/2],
        "Join tile columns must land on two adjacent ports");
 assert(flat_peg_rows() == [-15,-5,5,15],
        "Flat join must have a two-by-two field on each plate");
-assert(inner_floor_rows() == [5,15] && inner_wall_rows() == [13,23],
+assert(inner_floor_rows() == [5,15] && inner_wall_rows() == [5,15],
        "Inner angle must have a two-by-two field on each leg");
 assert(outer_floor_rows() == [13,23] && outer_wall_rows() == [13,23],
        "Outer angle must land on exterior floor and wall ports");
 assert([for(row=inner_floor_rows()) RM_PLATE/2-row] == [edge_ports[7],edge_ports[6]],
        "Inner floor pegs must meet the floor edge ports");
-assert(inner_wall_rows() == [RM_PLATE_T+RM_PORT_INSET,RM_PLATE_T+RM_PORT_INSET+RM_GRID],
-       "Inner wall pegs must meet the wall edge ports");
+assert(inner_wall_rows() == inner_floor_rows(),
+       "Inner angle legs must be geometrically symmetric");
 assert(RM_TEST_MALE_FITS == [0,0.05,0.10,0.15,0.20],
        "Tolerance coupon must retain its documented five male fits");
 assert(test_tile_positions() == [-RM_GRID/2,RM_GRID/2],
@@ -28,11 +28,11 @@ for(fit=RM_TEST_MALE_FITS)
   assert(peg_root_af(fit) > port_af(0) && port_af(0) > peg_tip_af(fit),
          "Every coupon peg must fit the nominal female port");
 assert(inner_floor_rows() == [RM_PORT_INSET,RM_JOIN_L-RM_PORT_INSET] &&
-       inner_wall_rows() == [RM_PLATE_T+RM_PORT_INSET,
-                             RM_PLATE_T+RM_JOIN_L-RM_PORT_INSET],
+       inner_wall_rows() == inner_floor_rows(),
        "Both inner-angle faces must use the same 20 mm connector tile");
-assert(outer_floor_rows() == inner_wall_rows() &&
-       outer_wall_rows() == inner_wall_rows(),
+assert(outer_floor_rows() == [RM_PLATE_T+RM_PORT_INSET,
+                              RM_PLATE_T+RM_JOIN_L-RM_PORT_INSET] &&
+       outer_wall_rows() == outer_floor_rows(),
        "Both outer-angle faces must use the same offset connector tile");
 assert(RM_INSERT_DEPTH > RM_INSERT_LEAD && insert_entry_d() > RM_INSERT_OD &&
        RM_INSERT_OD > insert_bore(),

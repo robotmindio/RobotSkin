@@ -27,13 +27,13 @@ the inside corner: one leg on the floor face and one on the wall face. Their
 plate-contact faces are flat. Water resistance is outside the first release
 until a sealed joint has been designed and tested.
 Every join is one 20 mm tile spanning two adjacent port columns. A flat tile
-has a 2×2 peg field on each plate. An angle join is two identical 20×20 mm
-connector tiles, one per plate, plus only the bridge required to clear the
-8 mm plate thickness. Its planar outlines use the same rounded corners as the
-Grove plaque while their plate-contact faces remain flat. One to four tiles
-span a 20–80 mm run on a single surface.
+has a 2×2 peg field on each plate. The inside angle is one continuous,
+geometrically symmetric L-shaped part with two identical 20 mm legs and the
+same 5/15 mm connector rows on each face. Its outer ends use the same rounded
+corners as the Grove plaque while both contact faces remain flat. One to four
+tiles span a 20–80 mm run on a single surface.
 
 `outer_angle_join` mounts below the floor and outside the wall. Its pegs use
 the same port dimensions but sit 13 and 23 mm from the exterior corner, rather
-than the inner join's 5 and 15 mm floor rows and 13 and 23 mm wall rows.
+than the inner join's symmetric 5 and 15 mm rows.
 Like the other joins, every peg has an identical screw-clearance hole.

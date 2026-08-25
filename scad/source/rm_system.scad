@@ -57,9 +57,9 @@ function join_columns() = [for(i=[0:RM_JOIN_PORTS-1]) (i-(RM_JOIN_PORTS-1)/2)*RM
 function flat_peg_rows() = [-RM_PORT_INSET-RM_GRID,-RM_PORT_INSET,
                              RM_PORT_INSET,RM_PORT_INSET+RM_GRID];
 function inner_floor_rows() = [RM_PORT_INSET,RM_PORT_INSET+RM_GRID];
-function inner_wall_rows() = [for(row=inner_floor_rows()) RM_PLATE_T+row];
-function outer_floor_rows() = inner_wall_rows();
-function outer_wall_rows() = inner_wall_rows();
+function inner_wall_rows() = inner_floor_rows();
+function outer_floor_rows() = [for(row=inner_floor_rows()) RM_PLATE_T+row];
+function outer_wall_rows() = outer_floor_rows();
 function octagon_d(af) = af/cos(22.5);
 function port_af(fit=RM_PORT_FIT) = RM_PORT_AF+2*fit;
 function insert_bore(fit=RM_PORT_FIT) = RM_INSERT_BORE+fit;
@@ -209,19 +209,13 @@ module join_panel(min_row, max_row) {
 
 module corner_body(outer=false) {
   if(outer) {
-    translate([0,-RM_PLATE_T,-RM_JOIN_T]) join_panel(-RM_JOIN_L,0);
-    translate([-RM_JOIN_L/2,-RM_PLATE_T-RM_EPS,-RM_JOIN_T])
-      cube([RM_JOIN_L,RM_PLATE_T+RM_EPS,RM_JOIN_T+RM_EPS]);
-    translate([0,RM_JOIN_T,RM_PLATE_T])
-      rotate([90,0,0]) join_panel(0,RM_JOIN_L);
-    translate([-RM_JOIN_L/2,-RM_EPS,-RM_EPS])
-      cube([RM_JOIN_L,RM_JOIN_T+RM_EPS,RM_PLATE_T+2*RM_EPS]);
+    translate([0,0,-RM_JOIN_T])
+      join_panel(-RM_PLATE_T-RM_JOIN_L,RM_JOIN_T);
+    translate([0,RM_JOIN_T,-RM_JOIN_T]) rotate([90,0,0])
+      join_panel(0,RM_JOIN_T+RM_PLATE_T+RM_JOIN_L);
   } else {
     join_panel(-RM_JOIN_L,0);
-    translate([0,0,RM_PLATE_T])
-      rotate([90,0,0]) join_panel(0,RM_JOIN_L);
-    translate([-RM_JOIN_L/2,-RM_JOIN_T,RM_JOIN_T])
-      cube([RM_JOIN_L,RM_JOIN_T,RM_PLATE_T-RM_JOIN_T]);
+    rotate([90,0,0]) join_panel(0,RM_JOIN_L);
   }
 }
 
