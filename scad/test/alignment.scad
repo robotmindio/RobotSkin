@@ -3,21 +3,23 @@ include <../source/rm_system.scad>
 inner = inner_join_rows();
 outer = outer_join_rows();
 edge_ports = [for(i=port_indices()) port_position(i)];
-assert(join_columns() == [for(i=port_indices()) port_position(i)],
-       "Join columns must equal every plate port column");
-assert(inner == [RM_PORT_INSET, RM_PORT_INSET+RM_GRID],
-       "Inner join rows must land on the first two port rows");
+assert(RM_JOIN_PORTS == 2 && RM_JOIN_L == 2*RM_GRID,
+       "Every join must be one two-column tile");
+assert(join_columns() == [-RM_GRID/2,RM_GRID/2],
+       "Join tile columns must land on two adjacent ports");
+assert(inner == [RM_PORT_INSET],
+       "Inner join must use one row on each leg");
 assert(outer == [for(row=inner) RM_PLATE_T+row],
        "Outer join rows must account for plate thickness");
-assert(flat_peg_rows() == [-5,-15,5,15],
+assert(flat_peg_rows() == [-5,5],
        "Flat join rows must land on both plates adjacent to the seam");
-assert(inner_floor_rows() == [5,15] && inner_wall_rows() == [13,23],
+assert(inner_floor_rows() == [5] && inner_wall_rows() == [13],
        "Inner angle must account for the wall plate thickness");
-assert(outer_floor_rows() == [13,23] && outer_wall_rows() == [13,23],
+assert(outer_floor_rows() == [13] && outer_wall_rows() == [13],
        "Outer angle must land on exterior floor and wall ports");
-assert([for(row=inner_floor_rows()) RM_PLATE/2-row] == [edge_ports[7],edge_ports[6]],
+assert([for(row=inner_floor_rows()) RM_PLATE/2-row] == [edge_ports[7]],
        "Inner floor pegs must meet the floor edge ports");
-assert(inner_wall_rows() == [RM_PLATE_T+inner[0],RM_PLATE_T+inner[1]],
+assert(inner_wall_rows() == [RM_PLATE_T+inner[0]],
        "Inner wall pegs must meet the wall edge ports");
 assert(RM_TEST_MALE_FITS == [0,0.05,0.10,0.15,0.20],
        "Tolerance coupon must retain its documented five male fits");

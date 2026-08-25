@@ -23,11 +23,12 @@ stops rotation; screws make a joint permanent.
 Flat joins mount on the plate face across an edge seam. Angle joins mount in
 the inside corner: one leg on the floor face and one on the wall face. The
 shallow join grooves hold silicone for permanent splash-resistant seams.
-Each join uses every one of the eight port columns along its full edge.
-Every join uses a continuous rounded panel that holds all its lock stations
-together and retains the silicone bead.
+Every join is one 20 mm tile spanning two adjacent port columns. A flat tile
+has two pegs per plate; an angle tile has two pegs on each leg. Its ends are
+square planes, so one to four tiles butt together without gaps to span a
+20–80 mm run on a single surface.
 
 `outer_angle_join` mounts below the floor and outside the wall. Its pegs use
-the same port dimensions but sit 13 and 23 mm from the exterior corner, rather
-than the inside join's 5 and 15 mm rows; the 8 mm shift clears plate thickness.
+the same port dimensions but sit 13 mm from the exterior corner, rather than
+the inside join's 5 mm row; the 8 mm shift clears plate thickness.
 It has matching shallow silicone grooves on its floor and wall contact faces.

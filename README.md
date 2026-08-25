@@ -16,8 +16,8 @@ at every occupied lock station. See `docs/ASSEMBLY.md`.
 The first printed set has four product categories:
 
 1. `plate_8x8` — 80×80 mm, double-sided 8×8 mounting grid.
-2. `flat_join` — joins two full plate edges coplanar.
-3. `angle_join` / `outer_angle_join` — inside/outside variants of one 90° join.
+2. `flat_join` — a 20 mm two-column tile; use one to four to join coplanar plate edges.
+3. `angle_join` / `outer_angle_join` — 20 mm inside/outside 90° tiles; use one to four per edge.
 4. `grove_plaque` — a generic 20 mm Grove board plaque.
 
 ## Print and calibrate

@@ -15,7 +15,7 @@ plaque only supplies peg guidance and a screw-clearance path.
 2. Press the pegs into the matching plate ports.
 3. Drive one M3×7 screw through each occupied lock station into its insert.
 
-Use all 32 lock stations on a full-edge flat or angle join (16 per plate face
-on angle joins). The Grove plaque uses its two lock stations. This is the only
-defined permanent-lock configuration; press-fit-only assembly remains
+Each join tile has four lock stations. Use all four for a permanent joint. A
+full 80 mm edge uses four tiles and 16 stations total (eight per plate face).
+The Grove plaque uses its two lock stations. Press-fit-only assembly remains
 removable.

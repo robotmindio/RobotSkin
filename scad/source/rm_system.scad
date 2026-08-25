@@ -28,11 +28,12 @@ RM_M3_HEAD_DEPTH = 2;
 RM_LOCK_SCREW_LENGTH = 7;
 RM_PLATE_R = 3;
 RM_JOIN_T = 4;
-RM_JOIN_L = RM_PLATE;
+RM_JOIN_PORTS = 2;
+RM_JOIN_L = RM_JOIN_PORTS*RM_GRID;
 RM_SEAL_W = 3;
 RM_SEAL_D = 0.9;
 RM_JOIN_EDGE_MARGIN = 1.5;
-RM_JOIN_PANEL_R = 3;
+RM_JOIN_CORNER_OVERLAP = 1;
 RM_PLAQUE_SIZE = 28;
 RM_PLAQUE_T = 3;
 RM_PLAQUE_R = 3;
@@ -56,8 +57,8 @@ RM_TEST_INSERT_PITCH = 14;
 
 function port_position(i) = -RM_PLATE/2 + RM_PORT_INSET + i*RM_GRID;
 function port_indices() = [0:RM_PORT_COUNT-1];
-function join_columns() = [for(i=port_indices()) port_position(i)];
-function inner_join_rows() = [for(i=[0:1]) RM_PORT_INSET+i*RM_GRID];
+function join_columns() = [for(i=[0:RM_JOIN_PORTS-1]) (i-(RM_JOIN_PORTS-1)/2)*RM_GRID];
+function inner_join_rows() = [RM_PORT_INSET];
 function outer_join_rows() = [for(row=inner_join_rows()) RM_PLATE_T+row];
 function flat_peg_rows() = concat([for(row=inner_join_rows()) -row],inner_join_rows());
 function inner_floor_rows() = inner_join_rows();
@@ -200,10 +201,10 @@ module backward_screw_cut() {
     cylinder(h=RM_M3_HEAD_DEPTH+RM_EPS,d=RM_M3_HEAD_D);
 }
 
-// One continuous panel joins every lock station and retains the silicone bead.
+// Square tile ends meet flush when joins are placed end-to-end on a plate face.
 module join_panel(min_row, max_row) {
   translate([-RM_JOIN_L/2,min_row,0])
-    rounded_box([RM_JOIN_L,max_row-min_row,RM_JOIN_T],RM_JOIN_PANEL_R);
+    cube([RM_JOIN_L,max_row-min_row,RM_JOIN_T]);
 }
 
 module flat_join() {
@@ -255,8 +256,9 @@ module outer_angle_join() {
   difference() {
     union() {
       translate([0,0,-RM_JOIN_T])
-        join_panel(-floor_leg,0);
-      translate([0,RM_JOIN_T,0]) rotate([90,0,0]) join_panel(0,wall_leg);
+        join_panel(-floor_leg,RM_JOIN_CORNER_OVERLAP);
+      translate([0,RM_JOIN_T,-RM_JOIN_CORNER_OVERLAP])
+        rotate([90,0,0]) join_panel(0,wall_leg);
       for(x=join_columns(), y=[for(row=floor_rows) -row])
         translate([x,y,0]) upward_peg();
       for(x=join_columns(), z=wall_rows)
