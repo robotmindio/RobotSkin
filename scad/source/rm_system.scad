@@ -14,12 +14,16 @@ RM_INSERT_BORE = 3.7; // pilot for a 4.0 mm-OD M3x3x4 heat-set insert
 RM_INSERT_OD = 4.0;
 RM_INSERT_DEPTH = 3;
 RM_INSERT_LEAD = 0.6;
+RM_INSERT_ENTRY_CLEARANCE = 0.3;
 RM_PORT_BOSS_AF = 6.2;
 RM_PEG_ENTRY = 0.3;
 RM_PEG_GRIP = 0.3;
 RM_PEG_BORE = RM_PORT_BOSS_AF + 0.4; // clears the boss and seated insert
 RM_M3_CLEARANCE = 3.4;
 RM_M3_HEAD_D = 6.2;
+RM_M3_HEAD_DEPTH = 2;
+RM_LOCK_SCREW_LENGTH = 7;
+RM_PLATE_R = 3;
 RM_JOIN_T = 4;
 RM_JOIN_L = RM_PLATE;
 RM_SEAL_W = 3;
@@ -27,14 +31,29 @@ RM_SEAL_D = 0.9;
 RM_JOIN_EDGE_MARGIN = 5;
 RM_JOIN_RAIL_W = 4;
 RM_JOIN_PAD_AF = 8.8;
+RM_JOIN_BRIDGE_COUNT = 3;
+RM_PLAQUE_SIZE = 28;
+RM_PLAQUE_T = 3;
+RM_PLAQUE_R = 3;
+RM_PLAQUE_PEG_X = 5;
+RM_PLAQUE_SLOT_XY = 8;
+RM_PLAQUE_SLOT_LENGTH = 4;
+RM_PLAQUE_SLOT_D = 2.8;
 
 function port_position(i) = -RM_PLATE/2 + RM_PORT_INSET + i*RM_GRID;
 function port_indices() = [0:RM_PORT_COUNT-1];
 function join_columns() = [for(i=port_indices()) port_position(i)];
 function inner_join_rows() = [for(i=[0:1]) RM_PORT_INSET+i*RM_GRID];
 function outer_join_rows() = [for(row=inner_join_rows()) RM_PLATE_T+row];
+function flat_peg_rows() = concat([for(row=inner_join_rows()) -row],inner_join_rows());
+function inner_floor_rows() = inner_join_rows();
+function inner_wall_rows() = outer_join_rows();
+function outer_floor_rows() = outer_join_rows();
+function outer_wall_rows() = outer_join_rows();
 function octagon_d(af) = af/cos(22.5);
 function join_leg(rows) = max(rows)+octagon_d(peg_root_af())/2+RM_JOIN_EDGE_MARGIN;
+function join_bridge_columns() = [for(i=[0:RM_JOIN_BRIDGE_COUNT-1])
+  -RM_JOIN_L/2+RM_JOIN_RAIL_W/2+i*(RM_JOIN_L-RM_JOIN_RAIL_W)/(RM_JOIN_BRIDGE_COUNT-1)];
 function port_af() = RM_PORT_AF+2*RM_FIT;
 function insert_bore() = RM_INSERT_BORE+RM_FIT;
 function port_boss_af() = RM_PORT_BOSS_AF-2*RM_FIT;
@@ -55,8 +74,14 @@ assert(port_boss_af() > RM_INSERT_OD,
        "The insert needs a supporting centre boss");
 assert(peg_bore() > port_boss_af(),
        "The peg must clear the centre boss");
+assert(RM_PLAQUE_T >= RM_M3_HEAD_DEPTH,
+       "The plaque must fully recess the specified screw head");
+assert(RM_M3_HEAD_D < RM_JOIN_PAD_AF,
+       "The join pad must retain material around the screw head");
+assert(RM_JOIN_BRIDGE_COUNT >= 2,
+       "The join lattice needs at least two bridge columns");
 
-module rounded_box(size=[20,20,3], r=2) {
+module rounded_box(size, r) {
   linear_extrude(height=size[2])
     offset(r=r) offset(delta=-r) square([size[0],size[1]]);
 }
@@ -74,7 +99,8 @@ module blind_port_cut() {
   }
   translate([0,0,-RM_EPS]) cylinder(h=RM_INSERT_DEPTH+RM_EPS,d=insert_bore());
   translate([0,0,-RM_EPS])
-    cylinder(h=RM_INSERT_LEAD+RM_EPS,d1=RM_INSERT_OD+0.3,d2=insert_bore());
+    cylinder(h=RM_INSERT_LEAD+RM_EPS,
+             d1=RM_INSERT_OD+RM_INSERT_ENTRY_CLEARANCE,d2=insert_bore());
 }
 
 module plate_port_cuts(top=false) {
@@ -89,7 +115,7 @@ module plate_port_cuts(top=false) {
 module plate_8x8() {
   difference() {
     translate([-RM_PLATE/2,-RM_PLATE/2,0])
-      rounded_box([RM_PLATE,RM_PLATE,RM_PLATE_T],3);
+      rounded_box([RM_PLATE,RM_PLATE,RM_PLATE_T],RM_PLATE_R);
     plate_port_cuts();
     plate_port_cuts(top=true);
   }
@@ -118,30 +144,32 @@ module backward_peg() {
   translate([0,RM_EPS,0]) rotate([90,0,0]) mount_peg();
 }
 
-module top_screw_cut() {
+module top_screw_cut(body_t=RM_JOIN_T) {
   translate([0,0,-RM_PORT_DEPTH-RM_EPS])
-    cylinder(h=RM_JOIN_T+RM_PORT_DEPTH+2*RM_EPS,d=RM_M3_CLEARANCE);
-  translate([0,0,RM_JOIN_T-2]) cylinder(h=2+RM_EPS,d=RM_M3_HEAD_D);
+    cylinder(h=body_t+RM_PORT_DEPTH+2*RM_EPS,d=RM_M3_CLEARANCE);
+  translate([0,0,body_t-RM_M3_HEAD_DEPTH])
+    cylinder(h=RM_M3_HEAD_DEPTH+RM_EPS,d=RM_M3_HEAD_D);
 }
 
 module side_screw_cut() {
   translate([0,-RM_JOIN_T-RM_EPS,0]) rotate([-90,0,0])
     cylinder(h=RM_JOIN_T+RM_EPS,d=RM_M3_CLEARANCE);
   translate([0,-RM_JOIN_T-RM_EPS,0]) rotate([-90,0,0])
-    cylinder(h=2+RM_EPS,d=RM_M3_HEAD_D);
+    cylinder(h=RM_M3_HEAD_DEPTH+RM_EPS,d=RM_M3_HEAD_D);
 }
 
 module bottom_screw_cut() {
   translate([0,0,-RM_JOIN_T-RM_EPS])
     cylinder(h=RM_JOIN_T+RM_PORT_DEPTH+2*RM_EPS,d=RM_M3_CLEARANCE);
-  translate([0,0,-RM_JOIN_T-RM_EPS]) cylinder(h=2+RM_EPS,d=RM_M3_HEAD_D);
+  translate([0,0,-RM_JOIN_T-RM_EPS])
+    cylinder(h=RM_M3_HEAD_DEPTH+RM_EPS,d=RM_M3_HEAD_D);
 }
 
 module backward_screw_cut() {
   translate([0,RM_JOIN_T+RM_EPS,0]) rotate([90,0,0])
     cylinder(h=RM_JOIN_T+RM_EPS,d=RM_M3_CLEARANCE);
   translate([0,RM_JOIN_T+RM_EPS,0]) rotate([90,0,0])
-    cylinder(h=2+RM_EPS,d=RM_M3_HEAD_D);
+    cylinder(h=RM_M3_HEAD_DEPTH+RM_EPS,d=RM_M3_HEAD_D);
 }
 
 // Repeated octagonal lock stations keep every join visually and structurally consistent.
@@ -151,15 +179,14 @@ module join_ladder(rows, min_row, max_row) {
       rounded_box([RM_JOIN_L,RM_JOIN_RAIL_W,RM_JOIN_T],RM_JOIN_RAIL_W/2);
   for(x=join_columns(), row=rows)
     translate([x,row,0]) octagonal_prism(RM_JOIN_T,RM_JOIN_PAD_AF);
-  for(x=[-RM_JOIN_L/2+RM_JOIN_RAIL_W/2,0,RM_JOIN_L/2-RM_JOIN_RAIL_W/2])
+  for(x=join_bridge_columns())
     translate([x-RM_JOIN_RAIL_W/2,min_row,0])
       rounded_box([RM_JOIN_RAIL_W,max_row-min_row,RM_JOIN_T],RM_JOIN_RAIL_W/2);
 }
 
 module flat_join() {
-  rows = inner_join_rows();
-  peg_rows = concat([-rows[0],-rows[1]],rows);
-  leg = join_leg(rows);
+  peg_rows = flat_peg_rows();
+  leg = join_leg(inner_join_rows());
   difference() {
     union() {
       join_ladder(peg_rows,-leg,leg);
@@ -174,42 +201,48 @@ module flat_join() {
 }
 
 module angle_join() {
-  rows = inner_join_rows();
-  leg = join_leg(rows);
+  floor_rows = inner_floor_rows();
+  wall_rows = inner_wall_rows();
+  floor_leg = join_leg(floor_rows);
+  wall_leg = join_leg(wall_rows);
   difference() {
     union() {
-      join_ladder([for(row=rows) -row],-leg,0);
-      rotate([90,0,0]) join_ladder(rows,0,leg);
-      for(x=join_columns(), y=[for(row=rows) -row])
+      join_ladder([for(row=floor_rows) -row],-floor_leg,0);
+      rotate([90,0,0]) join_ladder(wall_rows,0,wall_leg);
+      for(x=join_columns(), y=[for(row=floor_rows) -row])
         translate([x,y,0]) downward_peg();
-      for(x=join_columns(), z=rows)
+      for(x=join_columns(), z=wall_rows)
         translate([x,0,z]) forward_peg();
     }
-    for(x=join_columns(), y=[for(row=rows) -row]) translate([x,y,0]) top_screw_cut();
-    for(x=join_columns(), z=rows)
+    for(x=join_columns(), y=[for(row=floor_rows) -row])
+      translate([x,y,0]) top_screw_cut();
+    for(x=join_columns(), z=wall_rows)
       translate([x,0,z]) side_screw_cut();
     translate([-RM_JOIN_L/2,-RM_SEAL_W/2,-RM_EPS])
       cube([RM_JOIN_L,RM_SEAL_W,RM_SEAL_D+RM_EPS]);
-    translate([-RM_JOIN_L/2,-RM_JOIN_T-RM_EPS,-1.5])
+    translate([-RM_JOIN_L/2,-RM_JOIN_T-RM_EPS,-RM_SEAL_W/2])
       cube([RM_JOIN_L,RM_SEAL_D+RM_EPS,RM_SEAL_W]);
   }
 }
 
 module outer_angle_join() {
-  rows = outer_join_rows();
-  leg = join_leg(rows);
+  floor_rows = outer_floor_rows();
+  wall_rows = outer_wall_rows();
+  floor_leg = join_leg(floor_rows);
+  wall_leg = join_leg(wall_rows);
   difference() {
     union() {
-      translate([0,0,-RM_JOIN_T]) join_ladder([for(row=rows) -row],-leg,0);
-      translate([0,RM_JOIN_T,0]) rotate([90,0,0]) join_ladder(rows,0,leg);
-      for(x=join_columns(), y=[for(row=rows) -row])
+      translate([0,0,-RM_JOIN_T])
+        join_ladder([for(row=floor_rows) -row],-floor_leg,0);
+      translate([0,RM_JOIN_T,0]) rotate([90,0,0]) join_ladder(wall_rows,0,wall_leg);
+      for(x=join_columns(), y=[for(row=floor_rows) -row])
         translate([x,y,0]) upward_peg();
-      for(x=join_columns(), z=rows)
+      for(x=join_columns(), z=wall_rows)
         translate([x,0,z]) backward_peg();
     }
-    for(x=join_columns(), y=[for(row=rows) -row])
+    for(x=join_columns(), y=[for(row=floor_rows) -row])
       translate([x,y,0]) bottom_screw_cut();
-    for(x=join_columns(), z=rows)
+    for(x=join_columns(), z=wall_rows)
       translate([x,0,z]) backward_screw_cut();
     translate([-RM_JOIN_L/2,-RM_PLATE_T-RM_SEAL_W/2,-RM_SEAL_D])
       cube([RM_JOIN_L,RM_SEAL_W,RM_SEAL_D+RM_EPS]);
@@ -221,14 +254,16 @@ module outer_angle_join() {
 module grove_plaque() {
   difference() {
     union() {
-      translate([-14,-14,0]) rounded_box([28,28,3],3);
-      for(x=[-5,5]) translate([x,0,0]) downward_peg();
+      translate([-RM_PLAQUE_SIZE/2,-RM_PLAQUE_SIZE/2,0])
+        rounded_box([RM_PLAQUE_SIZE,RM_PLAQUE_SIZE,RM_PLAQUE_T],RM_PLAQUE_R);
+      for(x=[-RM_PLAQUE_PEG_X,RM_PLAQUE_PEG_X]) translate([x,0,0]) downward_peg();
     }
-    for(x=[-5,5]) translate([x,0,0]) top_screw_cut();
-    for(x=[-8,8], y=[-8,8])
-      translate([x,y,-RM_EPS]) linear_extrude(height=3+2*RM_EPS) hull() {
-          translate([0,-2]) circle(d=2.8);
-          translate([0,2]) circle(d=2.8);
+    for(x=[-RM_PLAQUE_PEG_X,RM_PLAQUE_PEG_X])
+      translate([x,0,0]) top_screw_cut(RM_PLAQUE_T);
+    for(x=[-RM_PLAQUE_SLOT_XY,RM_PLAQUE_SLOT_XY], y=[-RM_PLAQUE_SLOT_XY,RM_PLAQUE_SLOT_XY])
+      translate([x,y,-RM_EPS]) linear_extrude(height=RM_PLAQUE_T+2*RM_EPS) hull() {
+          translate([0,-RM_PLAQUE_SLOT_LENGTH/2]) circle(d=RM_PLAQUE_SLOT_D);
+          translate([0,RM_PLAQUE_SLOT_LENGTH/2]) circle(d=RM_PLAQUE_SLOT_D);
         }
   }
 }

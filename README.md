@@ -4,10 +4,14 @@ RobotMind has one connection rule: an annular blind octagonal port accepts a
 hollow octagonal peg around its centre boss.
 
 `scad/source/rm_system.scad` is the single source of truth: all dimensions,
-the interface, and every part definition live there. The other source files
-only name the part to export.
+the interface, and every part definition live there. `scad/parts/` contains
+only export entry points; the build discovers them automatically.
 Press parts together by hand; install M3×3×4 heat-set inserts and M3 screws
 through the peg centres when the joint must be permanent.
+
+The brass insert always goes in the plate's female port—not in a join. For a
+permanent joint, use one 4.0 mm-OD M3×3×4 insert and one M3×7 pan-head screw
+at every occupied lock station. See `docs/ASSEMBLY.md`.
 
 The first printed set has four product categories:
 
