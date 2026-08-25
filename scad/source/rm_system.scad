@@ -3,7 +3,7 @@ $fn = 32;
 
 RM_EPS = 0.1;
 RM_PORT_FIT = 0; // positive loosens the female port and insert pilot
-RM_PEG_FIT = 0.10; // calibrated from the two-mark male coupon
+RM_PEG_FIT = 0.20; // calibrated from the four-mark male coupon
 RM_PLATE = 80;
 RM_GRID = 10;
 RM_PLATE_T = 8;
@@ -20,7 +20,7 @@ RM_PORT_BOSS_D = 5.6;
 RM_PEG_BOSS_CLEARANCE = 0.3;
 RM_PEG_ENTRY = 0.22;
 RM_PEG_GRIP = 0.5;
-RM_PEG_MIN_WALL = 0.8;
+RM_PEG_MIN_WALL = 0.7;
 RM_M3_NOMINAL_D = 3.0;
 RM_M3_CLEARANCE = 3.4;
 RM_M3_HEAD_D = 6.2;
