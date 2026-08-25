@@ -57,12 +57,10 @@ function port_indices() = [0:RM_PORT_COUNT-1];
 function join_columns() = [for(i=[0:RM_JOIN_PORTS-1]) (i-(RM_JOIN_PORTS-1)/2)*RM_GRID];
 function flat_peg_rows() = [-RM_PORT_INSET-RM_GRID,-RM_PORT_INSET,
                              RM_PORT_INSET,RM_PORT_INSET+RM_GRID];
-function flat_lock_rows() = [flat_peg_rows()[0],flat_peg_rows()[3]];
 function inner_floor_rows() = [RM_PORT_INSET,RM_PORT_INSET+RM_GRID];
 function inner_wall_rows() = [for(row=inner_floor_rows()) RM_PLATE_T+row];
 function outer_floor_rows() = inner_wall_rows();
 function outer_wall_rows() = inner_wall_rows();
-function outermost(rows) = rows[len(rows)-1];
 function octagon_d(af) = af/cos(22.5);
 function port_af(fit=RM_PORT_FIT) = RM_PORT_AF+2*fit;
 function insert_bore(fit=RM_PORT_FIT) = RM_INSERT_BORE+fit;
@@ -191,6 +189,19 @@ module backward_screw_cut() {
     cylinder(h=RM_JOIN_T+RM_EPS,d=RM_M3_CLEARANCE);
 }
 
+// The sole male connector component; parts only place and orient it.
+module connector_station(direction="down", cut=false, body_t=RM_JOIN_T) {
+  if(direction == "down") {
+    if(cut) top_screw_cut(body_t); else downward_peg();
+  } else if(direction == "forward") {
+    if(cut) side_screw_cut(); else forward_peg();
+  } else if(direction == "up") {
+    if(cut) bottom_screw_cut(); else upward_peg();
+  } else if(direction == "backward") {
+    if(cut) backward_screw_cut(); else backward_peg();
+  } else assert(false, str("Unknown connector direction: ",direction));
+}
+
 // Grove-style rounding applies only to the planar outline; contact faces stay flat.
 module join_panel(min_row, max_row) {
   translate([-RM_JOIN_L/2,min_row,0])
@@ -215,10 +226,10 @@ module flat_join() {
     union() {
       join_panel(-RM_FLAT_JOIN_W/2,RM_FLAT_JOIN_W/2);
       for(x=join_columns(), y=peg_rows)
-        translate([x,y,0]) downward_peg();
+        translate([x,y,0]) connector_station();
     }
-    for(x=join_columns(), y=flat_lock_rows())
-      translate([x,y,0]) top_screw_cut();
+    for(x=join_columns(), y=peg_rows)
+      translate([x,y,0]) connector_station(cut=true);
   }
 }
 
@@ -229,14 +240,14 @@ module angle_join() {
     union() {
       corner_body();
       for(x=join_columns(), y=[for(row=floor_rows) -row])
-        translate([x,y,0]) downward_peg();
+        translate([x,y,0]) connector_station();
       for(x=join_columns(), z=wall_rows)
-        translate([x,0,z]) forward_peg();
+        translate([x,0,z]) connector_station("forward");
     }
-    for(x=join_columns()) {
-      translate([x,-outermost(floor_rows),0]) top_screw_cut();
-      translate([x,0,outermost(wall_rows)]) side_screw_cut();
-    }
+    for(x=join_columns(), y=[for(row=floor_rows) -row])
+      translate([x,y,0]) connector_station(cut=true);
+    for(x=join_columns(), z=wall_rows)
+      translate([x,0,z]) connector_station("forward",cut=true);
   }
 }
 
@@ -247,14 +258,14 @@ module outer_angle_join() {
     union() {
       corner_body(outer=true);
       for(x=join_columns(), y=[for(row=floor_rows) -row])
-        translate([x,y,0]) upward_peg();
+        translate([x,y,0]) connector_station("up");
       for(x=join_columns(), z=wall_rows)
-        translate([x,0,z]) backward_peg();
+        translate([x,0,z]) connector_station("backward");
     }
-    for(x=join_columns()) {
-      translate([x,-outermost(floor_rows),0]) bottom_screw_cut();
-      translate([x,0,outermost(wall_rows)]) backward_screw_cut();
-    }
+    for(x=join_columns(), y=[for(row=floor_rows) -row])
+      translate([x,y,0]) connector_station("up",cut=true);
+    for(x=join_columns(), z=wall_rows)
+      translate([x,0,z]) connector_station("backward",cut=true);
   }
 }
 
@@ -263,10 +274,11 @@ module grove_plaque() {
     union() {
       translate([-RM_PLAQUE_SIZE/2,-RM_PLAQUE_SIZE/2,0])
         rounded_box([RM_PLAQUE_SIZE,RM_PLAQUE_SIZE,RM_PLAQUE_T],RM_PLAQUE_R);
-      for(x=[-RM_PLAQUE_PEG_X,RM_PLAQUE_PEG_X]) translate([x,0,0]) downward_peg();
+      for(x=[-RM_PLAQUE_PEG_X,RM_PLAQUE_PEG_X])
+        translate([x,0,0]) connector_station(body_t=RM_PLAQUE_T);
     }
     for(x=[-RM_PLAQUE_PEG_X,RM_PLAQUE_PEG_X])
-      translate([x,0,0]) top_screw_cut(RM_PLAQUE_T);
+      translate([x,0,0]) connector_station(cut=true,body_t=RM_PLAQUE_T);
     for(x=[-RM_PLAQUE_SLOT_XY,RM_PLAQUE_SLOT_XY], y=[-RM_PLAQUE_SLOT_XY,RM_PLAQUE_SLOT_XY])
       translate([x,y,-RM_EPS]) linear_extrude(height=RM_PLAQUE_T+2*RM_EPS) hull() {
           translate([0,-RM_PLAQUE_SLOT_LENGTH/2]) circle(d=RM_PLAQUE_SLOT_D);

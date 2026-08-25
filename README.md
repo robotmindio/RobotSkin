@@ -7,7 +7,7 @@ hollow octagonal peg around its centre boss.
 the interface, and every part definition live there. `scad/parts/` contains
 only export entry points; the build discovers them automatically.
 Press parts together by hand; install M3×3×4 heat-set inserts and M3×6 screws
-at the marked through-holes when the joint must be permanent.
+through any peg centre when the joint must be permanent.
 
 The brass insert always goes in the plate's female port—not in a join. For a
 permanent joint, use one 4.0 mm-OD M3×3×4 insert and one M3×6 pan-head screw
