@@ -9,14 +9,6 @@ RM_GRID = 10;
 RM_PLATE_T = 4;
 RM_PORT_INSET = 5;
 RM_PORT_COUNT = 8;
-RM_MOUNT_D = 3.4;
-RM_MOUNT_SINK_D = 6.2;
-RM_MOUNT_SINK_DEPTH = 1.4;
-RM_MOUNT_CAP_D = 6.4;
-RM_MOUNT_CAP_DEPTH = 1;
-RM_MOUNT_CAP_GRIP = 0.05;
-RM_MOUNT_CAP_ENTRY = 0.1;
-RM_MOUNT_CAP_FIT = 0; // positive loosens the cosmetic cap
 RM_PORT_AF = 8;
 RM_PORT_DEPTH = 2.2;
 RM_INSERT_BORE = 3.7; // pilot for a 4.0 mm-OD M3x3x4 heat-set insert
@@ -64,7 +56,6 @@ function port_indices() = [0:RM_PORT_COUNT-1];
 function is_corner_port(x,y) =
   (x == 0 || x == RM_PORT_COUNT-1) &&
   (y == 0 || y == RM_PORT_COUNT-1);
-function mount_positions() = [port_position(0),port_position(RM_PORT_COUNT-1)];
 function join_columns() = [for(i=[0:RM_JOIN_PORTS-1]) (i-(RM_JOIN_PORTS-1)/2)*RM_GRID];
 function flat_peg_rows() = [-RM_PORT_INSET-RM_GRID,-RM_PORT_INSET,
                              RM_PORT_INSET,RM_PORT_INSET+RM_GRID];
@@ -93,8 +84,6 @@ assert(RM_PORT_FIT >= 0 && RM_PORT_FIT <= 0.15,
        "RM_PORT_FIT must stay within 0..0.15 mm");
 assert(RM_PEG_FIT >= 0 && RM_PEG_FIT <= 0.20,
        "RM_PEG_FIT must stay within 0..0.20 mm");
-assert(RM_MOUNT_CAP_FIT >= 0 && RM_MOUNT_CAP_FIT <= 0.15,
-       "RM_MOUNT_CAP_FIT must stay within 0..0.15 mm");
 assert(peg_root_af() > port_af() && port_af() > peg_tip_af(),
        "Peg needs a lead-in and final grip");
 assert(RM_INSERT_OD > insert_bore(),
@@ -134,21 +123,15 @@ module blind_port_cut(fit=RM_PORT_FIT, bore=undef) {
 
 module plate_port_cuts() {
   for(x=port_indices(), y=port_indices())
-    if(!is_corner_port(x,y))
-      translate([port_position(x),port_position(y),RM_PLATE_T])
-        mirror([0,0,1]) blind_port_cut();
+    translate([port_position(x),port_position(y),RM_PLATE_T])
+      mirror([0,0,1]) blind_port_cut();
 }
 
-module plate_mount_cuts() {
-  for(x=mount_positions(), y=mount_positions()) {
-    translate([x,y,-RM_EPS])
-      cylinder(h=RM_PLATE_T+2*RM_EPS,d=RM_MOUNT_D);
-    translate([x,y,RM_PLATE_T-RM_MOUNT_CAP_DEPTH-RM_MOUNT_SINK_DEPTH])
-      cylinder(h=RM_MOUNT_SINK_DEPTH+RM_EPS,
-               d1=RM_MOUNT_D,d2=RM_MOUNT_SINK_D);
-    translate([x,y,RM_PLATE_T-RM_MOUNT_CAP_DEPTH])
-      cylinder(h=RM_MOUNT_CAP_DEPTH+RM_EPS,d=RM_MOUNT_CAP_D);
-  }
+module plate_corner_through_cuts() {
+  for(x=port_indices(), y=port_indices())
+    if(is_corner_port(x,y))
+      translate([port_position(x),port_position(y),-RM_EPS])
+        cylinder(h=RM_PLATE_T+2*RM_EPS,d=RM_M3_CLEARANCE);
 }
 
 module plate_8x8() {
@@ -156,14 +139,8 @@ module plate_8x8() {
     translate([-RM_PLATE/2,-RM_PLATE/2,0])
       rounded_box([RM_PLATE,RM_PLATE,RM_PLATE_T],RM_PLATE_R);
     plate_port_cuts();
-    plate_mount_cuts();
+    plate_corner_through_cuts();
   }
-}
-
-module mounting_cap(fit=RM_MOUNT_CAP_FIT) {
-  cylinder(h=RM_MOUNT_CAP_DEPTH,
-           d1=RM_MOUNT_CAP_D+RM_MOUNT_CAP_GRIP-2*fit,
-           d2=RM_MOUNT_CAP_D-RM_MOUNT_CAP_ENTRY-2*fit);
 }
 
 module mount_peg(fit=RM_PEG_FIT) {

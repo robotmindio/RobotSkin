@@ -15,13 +15,10 @@ at every occupied lock station. See `docs/ASSEMBLY.md`.
 
 The first printed set has four product categories:
 
-1. `plate_8x8` — 80×80×4 mm single-sided base with 60 ports and four mounting holes.
-2. `flat_join` — a 20 mm two-column tile; use one to three to join coplanar plate edges.
-3. `angle_join` / `outer_angle_join` — 20 mm inside/outside 90° tiles; use one to three per edge.
+1. `plate_8x8` — 80×80×4 mm single-sided base with a full 8×8 port grid.
+2. `flat_join` — a 20 mm two-column tile; use one to four to join coplanar plate edges.
+3. `angle_join` / `outer_angle_join` — 20 mm inside/outside 90° tiles; use one to four per edge.
 4. `grove_plaque` — a generic 20 mm Grove board plaque.
-
-`mounting_cap` press-fits flush over an unused mounting hole or a recessed M3
-flat-head screw. Print four when the mounting points should disappear.
 
 ## Print and calibrate
 
@@ -36,9 +33,9 @@ First run `./scripts/build_test_parts.sh`. Its five male samples establish
 parts; see `docs/CALIBRATION.md`.
 
 Ports face upward over a flat printable back and retain a 1 mm backing wall.
-Four recessed M3 corner holes mount one plate to a surface or fasten two
-identical plates back-to-back. The first release makes no water-resistance
-claim; validate the dry mechanical interface before adding seals.
+The four corner ports continue through that wall for surface mounting with the
+same M3 pan-head screws used elsewhere in the kit. The first release makes no
+water-resistance claim; validate the dry mechanical interface before adding seals.
 
 Print [VOCABULARY.svg](docs/VOCABULARY.svg) at 100% for the part names and
 connection vocabulary.

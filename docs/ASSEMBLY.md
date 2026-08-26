@@ -23,9 +23,8 @@ removable.
 
 ## Plate mounting
 
-Use M3 flat-head screws in the four grid-aligned corner holes to mount one
-plate to a surface. Press a `mounting_cap` flush into each recess when the
-mounting point should be hidden. For a
-double-sided assembly, place two identical plates flat-back to flat-back and
-fasten the same holes with through-bolts or reusable binding posts. Do not glue
-the plate backs together.
+The four corner ports have an M3 clearance bore through the backing wall. Use
+the same M3 pan-head screw type as the rest of the kit to mount one plate to a
+threaded surface. For a double-sided assembly, place two identical plates
+flat-back to flat-back and fasten the corner ports with suitably long M3
+through-bolts or reusable binding posts. Do not glue the plate backs together.
