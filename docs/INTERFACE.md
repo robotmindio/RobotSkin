@@ -35,15 +35,20 @@ the inside corner: one leg on the floor face and one on the wall face. Their
 plate-contact faces are flat. Water resistance is outside the first release
 until a sealed joint has been designed and tested.
 Every join is one 20 mm tile spanning two adjacent port columns. A flat tile
-has a 2×2 peg field on each plate. The inside angle is one continuous,
-geometrically symmetric L-shaped part with two identical 20 mm legs and the
-same 5/15 mm connector rows on each face. Its outer ends use the same rounded
-corners as the Grove carrier while both contact faces remain flat. One to four
-tiles span a 20–80 mm run on a single surface.
+has a 2×2 peg field on each plate. The inside angle is one continuous L-shaped
+part. The floor rows are 5/15 mm from its
+plate edge; the wall rows compensate the 4 mm plate thickness so they remain
+5/15 mm from the wall plate's bottom edge. The horizontal plate edge therefore
+butts directly against the wall plate face instead of leaving a corner gap.
+Its outer ends use the same rounded corners as the Grove carrier while both
+contact faces remain flat. The assembled connector layout is symmetric relative
+to the two plate edges; the loose join includes the 4 mm compensation required
+by the butt joint. One to four tiles span a 20–80 mm run on a single surface.
 
-`outer_angle_join` mounts below the floor and outside the wall. Its pegs use
-the same port dimensions but sit 9 and 19 mm from the exterior corner, rather
-than the inner join's symmetric 5 and 15 mm rows.
+`outer_angle_join` mounts below the floor and outside the wall. Its floor pegs
+sit 9 and 19 mm from the join origin to reach plate ports 5 and 15 mm from the
+edge; its wall pegs use 5 and 15 mm rows after the same flush butt-joint
+compensation.
 Like the other joins, every peg has an identical screw-clearance hole.
 
 The four corner stations remain standard connector ports. Their 3.7 mm insert

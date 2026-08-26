@@ -55,7 +55,7 @@ module angle_scene() {
   plate_size = grid_size(8);
   color(PLATE_COLOR) plate(8,8);
   color(PLATE_COLOR)
-    translate([0,plate_size/2+RM_PLATE_T,plate_size/2+RM_PLATE_T])
+    translate([0,plate_size/2+RM_PLATE_T,plate_size/2])
       rotate([90,0,0]) plate(8,8);
   color(JOIN_COLOR) translate([0,plate_size/2,RM_PLATE_T]) angle_join();
 }
@@ -64,7 +64,7 @@ module outer_angle_scene() {
   plate_size = grid_size(8);
   color(PLATE_COLOR) plate(8,8);
   color(PLATE_COLOR)
-    translate([0,plate_size/2,plate_size/2+RM_PLATE_T])
+    translate([0,plate_size/2,plate_size/2])
       rotate([-90,0,0]) plate(8,8);
   color(JOIN_COLOR)
     translate([0,plate_size/2+RM_PLATE_T,0]) outer_angle_join();

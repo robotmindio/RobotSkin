@@ -82,6 +82,8 @@ function flat_rows(depth_ports) =
          edge_rows(depth_ports));
 function outer_rows(depth_ports,plate_t=RM_PLATE_T) =
   [for(row=edge_rows(depth_ports)) plate_t+row];
+function inside_wall_rows(depth_ports,plate_t=RM_PLATE_T) =
+  [for(row=edge_rows(depth_ports)) row-plate_t];
 function grove_hole_spacing(board_size) =
   [board_size[0]-RM_GROVE_EDGE,board_size[1]-RM_GROVE_EDGE];
 function grove_lock_x(board_width) = board_width/2+RM_GRID/2;
@@ -273,7 +275,8 @@ module corner_body(width,depth_ports,outer=false,plate_t=RM_PLATE_T) {
     translate([0,0,-RM_JOIN_T]) rotate([-90,0,0]) join_leg(width,length);
   } else {
     join_leg(width,depth);
-    rotate([90,0,0]) mirror([0,1,0]) join_leg(width,depth);
+    translate([0,0,-plate_t])
+      rotate([90,0,0]) mirror([0,1,0]) join_leg(width,depth+plate_t);
   }
 }
 
@@ -302,18 +305,19 @@ module angle_join(width_ports=2,depth_ports=2) {
   assert(depth_ports >= 1 && depth_ports == floor(depth_ports),
          "depth_ports must be a positive integer");
   width = grid_size(width_ports);
-  rows = edge_rows(depth_ports);
+  floor_rows = edge_rows(depth_ports);
+  wall_rows = inside_wall_rows(depth_ports);
   difference() {
     union() {
       corner_body(width,depth_ports);
-      for(x=grid_positions(width_ports),y=rows)
+      for(x=grid_positions(width_ports),y=floor_rows)
         translate([x,-y,0]) connector_peg();
-      for(x=grid_positions(width_ports),z=rows)
+      for(x=grid_positions(width_ports),z=wall_rows)
         translate([x,0,z]) connector_peg("forward");
     }
-    for(x=grid_positions(width_ports),y=rows)
+    for(x=grid_positions(width_ports),y=floor_rows)
       translate([x,-y,0]) connector_screw_cut();
-    for(x=grid_positions(width_ports),z=rows)
+    for(x=grid_positions(width_ports),z=wall_rows)
       translate([x,0,z]) connector_screw_cut("forward");
   }
 }
@@ -324,18 +328,19 @@ module outer_angle_join(width_ports=2,depth_ports=2,plate_t=RM_PLATE_T) {
   assert(depth_ports >= 1 && depth_ports == floor(depth_ports),
          "depth_ports must be a positive integer");
   width = grid_size(width_ports);
-  rows = outer_rows(depth_ports,plate_t);
+  floor_rows = outer_rows(depth_ports,plate_t);
+  wall_rows = edge_rows(depth_ports);
   difference() {
     union() {
       corner_body(width,depth_ports,outer=true,plate_t=plate_t);
-      for(x=grid_positions(width_ports),y=rows)
+      for(x=grid_positions(width_ports),y=floor_rows)
         translate([x,-y,0]) connector_peg("up");
-      for(x=grid_positions(width_ports),z=rows)
+      for(x=grid_positions(width_ports),z=wall_rows)
         translate([x,0,z]) connector_peg("backward");
     }
-    for(x=grid_positions(width_ports),y=rows)
+    for(x=grid_positions(width_ports),y=floor_rows)
       translate([x,-y,0]) connector_screw_cut("up");
-    for(x=grid_positions(width_ports),z=rows)
+    for(x=grid_positions(width_ports),z=wall_rows)
       translate([x,0,z]) connector_screw_cut("backward");
   }
 }

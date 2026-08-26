@@ -15,8 +15,8 @@ is not a safety component. A production release requires every gate in
 |---|---|---|---|
 | RM-PL-0808-A | `plate_8x8.stl` | A | 80×80 mm single-sided plate |
 | RM-JF-0202-A | `flat_join.stl` | A | 2×2 + 2×2 coplanar join |
-| RM-JI-0202-A | `angle_join.stl` | A | 2×2 + 2×2 inside 90° join |
-| RM-JO-0202-A | `outer_angle_join.stl` | A | 2×2 + 2×2 outside 90° join |
+| RM-JI-0202-B | `angle_join.stl` | B | 2×2 + 2×2 inside 90° flush-butt join |
+| RM-JO-0202-B | `outer_angle_join.stl` | B | 2×2 + 2×2 outside 90° flush-butt join |
 | RM-GR-2020-A | `grove_carrier_20x20.stl` | A | Grove 20×20 carrier |
 | RM-GR-2040-A | `grove_carrier_20x40.stl` | A | Grove 20×40 carrier |
 | RM-GR-2060-A | `grove_carrier_20x60.stl` | A | Grove 20×60 carrier |
