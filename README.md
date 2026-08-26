@@ -46,6 +46,12 @@ plate(8,8);
 ```
 
 The build also regenerates the assembly previews in `renders/`.
+CI runs `scripts/validate_stl.py` over every production STL and rejects open,
+inverted, empty, or disconnected meshes. Run the same gate locally with:
+
+```bash
+python scripts/validate_stl.py stl/*.stl
+```
 
 First run `./scripts/build_test_parts.sh`. Its five male samples establish
 `RM_PEG_FIT` against a nominal 2×2 female tile before you print production
