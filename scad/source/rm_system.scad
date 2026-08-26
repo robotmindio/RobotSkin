@@ -207,15 +207,27 @@ module join_panel(min_row, max_row) {
     rounded_box([RM_JOIN_L,max_row-min_row,RM_JOIN_T],RM_JOIN_PANEL_R);
 }
 
+// Square at the corner intersection, rounded only at the exposed end.
+module join_leg(length) {
+  linear_extrude(height=RM_JOIN_T) union() {
+    translate([-RM_JOIN_L/2,-length+RM_JOIN_PANEL_R])
+      square([RM_JOIN_L,length-RM_JOIN_PANEL_R]);
+    hull()
+      for(x=[-RM_JOIN_L/2+RM_JOIN_PANEL_R,
+             RM_JOIN_L/2-RM_JOIN_PANEL_R])
+        translate([x,-length+RM_JOIN_PANEL_R]) circle(r=RM_JOIN_PANEL_R);
+  }
+}
+
 module corner_body(outer=false) {
   if(outer) {
-    translate([0,0,-RM_JOIN_T])
-      join_panel(-RM_PLATE_T-RM_JOIN_L,RM_JOIN_T);
-    translate([0,RM_JOIN_T,-RM_JOIN_T]) rotate([90,0,0])
-      join_panel(0,RM_JOIN_T+RM_PLATE_T+RM_JOIN_L);
+    translate([0,RM_JOIN_T,-RM_JOIN_T])
+      join_leg(RM_JOIN_T+RM_PLATE_T+RM_JOIN_L);
+    translate([0,0,-RM_JOIN_T]) rotate([-90,0,0])
+      join_leg(RM_JOIN_T+RM_PLATE_T+RM_JOIN_L);
   } else {
-    join_panel(-RM_JOIN_L,0);
-    rotate([90,0,0]) join_panel(0,RM_JOIN_L);
+    join_leg(RM_JOIN_L);
+    rotate([90,0,0]) mirror([0,1,0]) join_leg(RM_JOIN_L);
   }
 }
 
