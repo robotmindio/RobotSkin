@@ -17,6 +17,10 @@ assert(grove_hole_spacing([20,20]) == [16,16] &&
        grove_hole_spacing([40,60]) == [36,56] &&
        grove_lock_x(20) == 15 && grove_lock_x(40) == 25,
        "Grove board and RobotMind stations must remain grid-derived");
+assert(grid_station_outside(31) == 35 && grid_station_outside(28) == 35,
+       "External lock stations must remain on the RobotMind grid");
+assert(RM_TRIPOD_BODY_T-RM_TRIPOD_NUT_H >= 2,
+       "Tripod nut pocket must retain a structural roof");
 assert(RM_TEST_MALE_FITS == [0,0.05,0.10,0.15,0.20],
        "Tolerance coupon must retain its documented five male fits");
 assert(RM_TEST_INSERT_BORES == [3.75,3.80,3.85,3.90,3.95],
@@ -34,6 +38,11 @@ translate([30,0,0]) flat_join(1,1);
 translate([50,0,0]) angle_join(1,1);
 translate([75,0,0]) outer_angle_join(1,1);
 translate([100,40,0]) grove_carrier([20,40]);
+translate([150,60,0]) apriltag_holder(20);
+translate([190,60,0]) tripod_adapter();
+translate([230,60,0]) profile_2020_adapter();
+translate([270,60,0]) din_rail_adapter();
+translate([310,60,0]) grove_cable_clip();
 translate([100,0,0]) connector_grid(2,2,direction="up");
 translate([130,0,0])
   difference() {

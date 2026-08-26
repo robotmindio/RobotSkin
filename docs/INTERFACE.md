@@ -17,6 +17,9 @@ mounting.
 | Peg depth | 2.2 mm |
 | Permanent lock | M3×6 pan-head screw, 2 mm insert engagement |
 | Grove PCB retention | M2.5×6 thread-forming screw, 2.1 mm blind pilot |
+| Profile 2020 mounting | Two M5 clearance holes, 30 mm apart |
+| DIN rail | EN 60715 TH35 rigid end-slide channel |
+| Tripod | Captive 1/4-20 hex nut, 4.5 mm maximum screw entry |
 
 The circular central boss carries the insert for its full 3 mm depth. A visible 4.6 mm,
 0.8 mm-deep entry cup leads into the 3.7 mm pilot, so the brass can start

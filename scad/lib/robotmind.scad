@@ -32,6 +32,23 @@ RM_GROVE_STANDOFF_H = 3;
 RM_GROVE_STANDOFF_D = 5;
 RM_GROVE_M2_5_PILOT_D = 2.1;
 RM_GROVE_M2_5_PILOT_DEPTH = 5;
+RM_ADAPTER_R = 3;
+RM_M3_HEAD_CLEARANCE_D = 6.2;
+RM_M5_CLEARANCE_D = 5.5;
+RM_TAG_BORDER = 3;
+RM_TAG_CARD_T = 0.4;
+RM_TAG_TAB = 4;
+RM_TRIPOD_BODY_T = 8;
+RM_TRIPOD_CLEARANCE_D = 6.8;
+RM_TRIPOD_NUT_AF = 11.3;
+RM_TRIPOD_NUT_H = 5.8;
+RM_DIN_WIDTH = 35;
+RM_DIN_CLEARANCE = 0.4;
+RM_DIN_HOOK_T = 2.5;
+RM_DIN_HOOK_DEPTH = 2;
+RM_DIN_LIP_T = 1.5;
+RM_CABLE_W = 7.5;
+RM_CABLE_H = 2.2;
 
 // Calibration-part standard.
 RM_TEST_MALE_FITS = [0,0.05,0.10,0.15,0.20];
@@ -61,6 +78,8 @@ function outer_rows(depth_ports,plate_t=RM_PLATE_T) =
 function grove_hole_spacing(board_size) =
   [board_size[0]-RM_GROVE_EDGE,board_size[1]-RM_GROVE_EDGE];
 function grove_lock_x(board_width) = board_width/2+RM_GRID/2;
+function grid_station_outside(distance) =
+  ceil((distance-RM_GRID/2)/RM_GRID)*RM_GRID+RM_GRID/2;
 function octagon_d(af) = af/cos(22.5);
 function port_af(fit=RM_PORT_FIT) = RM_PORT_AF+2*fit;
 function insert_bore(fit=RM_PORT_FIT) = RM_INSERT_BORE+fit;
@@ -99,6 +118,10 @@ module rounded_box(size,r) {
 
 module octagonal_prism(height,af) {
   cylinder(h=height,d=octagon_d(af),$fn=8);
+}
+
+module hexagonal_prism(height,af) {
+  cylinder(h=height,d=af/cos(30),$fn=6);
 }
 
 // Female interface primitive. Subtract this from a body.
@@ -338,6 +361,122 @@ module grove_carrier(board_size=[20,20]) {
       rounded_box([hole_spacing[0]-RM_GROVE_STANDOFF_D,
                    hole_spacing[1]-RM_GROVE_STANDOFF_D,
                    RM_CARRIER_T+2*RM_EPS],1);
+  }
+}
+
+module apriltag_holder(tag_size=50,border=RM_TAG_BORDER) {
+  assert(!is_list(tag_size) || len(tag_size) == 2,
+         "AprilTag size must be a number or [width,height]");
+  tag = is_list(tag_size) ? tag_size : [tag_size,tag_size];
+  assert(tag[0] > 0 && tag[1] > 0 && border >= RM_TAG_BORDER,
+         "AprilTag size must be positive and border at least RM_TAG_BORDER");
+  outer = [tag[0]+2*border,tag[1]+2*border];
+  lock_x = grid_station_outside(outer[0]/2+RM_M3_HEAD_CLEARANCE_D/2);
+  difference() {
+    union() {
+      difference() {
+        translate([-outer[0]/2,-outer[1]/2,0])
+          rounded_box([outer[0],outer[1],RM_JOIN_T],RM_ADAPTER_R);
+        translate([-tag[0]/2,-tag[1]/2,-RM_EPS])
+          cube([tag[0],tag[1],RM_JOIN_T+2*RM_EPS]);
+      }
+      for(side=[-1,1])
+        linear_extrude(height=RM_JOIN_T) hull() {
+          translate([side*lock_x,0]) circle(d=RM_GRID);
+          translate([side*(outer[0]/2-border/2),0])
+            square([border,2*border],center=true);
+        }
+      for(x=[-tag[0]/2-border,tag[0]/2-RM_TAG_TAB],
+          y=[-tag[1]/2-border,tag[1]/2-RM_TAG_TAB]) {
+        translate([x,y,0])
+          cube([RM_TAG_TAB+border,RM_TAG_TAB+border,RM_JOIN_T-1]);
+        translate([x,y,RM_JOIN_T-RM_TAG_CARD_T])
+          cube([RM_TAG_TAB+border,RM_TAG_TAB+border,RM_TAG_CARD_T]);
+      }
+      for(x=[-lock_x,lock_x]) translate([x,0,0]) connector_peg();
+    }
+    for(x=[-lock_x,lock_x])
+      translate([x,0,0]) connector_screw_cut(body_t=RM_JOIN_T);
+  }
+}
+
+module tripod_adapter() {
+  lock_x = 3*RM_GRID/2;
+  difference() {
+    union() {
+      translate([-2*RM_GRID,-RM_GRID,0])
+        rounded_box([4*RM_GRID,2*RM_GRID,RM_TRIPOD_BODY_T],RM_ADAPTER_R);
+      for(x=[-lock_x,lock_x])
+        translate([x,0,RM_TRIPOD_BODY_T]) connector_peg("up");
+    }
+    for(x=[-lock_x,lock_x]) {
+      translate([x,0,RM_TRIPOD_BODY_T])
+        connector_screw_cut("up",RM_TRIPOD_BODY_T);
+      translate([x,0,-RM_EPS])
+        cylinder(h=RM_TRIPOD_BODY_T-RM_JOIN_T+RM_EPS,
+                 d=RM_M3_HEAD_CLEARANCE_D);
+    }
+    translate([0,0,RM_TRIPOD_BODY_T-RM_TRIPOD_NUT_H])
+      hexagonal_prism(RM_TRIPOD_NUT_H+RM_EPS,RM_TRIPOD_NUT_AF);
+    translate([0,0,-RM_EPS])
+      cylinder(h=RM_TRIPOD_BODY_T+2*RM_EPS,d=RM_TRIPOD_CLEARANCE_D);
+  }
+}
+
+module profile_2020_adapter() {
+  difference() {
+    translate([-2*RM_GRID,-RM_GRID,0])
+      rounded_box([4*RM_GRID,2*RM_GRID,RM_JOIN_T],RM_ADAPTER_R);
+    for(x=grid_positions(2))
+      translate([x,0,RM_JOIN_T]) mirror([0,0,1]) port_cut();
+    for(x=[-3*RM_GRID/2,3*RM_GRID/2])
+      translate([x,0,-RM_EPS])
+        cylinder(h=RM_JOIN_T+2*RM_EPS,d=RM_M5_CLEARANCE_D);
+  }
+}
+
+module din_hook(side,length) {
+  rail_edge = RM_DIN_WIDTH/2+RM_DIN_CLEARANCE/2;
+  x = side*(rail_edge+RM_DIN_HOOK_T/2);
+  translate([x,0,-RM_DIN_HOOK_DEPTH/2])
+    cube([RM_DIN_HOOK_T,length,RM_DIN_HOOK_DEPTH],center=true);
+  translate([side*(rail_edge-RM_DIN_HOOK_T/2),0,
+             -RM_DIN_HOOK_DEPTH-RM_DIN_LIP_T/2])
+    cube([2*RM_DIN_HOOK_T,length,RM_DIN_LIP_T],center=true);
+}
+
+// Rigid end-slide adapter for EN 60715 TH35 rail.
+module din_rail_adapter() {
+  size = [4*RM_GRID,3*RM_GRID,RM_JOIN_T];
+  difference() {
+    union() {
+      translate([-size[0]/2,-size[1]/2,0])
+        rounded_box(size,RM_ADAPTER_R);
+      din_hook(-1,size[1]);
+      din_hook(1,size[1]);
+    }
+    for(x=grid_positions(2),y=grid_positions(2))
+      translate([x,y,RM_JOIN_T]) mirror([0,0,1]) port_cut();
+  }
+}
+
+module grove_cable_clip() {
+  inner_w = RM_CABLE_W+0.5;
+  difference() {
+    union() {
+      translate([-RM_GRID,-6,0])
+        rounded_box([2*RM_GRID,12,RM_JOIN_T],RM_ADAPTER_R);
+      translate([-RM_GRID/2,0,0]) connector_peg();
+      translate([-2,-5,RM_JOIN_T])
+        difference() {
+          cube([12,10,6]);
+          translate([(12-inner_w)/2,-RM_EPS,1.5])
+            cube([inner_w,10+2*RM_EPS,RM_CABLE_H+2.4]);
+          translate([(12-(RM_CABLE_W-1.5))/2,-2*RM_EPS,4])
+            cube([RM_CABLE_W-1.5,10+4*RM_EPS,3]);
+        }
+    }
+    translate([-RM_GRID/2,0,0]) connector_screw_cut(body_t=RM_JOIN_T);
   }
 }
 

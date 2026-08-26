@@ -7,7 +7,7 @@ port counts unless a parameter explicitly says otherwise.
 standards
   -> port_cut / peg / heat_set_insert
     -> connector_grid / plate_body / join_panel / join_leg
-      -> plate / flat_join / angle_join / outer_angle_join / grove_carrier
+      -> plate / joins / carriers / mounting adapters
         -> scad/parts entry point -> STL
 ```
 
@@ -19,6 +19,11 @@ flat_join(width_ports=2, depth_ports=2);
 angle_join(width_ports=2, depth_ports=2);
 outer_angle_join(width_ports=2, depth_ports=2, plate_t=RM_PLATE_T);
 grove_carrier(board_size=[20,20]);
+apriltag_holder(tag_size=50, border=RM_TAG_BORDER);
+tripod_adapter();
+profile_2020_adapter();
+din_rail_adapter();
+grove_cable_clip();
 ```
 
 `plate()` requires integer dimensions of at least 2×2. Width and height are
@@ -30,6 +35,15 @@ peg, hardware, or fit standard.
 40 mm and lengths of 20, 40, or 60 mm. Its RobotMind M3 lock stations remain
 outside the PCB footprint. Four raised bosses accept top-installed M2.5
 thread-forming screws, so assembly needs no inaccessible underside nuts.
+
+`apriltag_holder()` accepts a square size or `[width,height]` and retains the
+printed card between four corner shelves and tabs. Its two M3 stations are
+outside the image area and remain accessible.
+
+The mounting adapters deliberately expose RobotMind in the useful direction:
+`tripod_adapter()` places two upward pegs under a plate, while the 2020-profile
+and DIN-rail adapters provide female ports for carriers. The DIN part is a
+rigid end-slide mount, not a material-dependent snap clip.
 
 ## Reusable components
 
@@ -69,6 +83,7 @@ edge_rows(depth_ports);
 flat_rows(depth_ports);
 outer_rows(depth_ports, plate_t=RM_PLATE_T);
 is_corner_index(column, row, columns, rows);
+grid_station_outside(distance);
 ```
 
 ## Mechanical standard
@@ -86,6 +101,6 @@ RM_PEG_FIT
 RM_INSERT_BORE
 ```
 
-The repository currently ships only `plate(8,8)` as a production entry point.
-Additional sizes should be exported only after the first product set passes the
-physical release gate.
+The repository exports one validated candidate per product family. Additional
+sizes should be exported only after the first physical example of that family
+passes its release gate.

@@ -23,6 +23,24 @@ the carrier first, then place the board on its four standoffs and drive M2.5
 thread-forming screws into the blind pilots from above. The M3 locks remain
 accessible without removing the board. Press-fit-only assembly remains removable.
 
+## AprilTag holder
+
+Attach the empty frame through its two exposed M3 stations. Flex the printed
+tag card gently under the four corner tabs; no adhesive is required.
+
+## External mounting adapters
+
+- `tripod_adapter`: place a standard 1/4-20 hex nut in the top pocket, then
+  attach a RobotMind plate over it using two M3×6 screws from the recessed
+  underside stations. The plate traps the nut. Thread the tripod screw no more
+  than 4.5 mm into the adapter.
+- `profile_2020_adapter`: use two M5 screws through the exposed end holes into
+  M5 T-nuts for 20-series slot-6 extrusion.
+- `din_rail_adapter`: slide the rigid channel onto a TH35 rail from an exposed
+  rail end. It is not a front-snap clip.
+- `grove_cable_clip`: fasten or press its single peg first, then press the flat
+  cable through the narrowed opening.
+
 ## Plate mounting
 
 The four corner ports have an M3 clearance bore through the backing wall. Use

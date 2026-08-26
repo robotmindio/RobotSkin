@@ -1,8 +1,8 @@
 include <../lib/robotmind.scad>
 
-SCENE = "overview"; // overview, port, flat, angle, outer_angle, grove
+SCENE = "overview"; // overview, port, flat, angle, outer_angle, grove, adapters
 assert(SCENE=="overview" || SCENE=="port" || SCENE=="flat" || SCENE=="angle" ||
-       SCENE=="outer_angle" || SCENE=="grove",
+       SCENE=="outer_angle" || SCENE=="grove" || SCENE=="adapters",
        "Unknown preview scene");
 
 PLATE_COLOR = [0.60,0.72,0.84];
@@ -77,9 +77,18 @@ module grove_scene() {
       rounded_box([20,20,1.6],1);
 }
 
+module adapters_scene() {
+  color(CARRIER_COLOR) translate([-90,20,0]) apriltag_holder(50);
+  color(JOIN_COLOR) translate([-20,20,0]) tripod_adapter();
+  color(CARRIER_COLOR) translate([35,20,0]) profile_2020_adapter();
+  color(CARRIER_COLOR) translate([90,20,0]) din_rail_adapter();
+  color(JOIN_COLOR) translate([135,20,0]) grove_cable_clip();
+}
+
 if(SCENE=="overview") overview_scene();
 if(SCENE=="port") port_scene();
 if(SCENE=="flat") flat_scene();
 if(SCENE=="angle") angle_scene();
 if(SCENE=="outer_angle") outer_angle_scene();
 if(SCENE=="grove") grove_scene();
+if(SCENE=="adapters") adapters_scene();
