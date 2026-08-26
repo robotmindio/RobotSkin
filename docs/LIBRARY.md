@@ -35,6 +35,8 @@ peg, hardware, or fit standard.
 40 mm and lengths of 20, 40, or 60 mm. Its RobotMind M3 lock stations remain
 outside the PCB footprint. Four raised bosses accept top-installed M2.5
 thread-forming screws, so assembly needs no inaccessible underside nuts.
+The repository exports all five documented combinations as production entry
+points.
 
 `apriltag_holder()` accepts a square size or `[width,height]` and retains the
 printed card between four corner shelves and tabs. Its two M3 stations are

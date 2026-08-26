@@ -22,7 +22,7 @@ The production set contains:
 1. `plate_8x8` — 80×80×4 mm single-sided base with a full 8×8 port grid.
 2. `flat_join` — a 20 mm two-column tile; use one to four to join coplanar plate edges.
 3. `angle_join` / `outer_angle_join` — 20 mm inside/outside 90° tiles; use one to four per edge.
-4. `grove_carrier_20x20` — a serviceable carrier for a 20×20 mm Grove board.
+4. `grove_carrier_*` — serviceable carriers for all five nominal Grove sizes.
 5. `apriltag_holder_50` — a glue-free frame for a replaceable 50 mm tag.
 6. `tripod_adapter` — a plate-underlay adapter for a captive 1/4-20 nut.
 7. `profile_2020_adapter` — two RobotMind ports mounted with two M5 T-nuts.
@@ -67,8 +67,8 @@ need local support below the peg row that is perpendicular to the print bed.
 ./scripts/render_previews.sh
 ```
 
-This writes `overview.png`, interface and assembly views, including `grove.png`
-and `adapters.png`, to `renders/`. The port view is a cutaway of the assembled
+This writes `overview.png`, interface and assembly views, including `grove.png`,
+`grove_family.png`, and `adapters.png`, to `renders/`. The port view is a cutaway of the assembled
 plate port, peg, and 4.0 mm-OD brass insert. The insert sits flush in the 3 mm
 blind pilot, leaving its M3 threaded centre open for the screw. Insert it from
 the exposed plate face before mounting a join or carrier.

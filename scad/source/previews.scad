@@ -1,8 +1,9 @@
 include <../lib/robotmind.scad>
 
-SCENE = "overview"; // overview, port, flat, angle, outer_angle, grove, adapters
+SCENE = "overview"; // overview, port, flat, angle, outer_angle, grove, grove_family, adapters
 assert(SCENE=="overview" || SCENE=="port" || SCENE=="flat" || SCENE=="angle" ||
-       SCENE=="outer_angle" || SCENE=="grove" || SCENE=="adapters",
+       SCENE=="outer_angle" || SCENE=="grove" || SCENE=="grove_family" ||
+       SCENE=="adapters",
        "Unknown preview scene");
 
 PLATE_COLOR = [0.60,0.72,0.84];
@@ -77,6 +78,14 @@ module grove_scene() {
       rounded_box([20,20,1.6],1);
 }
 
+module grove_family_scene() {
+  color(CARRIER_COLOR) translate([-65,-35,0]) grove_carrier([20,20]);
+  color(CARRIER_COLOR) translate([-15,-25,0]) grove_carrier([20,40]);
+  color(CARRIER_COLOR) translate([35,-15,0]) grove_carrier([20,60]);
+  color(CARRIER_COLOR) translate([95,-25,0]) grove_carrier([40,40]);
+  color(CARRIER_COLOR) translate([165,-15,0]) grove_carrier([40,60]);
+}
+
 module adapters_scene() {
   color(CARRIER_COLOR) translate([-90,20,0]) apriltag_holder(50);
   color(JOIN_COLOR) translate([-20,20,0]) tripod_adapter();
@@ -91,4 +100,5 @@ if(SCENE=="flat") flat_scene();
 if(SCENE=="angle") angle_scene();
 if(SCENE=="outer_angle") outer_angle_scene();
 if(SCENE=="grove") grove_scene();
+if(SCENE=="grove_family") grove_family_scene();
 if(SCENE=="adapters") adapters_scene();

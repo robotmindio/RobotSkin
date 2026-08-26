@@ -6,7 +6,7 @@ SCENE="$PROJECT_DIR/scad/source/previews.scad"
 RENDER_DIR="$PROJECT_DIR/renders"
 mkdir -p "$RENDER_DIR"
 
-for scene in overview port flat angle outer_angle grove adapters; do
+for scene in overview port flat angle outer_angle grove grove_family adapters; do
   openscad --autocenter --viewall --projection=ortho --imgsize=1400,1000 \
     --colorscheme=Tomorrow --csglimit=2000000 -D "SCENE=\"$scene\"" \
     -o "$RENDER_DIR/$scene.png" "$SCENE"

@@ -38,6 +38,7 @@ translate([30,0,0]) flat_join(1,1);
 translate([50,0,0]) angle_join(1,1);
 translate([75,0,0]) outer_angle_join(1,1);
 translate([100,40,0]) grove_carrier([20,40]);
+translate([100,100,0]) grove_carrier([40,60]);
 translate([150,60,0]) apriltag_holder(20);
 translate([190,60,0]) tripod_adapter();
 translate([230,60,0]) profile_2020_adapter();
