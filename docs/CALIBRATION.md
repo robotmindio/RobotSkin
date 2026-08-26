@@ -39,3 +39,10 @@ release only when:
 
 Record failures here before changing geometry; do not add another connector
 type to work around an uncalibrated shared interface.
+
+## Mounting cap
+
+Print one `mounting_cap` before printing a set. It should press fully flush by
+hand and remain in place when the plate is inverted. If it is too tight, raise
+`RM_MOUNT_CAP_FIT` in 0.05 mm steps; do not enlarge the grid-aligned plate
+recesses.

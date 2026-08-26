@@ -20,6 +20,9 @@ The first printed set has four product categories:
 3. `angle_join` / `outer_angle_join` — 20 mm inside/outside 90° tiles; use one to three per edge.
 4. `grove_plaque` — a generic 20 mm Grove board plaque.
 
+`mounting_cap` press-fits flush over an unused mounting hole or a recessed M3
+flat-head screw. Print four when the mounting points should disappear.
+
 ## Print and calibrate
 
 ```bash

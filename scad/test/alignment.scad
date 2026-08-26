@@ -14,8 +14,11 @@ assert(outer_floor_rows() == [9,19] && outer_wall_rows() == [9,19],
 assert(len([for(x=port_indices(), y=port_indices())
               if(!is_corner_port(x,y)) 1]) == 60,
        "The single-sided plate must retain 60 connector ports");
-assert(mount_positions() == [-32.5,32.5],
-       "Mount holes must clear the rounded plate corners and adjacent ports");
+assert(mount_positions() == [edge_ports[0],edge_ports[7]],
+       "Mount holes must occupy corner positions on the 10 mm grid");
+assert(RM_MOUNT_CAP_D > RM_MOUNT_SINK_D &&
+       RM_MOUNT_CAP_DEPTH+RM_MOUNT_SINK_DEPTH < RM_PLATE_T,
+       "The flush cap and countersink must fit within the plate");
 assert([for(row=inner_floor_rows()) RM_PLATE/2-row] == [edge_ports[7],edge_ports[6]],
        "Inner floor pegs must meet the floor edge ports");
 assert(inner_wall_rows() == inner_floor_rows(),
