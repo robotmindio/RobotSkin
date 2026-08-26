@@ -13,6 +13,10 @@ assert(outer_rows(2) == [9,19],
 assert(is_corner_index(0,0,8,8) && is_corner_index(7,7,8,8) &&
        is_corner_index(2,4,3,5) && !is_corner_index(1,1,3,5),
        "Corner mounting ports must work for every plate size");
+assert(grove_hole_spacing([20,20]) == [16,16] &&
+       grove_hole_spacing([40,60]) == [36,56] &&
+       grove_lock_x(20) == 15 && grove_lock_x(40) == 25,
+       "Grove board and RobotMind stations must remain grid-derived");
 assert(RM_TEST_MALE_FITS == [0,0.05,0.10,0.15,0.20],
        "Tolerance coupon must retain its documented five male fits");
 assert(RM_TEST_INSERT_BORES == [3.75,3.80,3.85,3.90,3.95],
@@ -29,6 +33,7 @@ plate(2,3);
 translate([30,0,0]) flat_join(1,1);
 translate([50,0,0]) angle_join(1,1);
 translate([75,0,0]) outer_angle_join(1,1);
+translate([100,40,0]) grove_carrier([20,40]);
 translate([100,0,0]) connector_grid(2,2,direction="up");
 translate([130,0,0])
   difference() {

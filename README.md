@@ -9,6 +9,10 @@ them automatically. See `docs/LIBRARY.md` for the public API and hierarchy.
 Press parts together by hand; install M3×3×4 heat-set inserts and M3×6 screws
 through any peg centre when the joint must be permanent.
 
+The Grove carrier's PCB uses four M2.5×6 thread-forming screws in blind top
+pilots. These are payload fasteners; the carrier itself retains the common M3
+RobotMind lock hardware.
+
 The brass insert always goes in the plate's female port—not in a join. For a
 permanent joint, use one 4.0 mm-OD M3×3×4 insert and one M3×6 pan-head screw
 at every occupied lock station. See `docs/ASSEMBLY.md`.
@@ -18,7 +22,7 @@ The first printed set has four product categories:
 1. `plate_8x8` — 80×80×4 mm single-sided base with a full 8×8 port grid.
 2. `flat_join` — a 20 mm two-column tile; use one to four to join coplanar plate edges.
 3. `angle_join` / `outer_angle_join` — 20 mm inside/outside 90° tiles; use one to four per edge.
-4. `grove_plaque` — a generic 20 mm Grove board plaque.
+4. `grove_carrier_20x20` — a serviceable carrier for a 20×20 mm Grove board.
 
 ## Print and calibrate
 
@@ -49,7 +53,7 @@ water-resistance claim; validate the dry mechanical interface before adding seal
 Print [VOCABULARY.svg](docs/VOCABULARY.svg) at 100% for the part names and
 connection vocabulary.
 
-Print plates flat-side down. Print the flat join and plaque peg-side up. Angle joins
+Print plates flat-side down. Print the flat join and carrier peg-side up. Angle joins
 need local support below the peg row that is perpendicular to the print bed.
 
 ## Preview the system
@@ -58,8 +62,8 @@ need local support below the peg row that is perpendicular to the print bed.
 ./scripts/render_previews.sh
 ```
 
-This writes `overview.png`, `port.png`, `flat.png`, `angle.png`, and
-`outer_angle.png` to `renders/`. The port view is a cutaway of the assembled
+This writes `overview.png`, `port.png`, `flat.png`, `angle.png`,
+`outer_angle.png`, and `grove.png` to `renders/`. The port view is a cutaway of the assembled
 plate port, peg, and 4.0 mm-OD brass insert. The insert sits flush in the 3 mm
 blind pilot, leaving its M3 threaded centre open for the screw. Insert it from
-the exposed plate face before mounting a join or plaque.
+the exposed plate face before mounting a join or carrier.

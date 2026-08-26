@@ -16,6 +16,7 @@ mounting.
 | Peg root / tip | 8.3 / 7.7 mm across flats |
 | Peg depth | 2.2 mm |
 | Permanent lock | M3×6 pan-head screw, 2 mm insert engagement |
+| Grove PCB retention | M2.5×6 thread-forming screw, 2.1 mm blind pilot |
 
 The circular central boss carries the insert for its full 3 mm depth. A visible 4.6 mm,
 0.8 mm-deep entry cup leads into the 3.7 mm pilot, so the brass can start
@@ -33,7 +34,7 @@ Every join is one 20 mm tile spanning two adjacent port columns. A flat tile
 has a 2×2 peg field on each plate. The inside angle is one continuous,
 geometrically symmetric L-shaped part with two identical 20 mm legs and the
 same 5/15 mm connector rows on each face. Its outer ends use the same rounded
-corners as the Grove plaque while both contact faces remain flat. One to four
+corners as the Grove carrier while both contact faces remain flat. One to four
 tiles span a 20–80 mm run on a single surface.
 
 `outer_angle_join` mounts below the floor and outside the wall. Its pegs use
@@ -49,3 +50,7 @@ peg and heat-set insert or an M3 pan-head mounting screw through the plate.
 One plate is the default product. When both faces are required, place two
 identical plates flat-back to flat-back and fasten them through the four corner
 ports; no adhesive or second plate design is required.
+
+The Grove carrier keeps its two RobotMind lock stations outside the PCB
+footprint. The PCB sits 3 mm above the carrier on four bosses and is retained
+from above; its blind pilots leave 2 mm of plastic below the screw path.

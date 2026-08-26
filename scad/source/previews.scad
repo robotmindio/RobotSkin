@@ -1,13 +1,13 @@
 include <../lib/robotmind.scad>
 
-SCENE = "overview"; // overview, port, flat, angle, outer_angle
+SCENE = "overview"; // overview, port, flat, angle, outer_angle, grove
 assert(SCENE=="overview" || SCENE=="port" || SCENE=="flat" || SCENE=="angle" ||
-       SCENE=="outer_angle",
+       SCENE=="outer_angle" || SCENE=="grove",
        "Unknown preview scene");
 
 PLATE_COLOR = [0.60,0.72,0.84];
 JOIN_COLOR = [1.00,0.68,0.05];
-PLAQUE_COLOR = [0.16,0.38,0.64];
+CARRIER_COLOR = [0.16,0.38,0.64];
 INSERT_COLOR = [0.72,0.42,0.08];
 
 module insert_demo() {
@@ -19,7 +19,7 @@ module overview_scene() {
   color(JOIN_COLOR) translate([45,-30,0]) flat_join();
   color(JOIN_COLOR) translate([45,35,0]) angle_join();
   color(JOIN_COLOR) translate([145,30,0]) outer_angle_join();
-  color(PLAQUE_COLOR) translate([105,-20,0]) grove_plaque();
+  color(CARRIER_COLOR) translate([105,-20,0]) grove_carrier();
 }
 
 module port_scene() {
@@ -69,8 +69,17 @@ module outer_angle_scene() {
     translate([0,plate_size/2+RM_PLATE_T,0]) outer_angle_join();
 }
 
+module grove_scene() {
+  color(PLATE_COLOR) plate(5,4);
+  color(CARRIER_COLOR) translate([0,0,RM_PLATE_T]) grove_carrier();
+  color([0.10,0.55,0.28,0.85])
+    translate([-10,-10,RM_PLATE_T+RM_CARRIER_T+RM_GROVE_STANDOFF_H])
+      rounded_box([20,20,1.6],1);
+}
+
 if(SCENE=="overview") overview_scene();
 if(SCENE=="port") port_scene();
 if(SCENE=="flat") flat_scene();
 if(SCENE=="angle") angle_scene();
 if(SCENE=="outer_angle") outer_angle_scene();
+if(SCENE=="grove") grove_scene();

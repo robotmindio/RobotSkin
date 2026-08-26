@@ -7,7 +7,7 @@ port counts unless a parameter explicitly says otherwise.
 standards
   -> port_cut / peg / heat_set_insert
     -> connector_grid / plate_body / join_panel / join_leg
-      -> plate / flat_join / angle_join / outer_angle_join / grove_plaque
+      -> plate / flat_join / angle_join / outer_angle_join / grove_carrier
         -> scad/parts entry point -> STL
 ```
 
@@ -18,13 +18,18 @@ plate(columns, rows);
 flat_join(width_ports=2, depth_ports=2);
 angle_join(width_ports=2, depth_ports=2);
 outer_angle_join(width_ports=2, depth_ports=2, plate_t=RM_PLATE_T);
-grove_plaque(size=[28,28], peg_spacing=10, slot_spacing=[16,16]);
+grove_carrier(board_size=[20,20]);
 ```
 
 `plate()` requires integer dimensions of at least 2×2. Width and height are
 derived as `count × RM_GRID`; the four corner ports receive the M3 through bore.
 Join counts control their connector field without changing the shared port,
 peg, hardware, or fit standard.
+
+`grove_carrier()` accepts the documented Grove board families: widths of 20 or
+40 mm and lengths of 20, 40, or 60 mm. Its RobotMind M3 lock stations remain
+outside the PCB footprint. Four raised bosses accept top-installed M2.5
+thread-forming screws, so assembly needs no inaccessible underside nuts.
 
 ## Reusable components
 
@@ -38,6 +43,7 @@ plate_port_cuts(columns, rows);
 plate_corner_through_cuts(columns, rows);
 join_panel(width, min_row, max_row);
 join_leg(width, length);
+pcb_standoff(position);
 ```
 
 Directions are `down`, `forward`, `up`, and `backward`. Screw and port modules

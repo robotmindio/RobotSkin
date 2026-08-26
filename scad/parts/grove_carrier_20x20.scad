@@ -1,2 +1,2 @@
 include <../lib/robotmind.scad>
-grove_plaque();
+grove_carrier([20,20]);

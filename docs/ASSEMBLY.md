@@ -6,7 +6,7 @@ Each occupied lock station uses one M3×3×4, 4.0 mm-OD brass heat-set insert
 and one M3×6 pan-head screw. The insert is heat-set flush into the 3 mm-deep,
 blind centre bore of the plate's female port; it does not pass through the
 plate. Its M3 threaded centre remains open for the screw. The join or Grove
-plaque only supplies peg guidance and a screw-clearance path.
+carrier only supplies peg guidance and a screw-clearance path.
 
 ## Sequence
 
@@ -18,8 +18,10 @@ plaque only supplies peg guidance and a screw-clearance path.
 Each join tile has eight identical lock stations: four on each attached plate.
 For ordinary permanent assembly, use the four stations farthest from the seam
 or corner. Use all eight when maximum strength is required.
-The Grove plaque uses its two lock stations. Press-fit-only assembly remains
-removable.
+The Grove carrier uses two M3 lock stations outside the PCB footprint. Fasten
+the carrier first, then place the board on its four standoffs and drive M2.5
+thread-forming screws into the blind pilots from above. The M3 locks remain
+accessible without removing the board. Press-fit-only assembly remains removable.
 
 ## Plate mounting
 

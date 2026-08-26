@@ -25,10 +25,13 @@ RM_LOCK_SCREW_LENGTH = 6;
 RM_PLATE_R = 1;
 RM_JOIN_T = 4;
 RM_JOIN_PANEL_R = 3;
-RM_PLAQUE_T = RM_JOIN_T;
-RM_PLAQUE_R = 3;
-RM_PLAQUE_SLOT_LENGTH = 4;
-RM_PLAQUE_SLOT_D = 2.8;
+RM_CARRIER_T = RM_JOIN_T;
+RM_CARRIER_R = 3;
+RM_GROVE_EDGE = 4;
+RM_GROVE_STANDOFF_H = 3;
+RM_GROVE_STANDOFF_D = 5;
+RM_GROVE_M2_5_PILOT_D = 2.1;
+RM_GROVE_M2_5_PILOT_DEPTH = 5;
 
 // Calibration-part standard.
 RM_TEST_MALE_FITS = [0,0.05,0.10,0.15,0.20];
@@ -55,6 +58,9 @@ function flat_rows(depth_ports) =
          edge_rows(depth_ports));
 function outer_rows(depth_ports,plate_t=RM_PLATE_T) =
   [for(row=edge_rows(depth_ports)) plate_t+row];
+function grove_hole_spacing(board_size) =
+  [board_size[0]-RM_GROVE_EDGE,board_size[1]-RM_GROVE_EDGE];
+function grove_lock_x(board_width) = board_width/2+RM_GRID/2;
 function octagon_d(af) = af/cos(22.5);
 function port_af(fit=RM_PORT_FIT) = RM_PORT_AF+2*fit;
 function insert_bore(fit=RM_PORT_FIT) = RM_INSERT_BORE+fit;
@@ -296,27 +302,42 @@ module outer_angle_join(width_ports=2,depth_ports=2,plate_t=RM_PLATE_T) {
   }
 }
 
-module grove_plaque(size=[28,28],peg_spacing=RM_GRID,
-                    slot_spacing=[16,16]) {
-  assert(size[0] > slot_spacing[0]+RM_PLAQUE_SLOT_D &&
-         size[1] > slot_spacing[1]+RM_PLAQUE_SLOT_LENGTH,
-         "Plaque must contain its mounting slots");
+module pcb_standoff(position) {
+  translate([position[0],position[1],RM_CARRIER_T])
+    cylinder(h=RM_GROVE_STANDOFF_H,d=RM_GROVE_STANDOFF_D);
+}
+
+// Grove carrier. Board width is 20 or 40 mm; length is 20, 40, or 60 mm.
+module grove_carrier(board_size=[20,20]) {
+  assert((board_size[0] == 20 || board_size[0] == 40) &&
+         (board_size[1] == 20 || board_size[1] == 40 || board_size[1] == 60),
+         "Grove board_size must use a documented 20/40 x 20/40/60 mm format");
+  hole_spacing = grove_hole_spacing(board_size);
+  lock_x = grove_lock_x(board_size[0]);
+  body_size = [board_size[0]+2*RM_GRID,board_size[1]+2*RM_GROVE_EDGE];
   difference() {
     union() {
-      translate([-size[0]/2,-size[1]/2,0])
-        rounded_box([size[0],size[1],RM_PLAQUE_T],RM_PLAQUE_R);
-      for(x=[-peg_spacing/2,peg_spacing/2])
+      translate([-body_size[0]/2,-body_size[1]/2,0])
+        rounded_box([body_size[0],body_size[1],RM_CARRIER_T],RM_CARRIER_R);
+      for(x=[-lock_x,lock_x])
         translate([x,0,0]) connector_peg();
+      for(x=[-hole_spacing[0]/2,hole_spacing[0]/2],
+          y=[-hole_spacing[1]/2,hole_spacing[1]/2])
+        pcb_standoff([x,y]);
     }
-    for(x=[-peg_spacing/2,peg_spacing/2])
-      translate([x,0,0]) connector_screw_cut(body_t=RM_PLAQUE_T);
-    for(x=[-slot_spacing[0]/2,slot_spacing[0]/2],
-        y=[-slot_spacing[1]/2,slot_spacing[1]/2])
-      translate([x,y,-RM_EPS])
-        linear_extrude(height=RM_PLAQUE_T+2*RM_EPS) hull() {
-          translate([0,-RM_PLAQUE_SLOT_LENGTH/2]) circle(d=RM_PLAQUE_SLOT_D);
-          translate([0,RM_PLAQUE_SLOT_LENGTH/2]) circle(d=RM_PLAQUE_SLOT_D);
-        }
+    for(x=[-lock_x,lock_x])
+      translate([x,0,0]) connector_screw_cut(body_t=RM_CARRIER_T);
+    for(x=[-hole_spacing[0]/2,hole_spacing[0]/2],
+        y=[-hole_spacing[1]/2,hole_spacing[1]/2])
+      translate([x,y,RM_CARRIER_T+RM_GROVE_STANDOFF_H-
+                         RM_GROVE_M2_5_PILOT_DEPTH])
+        cylinder(h=RM_GROVE_M2_5_PILOT_DEPTH+RM_EPS,
+                 d=RM_GROVE_M2_5_PILOT_D);
+    translate([-hole_spacing[0]/2+RM_GROVE_STANDOFF_D/2,
+               -hole_spacing[1]/2+RM_GROVE_STANDOFF_D/2,-RM_EPS])
+      rounded_box([hole_spacing[0]-RM_GROVE_STANDOFF_D,
+                   hole_spacing[1]-RM_GROVE_STANDOFF_D,
+                   RM_CARRIER_T+2*RM_EPS],1);
   }
 }
 
