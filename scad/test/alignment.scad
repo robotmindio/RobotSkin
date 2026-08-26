@@ -21,6 +21,10 @@ assert(grid_station_outside(31) == 35 && grid_station_outside(28) == 35,
        "External lock stations must remain on the RobotMind grid");
 assert(RM_TRIPOD_BODY_T-RM_TRIPOD_NUT_H >= 2,
        "Tripod nut pocket must retain a structural roof");
+uno_holes = centred_points(RM_UNO_HOLES,RM_UNO_SIZE);
+assert(near(uno_holes[0][0],-20.29) && near(uno_holes[0][1],-24.13) &&
+       near(uno_holes[2][0],31.75) && near(uno_holes[2][1],8.89),
+       "UNO mounting holes must retain the official asymmetric layout");
 assert(RM_TEST_MALE_FITS == [0,0.05,0.10,0.15,0.20],
        "Tolerance coupon must retain its documented five male fits");
 assert(RM_TEST_INSERT_BORES == [3.75,3.80,3.85,3.90,3.95],
@@ -44,6 +48,7 @@ translate([190,60,0]) tripod_adapter();
 translate([230,60,0]) profile_2020_adapter();
 translate([270,60,0]) din_rail_adapter();
 translate([310,60,0]) grove_cable_clip();
+translate([380,100,0]) uno_carrier();
 translate([100,0,0]) connector_grid(2,2,direction="up");
 translate([130,0,0])
   difference() {

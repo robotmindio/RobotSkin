@@ -24,6 +24,7 @@ tripod_adapter();
 profile_2020_adapter();
 din_rail_adapter();
 grove_cable_clip();
+uno_carrier();
 ```
 
 `plate()` requires integer dimensions of at least 2×2. Width and height are
@@ -37,6 +38,10 @@ outside the PCB footprint. Four raised bosses accept top-installed M2.5
 thread-forming screws, so assembly needs no inaccessible underside nuts.
 The repository exports all five documented combinations as production entry
 points.
+
+`uno_carrier()` follows the official 68.58×53.34 mm UNO outline and asymmetric
+four-hole pattern. The open frame leaves connectors and underside pins clear;
+four RobotMind locks remain outside the board footprint.
 
 `apriltag_holder()` accepts a square size or `[width,height]` and retains the
 printed card between four corner shelves and tabs. Its two M3 stations are

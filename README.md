@@ -28,6 +28,7 @@ The production set contains:
 7. `profile_2020_adapter` — two RobotMind ports mounted with two M5 T-nuts.
 8. `din_rail_adapter` — four RobotMind ports on an end-slide TH35 rail mount.
 9. `grove_cable_clip` — a single-station retainer for flat Grove cable.
+10. `uno_carrier` — an open carrier for the standard asymmetric UNO hole layout.
 
 ## Print and calibrate
 
@@ -68,7 +69,7 @@ need local support below the peg row that is perpendicular to the print bed.
 ```
 
 This writes `overview.png`, interface and assembly views, including `grove.png`,
-`grove_family.png`, and `adapters.png`, to `renders/`. The port view is a cutaway of the assembled
+`grove_family.png`, `uno.png`, and `adapters.png`, to `renders/`. The port view is a cutaway of the assembled
 plate port, peg, and 4.0 mm-OD brass insert. The insert sits flush in the 3 mm
 blind pilot, leaving its M3 threaded centre open for the screw. Insert it from
 the exposed plate face before mounting a join or carrier.

@@ -49,6 +49,13 @@ RM_DIN_HOOK_DEPTH = 2;
 RM_DIN_LIP_T = 1.5;
 RM_CABLE_W = 7.5;
 RM_CABLE_H = 2.2;
+RM_UNO_SIZE = [68.58,53.34];
+RM_UNO_HOLES = [[14,2.54],[66.04,7.62],[66.04,35.56],[15.24,50.8]];
+RM_UNO_BORDER = 4;
+RM_UNO_STANDOFF_H = 5;
+RM_UNO_STANDOFF_D = 7;
+RM_UNO_LOCK_X = 25;
+RM_UNO_LOCK_Y = 35;
 
 // Calibration-part standard.
 RM_TEST_MALE_FITS = [0,0.05,0.10,0.15,0.20];
@@ -80,6 +87,9 @@ function grove_hole_spacing(board_size) =
 function grove_lock_x(board_width) = board_width/2+RM_GRID/2;
 function grid_station_outside(distance) =
   ceil((distance-RM_GRID/2)/RM_GRID)*RM_GRID+RM_GRID/2;
+function centred_points(points,size) =
+  [for(point=points) [point[0]-size[0]/2,point[1]-size[1]/2]];
+function near(a,b,tolerance=0.001) = abs(a-b) <= tolerance;
 function octagon_d(af) = af/cos(22.5);
 function port_af(fit=RM_PORT_FIT) = RM_PORT_AF+2*fit;
 function insert_bore(fit=RM_PORT_FIT) = RM_INSERT_BORE+fit;
@@ -124,6 +134,14 @@ module hexagonal_prism(height,af) {
   cylinder(h=height,d=af/cos(30),$fn=6);
 }
 
+// Heat-set insert pocket. Subtract downward from an exposed face.
+module heat_set_insert_cut(bore=RM_INSERT_BORE) {
+  translate([0,0,-RM_EPS])
+    cylinder(h=RM_INSERT_DEPTH+RM_EPS,d=bore);
+  translate([0,0,-RM_EPS])
+    cylinder(h=RM_INSERT_LEAD+RM_EPS,d1=insert_entry_d(),d2=bore);
+}
+
 // Female interface primitive. Subtract this from a body.
 module port_cut(fit=RM_PORT_FIT,bore=undef) {
   pilot = is_undef(bore) ? insert_bore(fit) : bore;
@@ -133,10 +151,7 @@ module port_cut(fit=RM_PORT_FIT,bore=undef) {
     translate([0,0,-2*RM_EPS])
       cylinder(h=RM_PORT_DEPTH+3*RM_EPS,d=port_boss_d(fit));
   }
-  translate([0,0,-RM_EPS])
-    cylinder(h=RM_INSERT_DEPTH+RM_EPS,d=pilot);
-  translate([0,0,-RM_EPS])
-    cylinder(h=RM_INSERT_LEAD+RM_EPS,d1=insert_entry_d(),d2=pilot);
+  heat_set_insert_cut(pilot);
 }
 
 // Male interface primitive.
@@ -477,6 +492,43 @@ module grove_cable_clip() {
         }
     }
     translate([-RM_GRID/2,0,0]) connector_screw_cut(body_t=RM_JOIN_T);
+  }
+}
+
+module uno_standoff(position,cut=false) {
+  translate([position[0],position[1],RM_CARRIER_T])
+    if(cut)
+      translate([0,0,RM_UNO_STANDOFF_H]) mirror([0,0,1])
+        heat_set_insert_cut();
+    else
+      cylinder(h=RM_UNO_STANDOFF_H,d=RM_UNO_STANDOFF_D);
+}
+
+module uno_carrier() {
+  holes = centred_points(RM_UNO_HOLES,RM_UNO_SIZE);
+  outer = [RM_UNO_SIZE[0]+2*RM_UNO_BORDER,
+           RM_UNO_SIZE[1]+2*RM_UNO_BORDER];
+  locks = [for(x=[-RM_UNO_LOCK_X,RM_UNO_LOCK_X],
+               y=[-RM_UNO_LOCK_Y,RM_UNO_LOCK_Y]) [x,y]];
+  difference() {
+    union() {
+      difference() {
+        translate([-outer[0]/2,-outer[1]/2,0])
+          rounded_box([outer[0],outer[1],RM_CARRIER_T],RM_ADAPTER_R);
+        translate([-RM_UNO_SIZE[0]/2,-RM_UNO_SIZE[1]/2,-RM_EPS])
+          cube([RM_UNO_SIZE[0],RM_UNO_SIZE[1],RM_CARRIER_T+2*RM_EPS]);
+      }
+      for(position=holes) uno_standoff(position);
+      for(position=locks) {
+        translate([position[0],position[1],0])
+          cylinder(h=RM_CARRIER_T,d=RM_GRID);
+        translate([position[0],position[1],0]) connector_peg();
+      }
+    }
+    for(position=holes) uno_standoff(position,cut=true);
+    for(position=locks)
+      translate([position[0],position[1],0])
+        connector_screw_cut(body_t=RM_CARRIER_T);
   }
 }
 
