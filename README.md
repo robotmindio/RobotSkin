@@ -30,6 +30,12 @@ The production set contains:
 9. `grove_cable_clip` — a single-station retainer for flat Grove cable.
 10. `uno_carrier` — an open carrier for the standard asymmetric UNO hole layout.
 
+The authoritative V0.1 catalog, SKU scheme, hardware BOM, and compatibility
+matrix are in [`docs/PRODUCT.md`](docs/PRODUCT.md). Use
+[`docs/PRINTING.md`](docs/PRINTING.md) for the release print profile and
+[`docs/QUALITY.md`](docs/QUALITY.md) for acceptance and load qualification.
+V0.1-alpha remains unrated engineering-evaluation hardware.
+
 ## Print and calibrate
 
 Create compatible geometry directly from port counts:
@@ -52,6 +58,16 @@ inverted, empty, or disconnected meshes. Run the same gate locally with:
 ```bash
 python scripts/validate_stl.py stl/*.stl
 ```
+
+Create the complete versioned engineering package, including STLs, calibration
+parts, drawings, documentation, source, and SHA-256 manifests, with:
+
+```bash
+./scripts/package_release.sh
+```
+
+The archive and its checksum are written to `dist/`. GitHub Actions runs the
+same command and uploads the result when Actions execution is available.
 
 First run `./scripts/build_test_parts.sh`. Its five male samples establish
 `RM_PEG_FIT` against a nominal 2×2 female tile before you print production

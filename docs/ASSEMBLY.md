@@ -1,5 +1,8 @@
 # RobotMind assembly
 
+Use the numbered sequence in
+[`ASSEMBLY_DRAWINGS.svg`](ASSEMBLY_DRAWINGS.svg) as the visual assembly guide.
+
 ## Hardware
 
 Each occupied lock station uses one M3×3×4, 4.0 mm-OD brass heat-set insert
