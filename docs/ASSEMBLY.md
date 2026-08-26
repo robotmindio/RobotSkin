@@ -48,6 +48,8 @@ the empty carrier to its four hidden plate ports first, then lower the
 UNO-format board onto the
 standoffs, and retain it with four M3×4 pan-head screws. Do not use M3×6 here:
 after passing through a 1.6 mm PCB it can bottom beyond the 3 mm insert.
+The exported UNO STL stands on its long frame edge for printing; its module in
+the OpenSCAD library remains in assembly orientation.
 
 ## Plate mounting
 

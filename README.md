@@ -67,6 +67,9 @@ connection vocabulary.
 
 Print plates flat-side down. Print the flat join and carrier peg-side up. Angle joins
 need local support below the peg row that is perpendicular to the print bed.
+The UNO carrier STL is pre-oriented on its long solid edge so neither its pegs
+nor its PCB standoffs create floating regions; add local support only if your
+printer cannot bridge the horizontal connector details cleanly.
 
 ## Preview the system
 
