@@ -20,3 +20,10 @@ For ordinary permanent assembly, use the four stations farthest from the seam
 or corner. Use all eight when maximum strength is required.
 The Grove plaque uses its two lock stations. Press-fit-only assembly remains
 removable.
+
+## Plate mounting
+
+Use the four recessed M3 corner holes to screw one plate to a surface. For a
+double-sided assembly, place two identical plates flat-back to flat-back and
+fasten the same holes with through-bolts or reusable binding posts. Do not glue
+the plate backs together.

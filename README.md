@@ -15,9 +15,9 @@ at every occupied lock station. See `docs/ASSEMBLY.md`.
 
 The first printed set has four product categories:
 
-1. `plate_8x8` — 80×80 mm, double-sided 8×8 mounting grid.
-2. `flat_join` — a 20 mm two-column tile; use one to four to join coplanar plate edges.
-3. `angle_join` / `outer_angle_join` — 20 mm inside/outside 90° tiles; use one to four per edge.
+1. `plate_8x8` — 80×80×4 mm single-sided base with 60 ports and four mounting holes.
+2. `flat_join` — a 20 mm two-column tile; use one to three to join coplanar plate edges.
+3. `angle_join` / `outer_angle_join` — 20 mm inside/outside 90° tiles; use one to three per edge.
 4. `grove_plaque` — a generic 20 mm Grove board plaque.
 
 ## Print and calibrate
@@ -32,14 +32,15 @@ First run `./scripts/build_test_parts.sh`. Its five male samples establish
 `RM_PEG_FIT` against a nominal 2×2 female tile before you print production
 parts; see `docs/CALIBRATION.md`.
 
-Ports are blind on both plate faces, retaining a 2 mm centre membrane. The
-first release makes no water-resistance claim; validate the dry mechanical
-interface before adding seals.
+Ports face upward over a flat printable back and retain a 1 mm backing wall.
+Four recessed M3 corner holes mount one plate to a surface or fasten two
+identical plates back-to-back. The first release makes no water-resistance
+claim; validate the dry mechanical interface before adding seals.
 
 Print [VOCABULARY.svg](docs/VOCABULARY.svg) at 100% for the part names and
 connection vocabulary.
 
-Print plates face down. Print the flat join and plaque peg-side up. Angle joins
+Print plates flat-side down. Print the flat join and plaque peg-side up. Angle joins
 need local support below the peg row that is perpendicular to the print bed.
 
 ## Preview the system

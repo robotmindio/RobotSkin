@@ -1,7 +1,8 @@
 # RobotMind interface
 
-The plate is 80×80×8 mm with an 8×8, 10 mm-pitch port grid. Port centres are
-5 mm from the edges. Both faces are identical.
+The base plate is 80×80×4 mm. Its front uses an 8×8, 10 mm-pitch layout with
+the four corner ports replaced by recessed M3 mounting holes, leaving 60
+connector ports. Its back is flat for reliable printing and surface mounting.
 
 | Feature | Dimension |
 |---|---:|
@@ -9,7 +10,8 @@ The plate is 80×80×8 mm with an 8×8, 10 mm-pitch port grid. Port centres are
 | Octagonal depth | 2.2 mm |
 | Insert entry / pilot / insert | 4.6 mm × 0.8 mm / 3.7 mm × 3.0 mm / 4.0 mm OD M3×3×4 |
 | Centre boss / peg clearance | 5.6 mm diameter / 5.9 mm diameter |
-| Centre membrane | 2.0 mm |
+| Port backing wall | 1.0 mm |
+| Corner mounting holes | 3.4 mm through, 5.8 mm × 2.0 mm socket-head recess |
 | Peg root / tip | 8.3 / 7.7 mm across flats |
 | Peg depth | 2.2 mm |
 | Permanent lock | M3×6 pan-head screw, 2 mm insert engagement |
@@ -30,10 +32,14 @@ Every join is one 20 mm tile spanning two adjacent port columns. A flat tile
 has a 2×2 peg field on each plate. The inside angle is one continuous,
 geometrically symmetric L-shaped part with two identical 20 mm legs and the
 same 5/15 mm connector rows on each face. Its outer ends use the same rounded
-corners as the Grove plaque while both contact faces remain flat. One to four
-tiles span a 20–80 mm run on a single surface.
+corners as the Grove plaque while both contact faces remain flat. One to three
+tiles span a 20–60 mm run without occupying the corner mounting holes.
 
 `outer_angle_join` mounts below the floor and outside the wall. Its pegs use
-the same port dimensions but sit 13 and 23 mm from the exterior corner, rather
+the same port dimensions but sit 9 and 19 mm from the exterior corner, rather
 than the inner join's symmetric 5 and 15 mm rows.
 Like the other joins, every peg has an identical screw-clearance hole.
+
+One plate is the default product. When both faces are required, place two
+identical plates flat-back to flat-back and fasten them through the four corner
+holes; no adhesive or second plate design is required.

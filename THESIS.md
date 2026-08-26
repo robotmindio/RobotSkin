@@ -8,7 +8,8 @@ the shared dry mechanical interface passes its release gate.
 
 ## Minimum first part set
 
-1. **8×8 plate** — the sole structural surface and mounting grid.
+1. **8×8 plate** — the sole single-sided structural surface and mounting grid;
+   two identical plates may be fastened back-to-back when both faces are needed.
 2. **Flat join** — joins two plates edge-to-edge.
 3. **90° join** — joins two plates at a right angle; an explicitly approved
    exterior variant uses the same port and peg interface.

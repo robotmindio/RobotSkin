@@ -6,9 +6,13 @@ RM_PORT_FIT = 0; // positive loosens the female port and insert pilot
 RM_PEG_FIT = 0.20; // calibrated from the four-mark male coupon
 RM_PLATE = 80;
 RM_GRID = 10;
-RM_PLATE_T = 8;
+RM_PLATE_T = 4;
 RM_PORT_INSET = 5;
 RM_PORT_COUNT = 8;
+RM_MOUNT_INSET = 7.5;
+RM_MOUNT_D = 3.4;
+RM_MOUNT_HEAD_D = 5.8;
+RM_MOUNT_HEAD_DEPTH = 2;
 RM_PORT_AF = 8;
 RM_PORT_DEPTH = 2.2;
 RM_INSERT_BORE = 3.7; // pilot for a 4.0 mm-OD M3x3x4 heat-set insert
@@ -53,6 +57,11 @@ RM_TEST_INSERT_PITCH = 14;
 
 function port_position(i) = -RM_PLATE/2 + RM_PORT_INSET + i*RM_GRID;
 function port_indices() = [0:RM_PORT_COUNT-1];
+function is_corner_port(x,y) =
+  (x == 0 || x == RM_PORT_COUNT-1) &&
+  (y == 0 || y == RM_PORT_COUNT-1);
+function mount_positions() = [-RM_PLATE/2+RM_MOUNT_INSET,
+                               RM_PLATE/2-RM_MOUNT_INSET];
 function join_columns() = [for(i=[0:RM_JOIN_PORTS-1]) (i-(RM_JOIN_PORTS-1)/2)*RM_GRID];
 function flat_peg_rows() = [-RM_PORT_INSET-RM_GRID,-RM_PORT_INSET,
                              RM_PORT_INSET,RM_PORT_INSET+RM_GRID];
@@ -73,8 +82,8 @@ function test_male_x(i) = (i-(len(RM_TEST_MALE_FITS)-1)/2)*RM_TEST_PAD_PITCH;
 function test_tile_positions() = [-RM_GRID/2,RM_GRID/2];
 function test_insert_x(i) = (i-(len(RM_TEST_INSERT_BORES)-1)/2)*RM_TEST_INSERT_PITCH;
 
-assert(RM_PLATE_T - 2*RM_INSERT_DEPTH >= 2,
-       "Opposing blind insert bores need a centre membrane");
+assert(RM_PLATE_T-RM_INSERT_DEPTH >= 1,
+       "The insert bore needs at least 1 mm of backing wall");
 assert(RM_PLATE == 2*RM_PORT_INSET + (RM_PORT_COUNT-1)*RM_GRID,
        "The full plate grid must terminate at both edges");
 assert(RM_PORT_FIT >= 0 && RM_PORT_FIT <= 0.15,
@@ -118,13 +127,20 @@ module blind_port_cut(fit=RM_PORT_FIT, bore=undef) {
              d1=insert_entry_d(),d2=pilot);
 }
 
-module plate_port_cuts(top=false) {
+module plate_port_cuts() {
   for(x=port_indices(), y=port_indices())
-    if(top)
+    if(!is_corner_port(x,y))
       translate([port_position(x),port_position(y),RM_PLATE_T])
         mirror([0,0,1]) blind_port_cut();
-    else
-      translate([port_position(x),port_position(y),0]) blind_port_cut();
+}
+
+module plate_mount_cuts() {
+  for(x=mount_positions(), y=mount_positions()) {
+    translate([x,y,-RM_EPS])
+      cylinder(h=RM_PLATE_T+2*RM_EPS,d=RM_MOUNT_D);
+    translate([x,y,RM_PLATE_T-RM_MOUNT_HEAD_DEPTH])
+      cylinder(h=RM_MOUNT_HEAD_DEPTH+RM_EPS,d=RM_MOUNT_HEAD_D);
+  }
 }
 
 module plate_8x8() {
@@ -132,7 +148,7 @@ module plate_8x8() {
     translate([-RM_PLATE/2,-RM_PLATE/2,0])
       rounded_box([RM_PLATE,RM_PLATE,RM_PLATE_T],RM_PLATE_R);
     plate_port_cuts();
-    plate_port_cuts(top=true);
+    plate_mount_cuts();
   }
 }
 

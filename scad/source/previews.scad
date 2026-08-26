@@ -52,14 +52,19 @@ module flat_scene() {
 
 module angle_scene() {
   color(PLATE_COLOR) plate_8x8();
-  color(PLATE_COLOR) translate([0,40,48]) rotate([-90,0,0]) plate_8x8();
+  color(PLATE_COLOR)
+    translate([0,RM_PLATE/2+RM_PLATE_T,RM_PLATE/2+RM_PLATE_T])
+      rotate([90,0,0]) plate_8x8();
   color(JOIN_COLOR) translate([0,40,RM_PLATE_T]) angle_join();
 }
 
 module outer_angle_scene() {
   color(PLATE_COLOR) plate_8x8();
-  color(PLATE_COLOR) translate([0,40,48]) rotate([-90,0,0]) plate_8x8();
-  color(JOIN_COLOR) translate([0,48,0]) outer_angle_join();
+  color(PLATE_COLOR)
+    translate([0,RM_PLATE/2,RM_PLATE/2+RM_PLATE_T])
+      rotate([-90,0,0]) plate_8x8();
+  color(JOIN_COLOR)
+    translate([0,RM_PLATE/2+RM_PLATE_T,0]) outer_angle_join();
 }
 
 if(SCENE=="overview") overview_scene();

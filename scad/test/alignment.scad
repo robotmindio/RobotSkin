@@ -9,8 +9,13 @@ assert(flat_peg_rows() == [-15,-5,5,15],
        "Flat join must have a two-by-two field on each plate");
 assert(inner_floor_rows() == [5,15] && inner_wall_rows() == [5,15],
        "Inner angle must have a two-by-two field on each leg");
-assert(outer_floor_rows() == [13,23] && outer_wall_rows() == [13,23],
+assert(outer_floor_rows() == [9,19] && outer_wall_rows() == [9,19],
        "Outer angle must land on exterior floor and wall ports");
+assert(len([for(x=port_indices(), y=port_indices())
+              if(!is_corner_port(x,y)) 1]) == 60,
+       "The single-sided plate must retain 60 connector ports");
+assert(mount_positions() == [-32.5,32.5],
+       "Mount holes must clear the rounded plate corners and adjacent ports");
 assert([for(row=inner_floor_rows()) RM_PLATE/2-row] == [edge_ports[7],edge_ports[6]],
        "Inner floor pegs must meet the floor edge ports");
 assert(inner_wall_rows() == inner_floor_rows(),
