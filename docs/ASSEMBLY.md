@@ -44,7 +44,8 @@ tag card gently under the four corner tabs; no adhesive is required.
 ## UNO-format carrier
 
 Install four standard M3×3×4 heat-set inserts into the standoff tops. Attach
-the empty carrier to four plate ports, lower the UNO-format board onto the
+the empty carrier to its four hidden plate ports first, then lower the
+UNO-format board onto the
 standoffs, and retain it with four M3×4 pan-head screws. Do not use M3×6 here:
 after passing through a 1.6 mm PCB it can bottom beyond the 3 mm insert.
 

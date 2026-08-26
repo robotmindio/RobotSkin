@@ -54,8 +54,8 @@ RM_UNO_HOLES = [[14,2.54],[66.04,7.62],[66.04,35.56],[15.24,50.8]];
 RM_UNO_BORDER = 4;
 RM_UNO_STANDOFF_H = 5;
 RM_UNO_STANDOFF_D = 7;
-RM_UNO_LOCK_X = 25;
-RM_UNO_LOCK_Y = 35;
+RM_UNO_LOCK_X = 15;
+RM_UNO_LOCK_Y = 15;
 
 // Calibration-part standard.
 RM_TEST_MALE_FITS = [0,0.05,0.10,0.15,0.20];
@@ -522,8 +522,12 @@ module uno_carrier() {
       }
       for(position=holes) uno_standoff(position);
       for(position=locks) {
-        translate([position[0],position[1],0])
-          cylinder(h=RM_CARRIER_T,d=RM_GRID);
+        linear_extrude(height=RM_CARRIER_T) hull() {
+          translate([position[0],position[1]]) circle(d=RM_GRID);
+          translate([(position[0] < 0 ? -1 : 1)*
+                     (RM_UNO_SIZE[0]/2+RM_UNO_BORDER/2),position[1]])
+            circle(d=RM_UNO_BORDER);
+        }
         translate([position[0],position[1],0]) connector_peg();
       }
     }

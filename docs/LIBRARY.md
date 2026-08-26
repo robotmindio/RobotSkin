@@ -41,7 +41,7 @@ points.
 
 `uno_carrier()` follows the official 68.58×53.34 mm UNO outline and asymmetric
 four-hole pattern. The open frame leaves connectors and underside pins clear;
-four RobotMind locks remain outside the board footprint.
+four symmetric RobotMind locks remain hidden below the board.
 
 `apriltag_holder()` accepts a square size or `[width,height]` and retains the
 printed card between four corner shelves and tabs. Its two M3 stations are

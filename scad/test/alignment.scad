@@ -25,6 +25,9 @@ uno_holes = centred_points(RM_UNO_HOLES,RM_UNO_SIZE);
 assert(near(uno_holes[0][0],-20.29) && near(uno_holes[0][1],-24.13) &&
        near(uno_holes[2][0],31.75) && near(uno_holes[2][1],8.89),
        "UNO mounting holes must retain the official asymmetric layout");
+assert(RM_UNO_LOCK_X+RM_GRID/2 < RM_UNO_SIZE[0]/2 &&
+       RM_UNO_LOCK_Y+RM_GRID/2 < RM_UNO_SIZE[1]/2,
+       "UNO RobotMind locks must remain hidden below the board");
 assert(RM_TEST_MALE_FITS == [0,0.05,0.10,0.15,0.20],
        "Tolerance coupon must retain its documented five male fits");
 assert(RM_TEST_INSERT_BORES == [3.75,3.80,3.85,3.90,3.95],
