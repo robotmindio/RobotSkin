@@ -341,8 +341,8 @@ module outer_angle_join(width_ports=2,depth_ports=2,plate_t=RM_PLATE_T) {
 }
 
 module pcb_standoff(position) {
-  translate([position[0],position[1],RM_CARRIER_T])
-    cylinder(h=RM_GROVE_STANDOFF_H,d=RM_GROVE_STANDOFF_D);
+  translate([position[0],position[1],RM_CARRIER_T-RM_EPS])
+    cylinder(h=RM_GROVE_STANDOFF_H+RM_EPS,d=RM_GROVE_STANDOFF_D);
 }
 
 // Grove carrier. Board width is 20 or 40 mm; length is 20, 40, or 60 mm.
@@ -496,12 +496,14 @@ module grove_cable_clip() {
 }
 
 module uno_standoff(position,cut=false) {
-  translate([position[0],position[1],RM_CARRIER_T])
-    if(cut)
-      translate([0,0,RM_UNO_STANDOFF_H]) mirror([0,0,1])
+  if(cut)
+    translate([position[0],position[1],
+               RM_CARRIER_T+RM_UNO_STANDOFF_H])
+      mirror([0,0,1])
         heat_set_insert_cut();
-    else
-      cylinder(h=RM_UNO_STANDOFF_H,d=RM_UNO_STANDOFF_D);
+  else
+    translate([position[0],position[1],RM_CARRIER_T-RM_EPS])
+      cylinder(h=RM_UNO_STANDOFF_H+RM_EPS,d=RM_UNO_STANDOFF_D);
 }
 
 module uno_carrier() {
