@@ -1,7 +1,9 @@
 # RobotMind interface
 
-The base plate is 80×80×4 mm with a full 8×8, 10 mm-pitch port grid. Its back
-is flat for reliable printing and surface mounting.
+The production base plate is `plate(8,8)`: 80×80×4 mm with a full 8×8,
+10 mm-pitch port grid. The library derives other plate dimensions from the
+same grid standard. Every plate back is flat for reliable printing and surface
+mounting.
 
 | Feature | Dimension |
 |---|---:|

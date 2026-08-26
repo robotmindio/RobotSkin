@@ -1,2 +1,2 @@
-include <../source/rm_system.scad>
+include <../lib/robotmind.scad>
 grove_plaque();

@@ -1,2 +1,2 @@
-include <../source/rm_system.scad>
-plate_8x8();
+include <../lib/robotmind.scad>
+plate(8,8);

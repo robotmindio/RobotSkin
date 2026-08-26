@@ -3,9 +3,9 @@
 RobotMind has one connection rule: an annular blind octagonal port accepts a
 hollow octagonal peg around its centre boss.
 
-`scad/source/rm_system.scad` is the single source of truth: all dimensions,
-the interface, and every part definition live there. `scad/parts/` contains
-only export entry points; the build discovers them automatically.
+`scad/lib/robotmind.scad` is the reusable design library and single source of
+truth. `scad/parts/` contains only export entry points; the build discovers
+them automatically. See `docs/LIBRARY.md` for the public API and hierarchy.
 Press parts together by hand; install M3×3×4 heat-set inserts and M3×6 screws
 through any peg centre when the joint must be permanent.
 
@@ -21,6 +21,15 @@ The first printed set has four product categories:
 4. `grove_plaque` — a generic 20 mm Grove board plaque.
 
 ## Print and calibrate
+
+Create compatible geometry directly from port counts:
+
+```scad
+include <scad/lib/robotmind.scad>
+
+plate(8,8);
+// plate(4,6); // same interface, 40×60 mm
+```
 
 ```bash
 ./scripts/build.sh

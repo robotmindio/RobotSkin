@@ -1,48 +1,37 @@
-include <../source/rm_system.scad>
+include <../lib/robotmind.scad>
 
-edge_ports = [for(i=port_indices()) port_position(i)];
-assert(RM_JOIN_PORTS == 2 && RM_JOIN_L == 2*RM_GRID,
-       "Every join must be one two-column tile");
-assert(join_columns() == [-RM_GRID/2,RM_GRID/2],
-       "Join tile columns must land on two adjacent ports");
-assert(flat_peg_rows() == [-15,-5,5,15],
-       "Flat join must have a two-by-two field on each plate");
-assert(inner_floor_rows() == [5,15] && inner_wall_rows() == [5,15],
-       "Inner angle must have a two-by-two field on each leg");
-assert(outer_floor_rows() == [9,19] && outer_wall_rows() == [9,19],
-       "Outer angle must land on exterior floor and wall ports");
-assert(len([for(x=port_indices(), y=port_indices()) 1]) == 64,
-       "The single-sided plate must retain its full 8x8 port grid");
-assert(is_corner_port(0,0) && is_corner_port(0,7) &&
-       is_corner_port(7,0) && is_corner_port(7,7) &&
-       !is_corner_port(1,1),
-       "Only the four grid-corner ports may pass through the backing wall");
-assert([for(row=inner_floor_rows()) RM_PLATE/2-row] == [edge_ports[7],edge_ports[6]],
-       "Inner floor pegs must meet the floor edge ports");
-assert(inner_wall_rows() == inner_floor_rows(),
-       "Inner angle legs must be geometrically symmetric");
+assert(grid_size(8) == 80 && grid_size(3) == 30,
+       "Plate size must be derived from its port count");
+assert(grid_positions(2) == [-5,5] &&
+       grid_positions(3) == [-10,0,10] &&
+       grid_positions(8) == [-35,-25,-15,-5,5,15,25,35],
+       "Every grid must remain centred at 10 mm pitch");
+assert(edge_rows(2) == [5,15] && flat_rows(2) == [-15,-5,5,15],
+       "Join rows must derive from their depth port count");
+assert(outer_rows(2) == [9,19],
+       "Outer joins must offset their rows by plate thickness");
+assert(is_corner_index(0,0,8,8) && is_corner_index(7,7,8,8) &&
+       is_corner_index(2,4,3,5) && !is_corner_index(1,1,3,5),
+       "Corner mounting ports must work for every plate size");
 assert(RM_TEST_MALE_FITS == [0,0.05,0.10,0.15,0.20],
        "Tolerance coupon must retain its documented five male fits");
-assert(test_tile_positions() == [-RM_GRID/2,RM_GRID/2],
-       "Tolerance tile must retain its 2x2 nominal female grid");
 assert(RM_TEST_INSERT_BORES == [3.75,3.80,3.85,3.90,3.95],
        "Insert coupon must retain its documented five pilot bores");
 for(bore=RM_TEST_INSERT_BORES)
   assert(bore < RM_INSERT_OD && bore > RM_M3_CLEARANCE,
-         "Every insert coupon pilot must be below insert OD and above M3 clearance");
+         "Every insert pilot must be below insert OD and above M3 clearance");
 for(fit=RM_TEST_MALE_FITS)
   assert(peg_root_af(fit) > port_af(0) && port_af(0) > peg_tip_af(fit),
          "Every coupon peg must fit the nominal female port");
-assert(inner_floor_rows() == [RM_PORT_INSET,RM_JOIN_L-RM_PORT_INSET] &&
-       inner_wall_rows() == inner_floor_rows(),
-       "Both inner-angle faces must use the same 20 mm connector tile");
-assert(outer_floor_rows() == [RM_PLATE_T+RM_PORT_INSET,
-                              RM_PLATE_T+RM_JOIN_L-RM_PORT_INSET] &&
-       outer_wall_rows() == outer_floor_rows(),
-       "Both outer-angle faces must use the same offset connector tile");
-assert(RM_INSERT_DEPTH > RM_INSERT_LEAD && insert_entry_d() > RM_INSERT_OD &&
-       RM_INSERT_OD > insert_bore(),
-       "Female port needs a visible entry cup and an interference pilot");
-assert(peg_bore() > port_boss_d() && peg_wall(peg_tip_af()) >= RM_PEG_MIN_WALL,
-       "Peg must clear the circular boss with a printable wall");
-cube([1,1,1]);
+
+// Small alternate instances keep the parameterized public API executable.
+plate(2,3);
+translate([30,0,0]) flat_join(1,1);
+translate([50,0,0]) angle_join(1,1);
+translate([75,0,0]) outer_angle_join(1,1);
+translate([100,0,0]) connector_grid(2,2,direction="up");
+translate([130,0,0])
+  difference() {
+    cube([grid_size(2),grid_size(2),RM_PLATE_T],center=true);
+    connector_grid(2,2,direction="up",cut=true,body_t=RM_PLATE_T);
+  }

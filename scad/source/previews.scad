@@ -1,4 +1,4 @@
-include <rm_system.scad>
+include <../lib/robotmind.scad>
 
 SCENE = "overview"; // overview, port, flat, angle, outer_angle
 assert(SCENE=="overview" || SCENE=="port" || SCENE=="flat" || SCENE=="angle" ||
@@ -15,7 +15,7 @@ module insert_demo() {
 }
 
 module overview_scene() {
-  color(PLATE_COLOR) translate([-55,0,0]) plate_8x8();
+  color(PLATE_COLOR) translate([-55,0,0]) plate(8,8);
   color(JOIN_COLOR) translate([45,-30,0]) flat_join();
   color(JOIN_COLOR) translate([45,35,0]) angle_join();
   color(JOIN_COLOR) translate([145,30,0]) outer_angle_join();
@@ -27,7 +27,7 @@ module port_scene() {
   color(PLATE_COLOR) intersection() {
     difference() {
       translate([-10,-10,0]) rounded_box([20,20,RM_PLATE_T],2);
-      translate([0,0,RM_PLATE_T]) mirror([0,0,1]) blind_port_cut();
+      translate([0,0,RM_PLATE_T]) mirror([0,0,1]) port_cut();
     }
     translate([-10,0,-RM_EPS]) cube([20,10,RM_PLATE_T+2*RM_EPS]);
   }
@@ -35,9 +35,9 @@ module port_scene() {
     difference() {
       union() {
         translate([-8,-8,RM_PLATE_T]) rounded_box([16,16,RM_JOIN_T],2);
-        translate([0,0,RM_PLATE_T]) downward_peg();
+        translate([0,0,RM_PLATE_T]) connector_peg();
       }
-      translate([0,0,RM_PLATE_T]) top_screw_cut();
+      translate([0,0,RM_PLATE_T]) connector_screw_cut();
     }
     translate([-10,0,-RM_EPS]) cube([20,10,RM_PLATE_T+RM_JOIN_T+2*RM_EPS]);
   }
@@ -45,26 +45,28 @@ module port_scene() {
 }
 
 module flat_scene() {
-  color(PLATE_COLOR) translate([0,-40,0]) plate_8x8();
-  color(PLATE_COLOR) translate([0,40,0]) plate_8x8();
+  color(PLATE_COLOR) translate([0,-40,0]) plate(8,8);
+  color(PLATE_COLOR) translate([0,40,0]) plate(8,8);
   color(JOIN_COLOR) translate([0,0,RM_PLATE_T]) flat_join();
 }
 
 module angle_scene() {
-  color(PLATE_COLOR) plate_8x8();
+  plate_size = grid_size(8);
+  color(PLATE_COLOR) plate(8,8);
   color(PLATE_COLOR)
-    translate([0,RM_PLATE/2+RM_PLATE_T,RM_PLATE/2+RM_PLATE_T])
-      rotate([90,0,0]) plate_8x8();
-  color(JOIN_COLOR) translate([0,40,RM_PLATE_T]) angle_join();
+    translate([0,plate_size/2+RM_PLATE_T,plate_size/2+RM_PLATE_T])
+      rotate([90,0,0]) plate(8,8);
+  color(JOIN_COLOR) translate([0,plate_size/2,RM_PLATE_T]) angle_join();
 }
 
 module outer_angle_scene() {
-  color(PLATE_COLOR) plate_8x8();
+  plate_size = grid_size(8);
+  color(PLATE_COLOR) plate(8,8);
   color(PLATE_COLOR)
-    translate([0,RM_PLATE/2,RM_PLATE/2+RM_PLATE_T])
-      rotate([-90,0,0]) plate_8x8();
+    translate([0,plate_size/2,plate_size/2+RM_PLATE_T])
+      rotate([-90,0,0]) plate(8,8);
   color(JOIN_COLOR)
-    translate([0,RM_PLATE/2+RM_PLATE_T,0]) outer_angle_join();
+    translate([0,plate_size/2+RM_PLATE_T,0]) outer_angle_join();
 }
 
 if(SCENE=="overview") overview_scene();
