@@ -529,18 +529,6 @@ module uno_standoff(position,cut=false) {
       cylinder(h=RM_UNO_STANDOFF_H+RM_EPS,d=RM_UNO_STANDOFF_D);
 }
 
-module uno_standoff_bridge(position,outer) {
-  if(abs(position[0]) > abs(position[1])) {
-    edge = position[0] < 0 ? -outer[0]/2 : outer[0]/2;
-    translate([min(position[0],edge),position[1]-RM_UNO_BORDER/2,0])
-      cube([abs(edge-position[0]),RM_UNO_BORDER,RM_CARRIER_T]);
-  } else {
-    edge = position[1] < 0 ? -outer[1]/2 : outer[1]/2;
-    translate([position[0]-RM_UNO_BORDER/2,min(position[1],edge),0])
-      cube([RM_UNO_BORDER,abs(edge-position[1]),RM_CARRIER_T]);
-  }
-}
-
 module uno_carrier() {
   holes = centred_points(RM_UNO_HOLES,RM_UNO_SIZE);
   outer = [RM_UNO_SIZE[0]+2*RM_UNO_BORDER,
@@ -549,22 +537,10 @@ module uno_carrier() {
                y=[-RM_UNO_LOCK_Y,RM_UNO_LOCK_Y]) [x,y]];
   difference() {
     union() {
-      difference() {
-        translate([-outer[0]/2,-outer[1]/2,0])
-          rounded_box([outer[0],outer[1],RM_CARRIER_T],RM_ADAPTER_R);
-        translate([-RM_UNO_SIZE[0]/2,-RM_UNO_SIZE[1]/2,-RM_EPS])
-          cube([RM_UNO_SIZE[0],RM_UNO_SIZE[1],RM_CARRIER_T+2*RM_EPS]);
-      }
-      for(position=holes) {
-        uno_standoff(position);
-        uno_standoff_bridge(position,outer);
-      }
-      for(y=[-RM_UNO_LOCK_Y,RM_UNO_LOCK_Y])
-        translate([-outer[0]/2,y-RM_UNO_BORDER/2,0])
-          cube([outer[0],RM_UNO_BORDER,RM_CARRIER_T]);
+      translate([-outer[0]/2,-outer[1]/2,0])
+        rounded_box([outer[0],outer[1],RM_CARRIER_T],RM_ADAPTER_R);
+      for(position=holes) uno_standoff(position);
       for(position=locks) {
-        translate([position[0],position[1],0])
-          cylinder(h=RM_CARRIER_T,d=RM_GRID);
         translate([position[0],position[1],0]) connector_peg();
       }
     }

@@ -43,10 +43,8 @@ The repository exports all five documented combinations as production entry
 points.
 
 `uno_carrier()` follows the official 68.58×53.34 mm UNO outline and asymmetric
-four-hole pattern. Its orthogonal skeleton uses a continuous perimeter and two
-straight grid-aligned crossbars; only the four standoff locations carry the
-board's unavoidable asymmetry, each attached by the shortest orthogonal bridge
-to the perimeter. Four symmetric RobotMind locks remain hidden below the board.
+four-hole pattern. Its main body is one continuous flat plate interrupted only
+by screw paths. Four symmetric RobotMind locks remain hidden below the board.
 
 `apriltag_holder()` accepts a square size or `[width,height]` and retains the
 printed card between four corner shelves and tabs. Its two M3 stations are
