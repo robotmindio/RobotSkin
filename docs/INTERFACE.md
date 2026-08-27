@@ -13,6 +13,7 @@ mounting.
 | Centre boss / peg clearance | 5.6 mm diameter / 5.9 mm diameter |
 | Port backing wall | 1.0 mm |
 | Corner mounting ports | Standard port plus 3.4 mm M3 clearance through backing wall |
+| Through-plate ports | Standard port plus 3.4 mm M3 clearance through every backing wall |
 | Peg root / tip | 8.3 / 7.7 mm across flats |
 | Peg depth | 2.2 mm |
 | Permanent lock | M3×6 pan-head screw, 2 mm insert engagement |
@@ -59,6 +60,10 @@ peg and heat-set insert or an M3 pan-head mounting screw through the plate.
 One plate is the default product. When both faces are required, place two
 identical plates flat-back to flat-back and fasten them through the four corner
 ports; no adhesive or second plate design is required.
+
+`through_plate(columns,rows)` is the mounting-oriented variant: every grid
+station remains a standard RobotMind port while its M3 centre continues through
+the full plate. The production exports are 5×3 (50×30 mm) and 5×8 (50×80 mm).
 
 The Grove carrier keeps its two RobotMind lock stations outside the PCB
 footprint. The PCB sits 3 mm above the carrier on four bosses and is retained

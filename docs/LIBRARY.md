@@ -15,6 +15,7 @@ standards
 
 ```scad
 plate(columns, rows);
+through_plate(columns, rows);
 flat_join(width_ports=2, depth_ports=2);
 angle_join(width_ports=2, depth_ports=2);
 outer_angle_join(width_ports=2, depth_ports=2, plate_t=RM_PLATE_T);
@@ -29,6 +30,8 @@ uno_carrier();
 
 `plate()` requires integer dimensions of at least 2×2. Width and height are
 derived as `count × RM_GRID`; the four corner ports receive the M3 through bore.
+`through_plate()` uses the same dimensions and identical octagonal ports, but
+continues the 3.4 mm M3 centre path through the backing wall at every station.
 Join counts control their connector field without changing the shared port,
 peg, hardware, or fit standard.
 
@@ -62,6 +65,7 @@ connector_screw_cut(direction="down", body_t=RM_JOIN_T);
 plate_body(columns, rows);
 plate_port_cuts(columns, rows);
 plate_corner_through_cuts(columns, rows);
+plate_all_through_cuts(columns, rows);
 join_panel(width, min_row, max_row);
 join_leg(width, length);
 pcb_standoff(position);

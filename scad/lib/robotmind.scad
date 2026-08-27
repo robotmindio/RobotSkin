@@ -239,6 +239,12 @@ module plate_corner_through_cuts(columns,rows) {
         cylinder(h=RM_PLATE_T+2*RM_EPS,d=RM_M3_CLEARANCE);
 }
 
+module plate_all_through_cuts(columns,rows) {
+  for(x=grid_positions(columns),y=grid_positions(rows))
+    translate([x,y,-RM_EPS])
+      cylinder(h=RM_PLATE_T+2*RM_EPS,d=RM_M3_CLEARANCE);
+}
+
 // Public plate: dimensions are port counts, not millimetres.
 module plate(columns,rows) {
   assert(columns >= 2 && rows >= 2 &&
@@ -248,6 +254,18 @@ module plate(columns,rows) {
     plate_body(columns,rows);
     plate_port_cuts(columns,rows);
     plate_corner_through_cuts(columns,rows);
+  }
+}
+
+// Plate with an M3 clearance path through every otherwise standard port.
+module through_plate(columns,rows) {
+  assert(columns >= 2 && rows >= 2 &&
+         columns == floor(columns) && rows == floor(rows),
+         "Through-plate dimensions must be integers of at least 2x2");
+  difference() {
+    plate_body(columns,rows);
+    plate_port_cuts(columns,rows);
+    plate_all_through_cuts(columns,rows);
   }
 }
 

@@ -43,6 +43,8 @@ for(fit=RM_TEST_MALE_FITS)
 
 // Small alternate instances keep the parameterized public API executable.
 plate(2,3);
+translate([0,50,0]) through_plate(5,3);
+translate([0,100,0]) through_plate(5,8);
 translate([30,0,0]) flat_join(1,1);
 translate([50,0,0]) angle_join(1,1);
 translate([75,0,0]) outer_angle_join(1,1);
