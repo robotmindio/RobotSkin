@@ -29,7 +29,7 @@ is not a safety component. A production release requires every gate in
 | RM-PF-2020-A | `profile_2020_adapter.stl` | A | 20-series slot-6 adapter |
 | RM-DN-TH35-A | `din_rail_adapter.stl` | A | TH35 end-slide adapter |
 | RM-CC-GRV1-A | `grove_cable_clip.stl` | A | Grove cable clip |
-| RM-PC-UNO3-A | `uno_carrier.stl` | A | UNO R3-form-factor carrier |
+| RM-PC-UNO3-B | `uno_carrier.stl` | B | Orthogonal UNO R3-form-factor carrier |
 
 ## Authoritative hardware BOM
 

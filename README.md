@@ -28,7 +28,8 @@ The production set contains:
 7. `profile_2020_adapter` — two RobotMind ports mounted with two M5 T-nuts.
 8. `din_rail_adapter` — four RobotMind ports on an end-slide TH35 rail mount.
 9. `grove_cable_clip` — a single-station retainer for flat Grove cable.
-10. `uno_carrier` — an open carrier for the standard asymmetric UNO hole layout.
+10. `uno_carrier` — an orthogonal open-frame carrier for the standard
+    asymmetric UNO hole layout.
 11. `through_plate_5x3` / `through_plate_5x8` — full port grids with an M3
     clearance path through every station.
 
