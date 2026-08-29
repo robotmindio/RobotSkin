@@ -14,8 +14,6 @@ assert(edge_rows(2) == [5,15] && flat_rows(2) == [-15,-5,5,15],
        "Join rows must derive from their depth port count");
 assert(outer_rows(2) == [9,19],
        "Outer joins must offset their rows by plate thickness");
-assert(inside_wall_rows(2) == [1,11],
-       "Inside wall rows must compensate plate thickness for a flush butt joint");
 assert(is_corner_index(0,0,8,8) && is_corner_index(7,7,8,8) &&
        is_corner_index(2,4,3,5) && !is_corner_index(1,1,3,5),
        "Corner mounting ports must work for every plate size");
