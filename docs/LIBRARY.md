@@ -17,7 +17,7 @@ standards
 plate(columns, rows, thickness=RM_PLATE_T);
 through_plate(columns, rows, thickness=RM_PLATE_T);
 h25t_horn_plate_3x3(thickness=2*RM_PLATE_T,
-                     hub_pattern=RM_H25T_HUB_PATTERN);
+                     hub_radius=RM_STS3215_HUB_RADIUS);
 h25t_port_cube_3x3();
 flat_join(width_ports=2, depth_ports=2);
 angle_join(width_ports=2, depth_ports=2);
@@ -40,12 +40,12 @@ Join counts control their connector field without changing the shared port,
 peg, hardware, or fit standard.
 
 `h25t_horn_plate_3x3()` is an 8 mm, 30×30 mm servo adapter. It reserves its
-four corner-port locations for a 16 mm square 4×M3 horn/hub pattern, leaves a
-counterbored M3 centre path for the supplied horn screw, and keeps four
-cardinal RobotSkin ports. It attaches to a purchased H25T metal horn/hub; it
-does not print a servo spline.
+four cardinal stations for the STS3215/LeRobot H25T horn's 4×M3 pattern at
+7 mm radius, leaves a counterbored M3 centre path for the shaft screw, and
+keeps four corner RobotSkin ports. It attaches to the supplied horn; it does
+not print a servo spline.
 
-`h25t_port_cube_3x3()` mates to those four cardinal ports with lower pegs and
+`h25t_port_cube_3x3()` mates to those four corner ports with lower pegs and
 provides a 30 mm cube with 3×3 RobotSkin female ports on its other five faces.
 The four lower peg screw paths continue to matching top ports, so all four
 locks remain accessible from above.

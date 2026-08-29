@@ -34,7 +34,7 @@ RM_GROVE_M2_5_PILOT_D = 2.1;
 RM_GROVE_M2_5_PILOT_DEPTH = 5;
 RM_ADAPTER_R = 3;
 RM_M3_HEAD_CLEARANCE_D = 6.2;
-RM_H25T_HUB_PATTERN = 16;
+RM_STS3215_HUB_RADIUS = 7;
 RM_H25T_HUB_HOLE_D = RM_M3_CLEARANCE;
 RM_H25T_HUB_COUNTERBORE_DEPTH = 3;
 RM_M5_CLEARANCE_D = 5.5;
@@ -276,39 +276,40 @@ module through_plate(columns,rows,thickness=RM_PLATE_T) {
   }
 }
 
-// 3x3, 8 mm plate for an H25T metal horn/hub with a 16 mm, 4xM3 pattern.
-// The four hub screws replace the corner ports.  The centre is a clear,
+// 3x3, 8 mm plate for the LeRobot STS3215 H25T horn.  Its 4xM3 horn holes
+// sit 7 mm from the centre, so the four corner stations remain RobotSkin.
+// The centre is a clear,
 // counterbored path for the horn's supplied shaft screw; the four cardinal
-// stations retain the standard RobotSkin female interface.
+// stations are reserved for the horn hardware.
 module h25t_horn_plate_3x3(thickness=2*RM_PLATE_T,
-                            hub_pattern=RM_H25T_HUB_PATTERN) {
+                            hub_radius=RM_STS3215_HUB_RADIUS) {
   assert(thickness >= 2*RM_PLATE_T,
          "The H25T horn plate requires 8 mm thickness");
-  assert(hub_pattern > 0 && hub_pattern < 2*RM_GRID,
-         "H25T hub pattern must fit inside the 3x3 plate");
+  assert(hub_radius > 0 && hub_radius < RM_GRID,
+         "STS3215 horn radius must fit inside the 3x3 plate");
   difference() {
     plate_body(3,3,thickness);
     for(x=grid_positions(3),y=grid_positions(3))
-      if((x == 0 || y == 0) && !(x == 0 && y == 0))
+      if(x != 0 && y != 0)
         translate([x,y,thickness]) mirror([0,0,1]) port_cut();
     translate([0,0,-RM_EPS])
       cylinder(h=thickness+2*RM_EPS,d=RM_M3_CLEARANCE);
     translate([0,0,thickness-RM_H25T_HUB_COUNTERBORE_DEPTH])
       cylinder(h=RM_H25T_HUB_COUNTERBORE_DEPTH+RM_EPS,
                d=RM_M3_HEAD_CLEARANCE_D);
-    for(x=[-hub_pattern/2,hub_pattern/2],
-        y=[-hub_pattern/2,hub_pattern/2]) {
-      translate([x,y,-RM_EPS])
+    for(angle=[0:90:270])
+      rotate([0,0,angle]) translate([hub_radius,0,0]) {
+      translate([0,0,-RM_EPS])
         cylinder(h=thickness+2*RM_EPS,d=RM_H25T_HUB_HOLE_D);
-      translate([x,y,thickness-RM_H25T_HUB_COUNTERBORE_DEPTH])
+      translate([0,0,thickness-RM_H25T_HUB_COUNTERBORE_DEPTH])
         cylinder(h=RM_H25T_HUB_COUNTERBORE_DEPTH+RM_EPS,
                  d=RM_M3_HEAD_CLEARANCE_D);
-    }
+      }
   }
 }
 
 // Single-print 30 mm cube for the H25T horn plate.  Four lower pegs mate to
-// its cardinal ports; their M3 paths continue to the matching top ports so
+// its corner ports; their M3 paths continue to the matching top ports so
 // the cube can be locked after the horn's centre screw is installed.
 module h25t_port_cube_3x3() {
   size = grid_size(3);
@@ -317,7 +318,7 @@ module h25t_port_cube_3x3() {
       translate([-size/2,-size/2,0])
         rounded_box([size,size,size],RM_PLATE_R);
       for(x=grid_positions(3),y=grid_positions(3))
-        if((x == 0 && y != 0) || (x != 0 && y == 0))
+        if(x != 0 && y != 0)
           translate([x,y,0]) connector_peg();
     }
     // Top face.
@@ -333,7 +334,7 @@ module h25t_port_cube_3x3() {
       translate([size/2,y,z+size/2]) rotate([0,90,0]) port_cut();
     }
     for(x=grid_positions(3),y=grid_positions(3))
-      if((x == 0 && y != 0) || (x != 0 && y == 0))
+      if(x != 0 && y != 0)
         translate([x,y,0]) connector_screw_cut(body_t=size);
   }
 }
