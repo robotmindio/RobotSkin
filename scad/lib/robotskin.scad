@@ -64,6 +64,7 @@ RM_LD06_HOLE_D = 2.4;
 RM_LD06_HOLE_SPACING = 28.2;
 RM_LD06_INSERT_BORE = 3.7;
 RM_LD06_INSERT_DEPTH = 3.5;
+RM_LEKIWI_CORNER_R = 7.5;
 
 // Calibration-part standard.
 RM_TEST_MALE_FITS = [0,0.05,0.10,0.15,0.20];
@@ -281,30 +282,38 @@ module through_plate(columns,rows,thickness=RM_PLATE_T) {
 
 // LeKiwi top plate: 3x5 RobotSkin end, flat LD06 end, and wheel clearance.
 module lekiwi_lidar_base(ld06_hole_d=RM_LD06_HOLE_D,
-                         ld06_insert_bore=RM_LD06_INSERT_BORE) {
+                         ld06_insert_bore=RM_LD06_INSERT_BORE,
+                         corner_r=RM_LEKIWI_CORNER_R) {
   assert(ld06_hole_d >= 2 && ld06_hole_d <= 3,
          "LD06 M2 clearance must stay within 2..3 mm");
   assert(ld06_insert_bore > ld06_hole_d && ld06_insert_bore < 4,
          "LD06 insert bore must clear M2 and remain below the 4 mm insert OD");
   assert(2*RM_LD06_INSERT_DEPTH < 2*RM_PLATE_T,
          "Opposed LD06 inserts must retain a centre wall");
+  assert(corner_r >= RM_GRID/2 && corner_r < RM_GRID,
+         "LeKiwi corner radius must stay within 5..<10 mm");
   difference() {
     union() {
       translate([0,0,RM_PLATE_T])
         linear_extrude(height=2*RM_PLATE_T)
-          offset(r=RM_GRID/2) offset(delta=-RM_GRID/2)
+          offset(r=corner_r) offset(delta=-corner_r)
             polygon([[-40,-25],[40,-25],[40,15],[-10,15],
                      [-10,25],[-40,25]]);
       translate([-40,-25,0])
-        rounded_box([30,50,RM_PLATE_T],RM_GRID/2);
+        rounded_box([30,50,RM_PLATE_T],corner_r);
     }
     for(x=[-35,-25,-15,-5],y=grid_positions(5))
-      if(x != -5 || y != 20)
+      if((x != -5 || y != 20) &&
+         !((x == -35 || x == -15) && (y == -20 || y == 20)))
         translate([x,y,3*RM_PLATE_T]) mirror([0,0,1]) port_cut();
     for(x=[-35,-25,-15,-5],y=grid_positions(5))
       if(x != -5 || y != 20)
         translate([x,y,-RM_EPS])
           cylinder(h=3*RM_PLATE_T+2*RM_EPS,d=RM_M3_CLEARANCE);
+    for(x=[-35,-15],y=[-20,20])
+      translate([x,y,3*RM_PLATE_T-RM_LOCK_SCREW_LENGTH])
+        cylinder(h=RM_LOCK_SCREW_LENGTH+RM_EPS,
+                 d=RM_M3_HEAD_CLEARANCE_D);
     for(side=[-1,1]) {
       position = [20+side*RM_LD06_HOLE_SPACING/2,
                   -5+side*RM_LD06_HOLE_SPACING/2];
