@@ -308,11 +308,12 @@ module h25t_horn_plate_3x3(thickness=2*RM_PLATE_T,
   }
 }
 
-// Single-print 30 mm end-effector hub for the H25T drive plate.  Four lower
-// pegs locate it in the plate's corner ports.  Four M3x35 screws enter through
-// the matching top ports and lock into the plate's heat-set inserts.
+// Single-print 40 mm end-effector hub for the H25T drive plate.  Its 30 mm
+// 3x3 port grids are inset 5 mm from every edge so perpendicular ports do not
+// intersect.  Four lower pegs locate it in the plate's corner ports; four
+// M3x45 screws enter through the matching top ports and lock into the plate.
 module h25t_port_cube_3x3() {
-  size = grid_size(3);
+  size = grid_size(3)+RM_GRID;
   difference() {
     union() {
       translate([-size/2,-size/2,0])
@@ -326,12 +327,12 @@ module h25t_port_cube_3x3() {
       translate([x,y,size]) mirror([0,0,1]) port_cut();
     // Front, back, left, and right faces; Z uses the same 3x3 grid.
     for(x=grid_positions(3),z=grid_positions(3)) {
-      translate([x,-size/2,z+size/2]) rotate([90,0,0]) port_cut();
-      translate([x,size/2,z+size/2]) rotate([-90,0,0]) port_cut();
+      translate([x,-size/2,z+size/2]) rotate([-90,0,0]) port_cut();
+      translate([x,size/2,z+size/2]) rotate([90,0,0]) port_cut();
     }
     for(y=grid_positions(3),z=grid_positions(3)) {
-      translate([-size/2,y,z+size/2]) rotate([0,-90,0]) port_cut();
-      translate([size/2,y,z+size/2]) rotate([0,90,0]) port_cut();
+      translate([-size/2,y,z+size/2]) rotate([0,90,0]) port_cut();
+      translate([size/2,y,z+size/2]) rotate([0,-90,0]) port_cut();
     }
     for(x=grid_positions(3),y=grid_positions(3))
       if(x != 0 && y != 0)
