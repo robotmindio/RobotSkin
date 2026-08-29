@@ -68,7 +68,7 @@ standoff insert after passing through a 1.6 mm PCB.
 | Tripod adapter | V0.1 plate | 1/4-20 tripod screw | Maximum 4.5 mm screw entry into adapter |
 | AprilTag holder | V0.1 plate | 50×50 mm printed card | No optical-range claim; print tag at exact scale |
 | Cable clip | V0.1 plate | 7.5 mm nominal flat Grove cable | Verify cable jacket compression before repeated use |
-| H25T drive plate | Four V0.1 corner female ports with M3-through paths | STS3215/LeRobot H25T horn, 4×M3 at 7 mm radius | Install the supplied centre screw before attaching the plate |
+| H25T drive plate | Four V0.1 corner female ports with M3-through paths | STS3215/LeRobot H25T horn, 4×M3 at 7 mm radius | All five horn screws install from the port face |
 | H25T end-effector hub | H25T drive plate | Five top ports plus two ports on each vertical face | Four 22 mm corner M3 access bores lock into the drive plate |
 
 Compatibility means nominal mechanical geometry only until the applicable

@@ -310,8 +310,7 @@ module lekiwi_lidar_base(ld06_hole_d=RM_LD06_HOLE_D) {
 
 // 3x3 drive plate for the LeRobot STS3215 H25T horn.  Its 4xM3 horn holes
 // sit 7 mm from the centre, so the four corner stations remain RobotSkin.
-// The underside pocket clears the horn's centre-screw head; install that
-// supplied screw before bolting this plate to the horn.
+// All five horn screws install from the port face.
 module h25t_horn_plate_3x3(thickness=2*RM_PLATE_T,
                             hub_radius=RM_STS3215_HUB_RADIUS) {
   assert(thickness >= 2*RM_PLATE_T,
@@ -326,7 +325,7 @@ module h25t_horn_plate_3x3(thickness=2*RM_PLATE_T,
     plate_corner_through_cuts(3,3,thickness);
     translate([0,0,-RM_EPS])
       cylinder(h=thickness+2*RM_EPS,d=RM_M3_CLEARANCE);
-    translate([0,0,-RM_EPS])
+    translate([0,0,thickness-RM_H25T_HUB_COUNTERBORE_DEPTH])
       cylinder(h=RM_H25T_HUB_COUNTERBORE_DEPTH+RM_EPS,
                d=RM_M3_HEAD_CLEARANCE_D);
     for(angle=[0:90:270])

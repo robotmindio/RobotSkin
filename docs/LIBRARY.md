@@ -41,9 +41,9 @@ peg, hardware, or fit standard.
 
 `h25t_horn_plate_3x3()` is an 8 mm, 30×30 mm STS3215 drive plate. It reserves its
 four cardinal stations for the STS3215/LeRobot H25T horn's 4×M3 pattern at
-7 mm radius, clears the horn's centre-screw head from below, and keeps four
-corner RobotSkin ports with M3-through paths. Install the supplied centre
-screw before fastening the drive plate; it does not print a servo spline.
+7 mm radius and keeps four corner RobotSkin ports with M3-through paths. The
+centre screw and four surrounding horn screws all install from the port face;
+the plate does not print a servo spline.
 
 `h25t_port_cube_3x3()` mates to those four corner ports with lower pegs and
 provides a 30×30×30 mm hub. Its centre and four top edge-centre stations are

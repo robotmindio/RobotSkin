@@ -48,10 +48,9 @@ tag card gently under the four corner tabs; no adhesive is required.
   rail end. It is not a front-snap clip.
 - `grove_cable_clip`: fasten or press its single peg first, then press the flat
   cable through the narrowed opening.
-- `h25t_horn_plate_3x3`: install the supplied M3×6 centre screw in the
-  STS3215 H25T horn first. Its head sits in the underside pocket of the drive
-  plate. Bolt the plate to the horn through the four M3 holes at 7 mm radius,
-  using four M3×8 pan-head screws.
+- `h25t_horn_plate_3x3`: place the plate on the STS3215 H25T horn, then install
+  the supplied M3×6 centre screw and four M3×8 pan-head screws from the port
+  face. The surrounding screws use the four holes at 7 mm radius.
 - `h25t_port_cube_3x3`: heat-set inserts in the drive plate's four corner
   ports, press in the hub's four lower pegs, then lock them through the recessed
   top-corner M3 access bores. Remove these four screws to service the horn
