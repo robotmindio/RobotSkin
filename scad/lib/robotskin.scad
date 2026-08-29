@@ -277,8 +277,9 @@ module through_plate(columns,rows,thickness=RM_PLATE_T) {
 }
 
 // 3x3, 8 mm plate for an H25T metal horn/hub with a 16 mm, 4xM3 pattern.
-// The four hub screws replace the corner ports; the five remaining stations
-// retain the standard RobotSkin female interface.
+// The four hub screws replace the corner ports.  The centre is a clear,
+// counterbored path for the horn's supplied shaft screw; the four cardinal
+// stations retain the standard RobotSkin female interface.
 module h25t_horn_plate_3x3(thickness=2*RM_PLATE_T,
                             hub_pattern=RM_H25T_HUB_PATTERN) {
   assert(thickness >= 2*RM_PLATE_T,
@@ -288,8 +289,13 @@ module h25t_horn_plate_3x3(thickness=2*RM_PLATE_T,
   difference() {
     plate_body(3,3,thickness);
     for(x=grid_positions(3),y=grid_positions(3))
-      if(x == 0 || y == 0)
+      if((x == 0 || y == 0) && !(x == 0 && y == 0))
         translate([x,y,thickness]) mirror([0,0,1]) port_cut();
+    translate([0,0,-RM_EPS])
+      cylinder(h=thickness+2*RM_EPS,d=RM_M3_CLEARANCE);
+    translate([0,0,thickness-RM_H25T_HUB_COUNTERBORE_DEPTH])
+      cylinder(h=RM_H25T_HUB_COUNTERBORE_DEPTH+RM_EPS,
+               d=RM_M3_HEAD_CLEARANCE_D);
     for(x=[-hub_pattern/2,hub_pattern/2],
         y=[-hub_pattern/2,hub_pattern/2]) {
       translate([x,y,-RM_EPS])
@@ -298,6 +304,37 @@ module h25t_horn_plate_3x3(thickness=2*RM_PLATE_T,
         cylinder(h=RM_H25T_HUB_COUNTERBORE_DEPTH+RM_EPS,
                  d=RM_M3_HEAD_CLEARANCE_D);
     }
+  }
+}
+
+// Single-print 30 mm cube for the H25T horn plate.  Four lower pegs mate to
+// its cardinal ports; their M3 paths continue to the matching top ports so
+// the cube can be locked after the horn's centre screw is installed.
+module h25t_port_cube_3x3() {
+  size = grid_size(3);
+  difference() {
+    union() {
+      translate([-size/2,-size/2,0])
+        rounded_box([size,size,size],RM_PLATE_R);
+      for(x=grid_positions(3),y=grid_positions(3))
+        if((x == 0 && y != 0) || (x != 0 && y == 0))
+          translate([x,y,0]) connector_peg();
+    }
+    // Top face.
+    for(x=grid_positions(3),y=grid_positions(3))
+      translate([x,y,size]) mirror([0,0,1]) port_cut();
+    // Front, back, left, and right faces; Z uses the same 3x3 grid.
+    for(x=grid_positions(3),z=grid_positions(3)) {
+      translate([x,-size/2,z+size/2]) rotate([90,0,0]) port_cut();
+      translate([x,size/2,z+size/2]) rotate([-90,0,0]) port_cut();
+    }
+    for(y=grid_positions(3),z=grid_positions(3)) {
+      translate([-size/2,y,z+size/2]) rotate([0,-90,0]) port_cut();
+      translate([size/2,y,z+size/2]) rotate([0,90,0]) port_cut();
+    }
+    for(x=grid_positions(3),y=grid_positions(3))
+      if((x == 0 && y != 0) || (x != 0 && y == 0))
+        translate([x,y,0]) connector_screw_cut(body_t=size);
   }
 }
 

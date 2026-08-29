@@ -4,6 +4,8 @@ assert(grid_size(8) == 80 && grid_size(3) == 30,
        "Plate size must be derived from its port count");
 assert(2*RM_PLATE_T == 8 && RM_H25T_HUB_PATTERN == 16,
        "The H25T horn plate must remain a double-thickness 3x3 interface");
+assert(grid_size(3) == 30 && RM_M3_CLEARANCE < RM_INSERT_BORE,
+       "The H25T cube must retain its 30 mm body and M3 lock paths");
 assert(grid_positions(2) == [-5,5] &&
        grid_positions(3) == [-10,0,10] &&
        grid_positions(8) == [-35,-25,-15,-5,5,15,25,35],
@@ -47,6 +49,7 @@ for(fit=RM_TEST_MALE_FITS)
 plate(2,3);
 translate([0,-50,0]) plate(3,3,thickness=2*RM_PLATE_T);
 translate([50,-50,0]) h25t_horn_plate_3x3();
+translate([100,-50,0]) h25t_port_cube_3x3();
 translate([0,50,0]) through_plate(5,3);
 translate([0,100,0]) through_plate(5,8);
 translate([30,0,0]) flat_join(1,1);

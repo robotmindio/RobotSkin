@@ -30,7 +30,8 @@ is not a safety component. A production release requires every gate in
 | RM-DN-TH35-A | `din_rail_adapter.stl` | A | TH35 end-slide adapter |
 | RM-CC-GRV1-A | `grove_cable_clip.stl` | A | Grove cable clip |
 | RM-PC-UNO3-C | `uno_carrier.stl` | C | Solid UNO R3-form-factor carrier |
-| RM-SV-H25T-A | `h25t_horn_plate_3x3.stl` | A | H25T 16 mm-hub to 3×3 plate adapter |
+| RM-SV-H25T-B | `h25t_horn_plate_3x3.stl` | B | H25T 16 mm-hub to four-port plate adapter with centre screw path |
+| RM-SV-H25C-A | `h25t_port_cube_3x3.stl` | A | H25T plate to five-face 3×3 RobotSkin port cube |
 
 ## Authoritative hardware BOM
 
@@ -66,7 +67,8 @@ standoff insert after passing through a 1.6 mm PCB.
 | Tripod adapter | V0.1 plate | 1/4-20 tripod screw | Maximum 4.5 mm screw entry into adapter |
 | AprilTag holder | V0.1 plate | 50×50 mm printed card | No optical-range claim; print tag at exact scale |
 | Cable clip | V0.1 plate | 7.5 mm nominal flat Grove cable | Verify cable jacket compression before repeated use |
-| H25T horn plate | Five V0.1 female ports | H25T metal horn/hub, 16 mm square 4×M3 pattern | Verify supplied horn pattern; 25T spline alone is insufficient |
+| H25T horn plate | Four V0.1 female ports + centre screw path | H25T metal horn/hub, 16 mm square 4×M3 pattern | Verify supplied horn pattern; 25T spline alone is insufficient |
+| H25T port cube | H25T horn plate | Five 3×3 V0.1 female port faces | Install the horn's centre screw before locking the cube |
 
 Compatibility means nominal mechanical geometry only until the applicable
 qualification record in `QUALITY.md` is complete.

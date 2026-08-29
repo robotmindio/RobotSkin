@@ -50,7 +50,12 @@ tag card gently under the four corner tabs; no adhesive is required.
   cable through the narrowed opening.
 - `h25t_horn_plate_3x3`: bolt the flat side to an H25T metal horn/hub with a
   16 mm square, 4×M3 threaded pattern using four M3×8 pan-head screws. Then
-  mount the horn to the servo using its manufacturer-supplied centre screw.
+  mount the horn to the servo using its manufacturer-supplied centre screw
+  through the plate's counterbored centre hole.
+- `h25t_port_cube_3x3`: after the centre screw is installed, press its four
+  lower pegs into the horn plate's cardinal ports. Heat-set inserts in those
+  four ports, then drive four M3×6 screws down through the matching top ports
+  of the cube.
 
 ## UNO-format carrier
 
