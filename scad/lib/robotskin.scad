@@ -62,6 +62,8 @@ RM_UNO_LOCK_X = 15;
 RM_UNO_LOCK_Y = 15;
 RM_LD06_HOLE_D = 2.4;
 RM_LD06_HOLE_SPACING = 28.2;
+RM_LD06_INSERT_BORE = 3.7;
+RM_LD06_INSERT_DEPTH = 3.5;
 
 // Calibration-part standard.
 RM_TEST_MALE_FITS = [0,0.05,0.10,0.15,0.20];
@@ -140,10 +142,10 @@ module hexagonal_prism(height,af) {
   cylinder(h=height,d=af/cos(30),$fn=6);
 }
 
-// Heat-set insert pocket. Subtract downward from an exposed face.
-module heat_set_insert_cut(bore=RM_INSERT_BORE) {
+// Heat-set insert pocket. Orient inward from the exposed face.
+module heat_set_insert_cut(bore=RM_INSERT_BORE,depth=RM_INSERT_DEPTH) {
   translate([0,0,-RM_EPS])
-    cylinder(h=RM_INSERT_DEPTH+RM_EPS,d=bore);
+    cylinder(h=depth+RM_EPS,d=bore);
   translate([0,0,-RM_EPS])
     cylinder(h=RM_INSERT_LEAD+RM_EPS,d1=insert_entry_d(),d2=bore);
 }
@@ -278,9 +280,14 @@ module through_plate(columns,rows,thickness=RM_PLATE_T) {
 }
 
 // LeKiwi top plate: 3x5 RobotSkin end, flat LD06 end, and wheel clearance.
-module lekiwi_lidar_base(ld06_hole_d=RM_LD06_HOLE_D) {
+module lekiwi_lidar_base(ld06_hole_d=RM_LD06_HOLE_D,
+                         ld06_insert_bore=RM_LD06_INSERT_BORE) {
   assert(ld06_hole_d >= 2 && ld06_hole_d <= 3,
          "LD06 M2 clearance must stay within 2..3 mm");
+  assert(ld06_insert_bore > ld06_hole_d && ld06_insert_bore < 4,
+         "LD06 insert bore must clear M2 and remain below the 4 mm insert OD");
+  assert(2*RM_LD06_INSERT_DEPTH < 2*RM_PLATE_T,
+         "Opposed LD06 inserts must retain a centre wall");
   difference() {
     union() {
       translate([0,0,RM_PLATE_T])
@@ -298,11 +305,16 @@ module lekiwi_lidar_base(ld06_hole_d=RM_LD06_HOLE_D) {
       if(x != -5 || y != 20)
         translate([x,y,-RM_EPS])
           cylinder(h=3*RM_PLATE_T+2*RM_EPS,d=RM_M3_CLEARANCE);
-    for(side=[-1,1])
-      translate([20+side*RM_LD06_HOLE_SPACING/2,
-                 -5+side*RM_LD06_HOLE_SPACING/2,
-                 RM_PLATE_T-RM_EPS])
+    for(side=[-1,1]) {
+      position = [20+side*RM_LD06_HOLE_SPACING/2,
+                  -5+side*RM_LD06_HOLE_SPACING/2];
+      translate([position[0],position[1],RM_PLATE_T-RM_EPS])
         cylinder(h=2*RM_PLATE_T+2*RM_EPS,d=ld06_hole_d);
+      translate([position[0],position[1],RM_PLATE_T])
+        heat_set_insert_cut(ld06_insert_bore,RM_LD06_INSERT_DEPTH);
+      translate([position[0],position[1],3*RM_PLATE_T]) mirror([0,0,1])
+        heat_set_insert_cut(ld06_insert_bore,RM_LD06_INSERT_DEPTH);
+    }
   }
 }
 
