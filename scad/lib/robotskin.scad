@@ -59,6 +59,9 @@ RM_UNO_STANDOFF_H = 5;
 RM_UNO_STANDOFF_D = 7;
 RM_UNO_LOCK_X = 15;
 RM_UNO_LOCK_Y = 15;
+RM_LD06_HOLE_D = 2.4;
+RM_LD06_HOLE_SPACING = 31.4;
+RM_LD06_HOLE_Y = -15.7;
 
 // Calibration-part standard.
 RM_TEST_MALE_FITS = [0,0.05,0.10,0.15,0.20];
@@ -273,6 +276,26 @@ module through_plate(columns,rows,thickness=RM_PLATE_T) {
     plate_body(columns,rows,thickness);
     plate_port_cuts(columns,rows,thickness);
     plate_all_through_cuts(columns,rows,thickness);
+  }
+}
+
+// LeKiwi top plate: 3x5 RobotSkin end, flat LD06 end, and wheel clearance.
+module lekiwi_lidar_base(ld06_hole_d=RM_LD06_HOLE_D) {
+  assert(ld06_hole_d >= 2 && ld06_hole_d <= 3,
+         "LD06 M2 clearance must stay within 2..3 mm");
+  difference() {
+    linear_extrude(height=RM_PLATE_T)
+      offset(r=RM_ADAPTER_R) offset(delta=-RM_ADAPTER_R)
+        polygon([[-40,-25],[-10,-25],[-10,-15],[40,-15],
+                 [40,25],[-40,25]]);
+    for(x=[-35,-25,-15],y=grid_positions(5))
+      translate([x,y,RM_PLATE_T]) mirror([0,0,1]) port_cut();
+    for(x=[-35,-25,-15],y=grid_positions(5))
+      translate([x,y,-RM_EPS])
+        cylinder(h=RM_PLATE_T+2*RM_EPS,d=RM_M3_CLEARANCE);
+    for(x=[15-RM_LD06_HOLE_SPACING/2,15+RM_LD06_HOLE_SPACING/2])
+      translate([x,5+RM_LD06_HOLE_Y,-RM_EPS])
+        cylinder(h=RM_PLATE_T+2*RM_EPS,d=ld06_hole_d);
   }
 }
 
