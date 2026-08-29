@@ -14,8 +14,10 @@ standards
 ## Finished parts
 
 ```scad
-plate(columns, rows);
-through_plate(columns, rows);
+plate(columns, rows, thickness=RM_PLATE_T);
+through_plate(columns, rows, thickness=RM_PLATE_T);
+h25t_horn_plate_3x3(thickness=2*RM_PLATE_T,
+                     hub_pattern=RM_H25T_HUB_PATTERN);
 flat_join(width_ports=2, depth_ports=2);
 angle_join(width_ports=2, depth_ports=2);
 outer_angle_join(width_ports=2, depth_ports=2, plate_t=RM_PLATE_T);
@@ -29,11 +31,17 @@ uno_carrier();
 ```
 
 `plate()` requires integer dimensions of at least 2×2. Width and height are
-derived as `count × RM_GRID`; the four corner ports receive the M3 through bore.
+derived as `count × RM_GRID`; `thickness` defaults to 4 mm and may be increased
+for custom structural plates. The four corner ports receive the M3 through bore.
 `through_plate()` uses the same dimensions and identical octagonal ports, but
 continues the 3.4 mm M3 centre path through the backing wall at every station.
 Join counts control their connector field without changing the shared port,
 peg, hardware, or fit standard.
+
+`h25t_horn_plate_3x3()` is an 8 mm, 30×30 mm servo adapter. It reserves its
+four corner-port locations for a 16 mm square 4×M3 horn/hub pattern and keeps
+the centre plus four cardinal RobotSkin ports. It attaches to a purchased H25T
+metal horn/hub; it does not print a servo spline.
 
 `grove_carrier()` accepts the documented Grove board families: widths of 20 or
 40 mm and lengths of 20, 40, or 60 mm. Its RobotSkin M3 lock stations remain

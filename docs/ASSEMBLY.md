@@ -26,6 +26,11 @@ the carrier first, then place the board on its four standoffs and drive M2.5
 thread-forming screws into the blind pilots from above. The M3 locks remain
 accessible without removing the board. Press-fit-only assembly remains removable.
 
+The large rectangular opening between the Grove standoffs is only PCB and
+connector clearance: leave it empty. Do not heat-set an insert in that opening
+or in the carrier. The brass M3 inserts belong exclusively in the matching
+female ports of the RobotSkin plate.
+
 ## AprilTag holder
 
 Attach the empty frame through its two exposed M3 stations. Flex the printed
@@ -43,6 +48,9 @@ tag card gently under the four corner tabs; no adhesive is required.
   rail end. It is not a front-snap clip.
 - `grove_cable_clip`: fasten or press its single peg first, then press the flat
   cable through the narrowed opening.
+- `h25t_horn_plate_3x3`: bolt the flat side to an H25T metal horn/hub with a
+  16 mm square, 4×M3 threaded pattern using four M3×8 pan-head screws. Then
+  mount the horn to the servo using its manufacturer-supplied centre screw.
 
 ## UNO-format carrier
 

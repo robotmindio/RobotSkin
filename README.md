@@ -23,7 +23,7 @@ custom enclosure every time.
 - **Electronics:** Grove sensor carriers, a cable clip, and a solid UNO-format
   carrier.
 - **Mounting adapters:** AprilTag, camera-tripod, 20-series extrusion, and TH35
-  DIN rail adapters.
+  DIN rail adapters, plus an H25T servo-horn plate.
 
 <p align="center">
   <img src="docs/assets/uno-carrier.png" alt="UNO-format carrier on a RobotSkin plate" width="48%">
@@ -76,6 +76,7 @@ include <scad/lib/robotskin.scad>
 
 plate(8, 8);  // 80 × 80 mm
 plate(5, 3);  // 50 × 30 mm
+plate(3, 3, thickness=8);  // double-thickness custom plate
 ```
 
 The public component API and mechanical rules are documented in

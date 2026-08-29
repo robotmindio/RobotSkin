@@ -34,6 +34,9 @@ RM_GROVE_M2_5_PILOT_D = 2.1;
 RM_GROVE_M2_5_PILOT_DEPTH = 5;
 RM_ADAPTER_R = 3;
 RM_M3_HEAD_CLEARANCE_D = 6.2;
+RM_H25T_HUB_PATTERN = 16;
+RM_H25T_HUB_HOLE_D = RM_M3_CLEARANCE;
+RM_H25T_HUB_COUNTERBORE_DEPTH = 3;
 RM_M5_CLEARANCE_D = 5.5;
 RM_TAG_BORDER = 3;
 RM_TAG_CARD_T = 0.4;
@@ -219,53 +222,82 @@ module connector_grid(columns,rows,direction="down",cut=false,
 }
 
 // Plate components.
-module plate_body(columns,rows) {
+module plate_body(columns,rows,thickness=RM_PLATE_T) {
   translate([-grid_size(columns)/2,-grid_size(rows)/2,0])
-    rounded_box([grid_size(columns),grid_size(rows),RM_PLATE_T],RM_PLATE_R);
+    rounded_box([grid_size(columns),grid_size(rows),thickness],RM_PLATE_R);
 }
 
-module plate_port_cuts(columns,rows) {
+module plate_port_cuts(columns,rows,thickness=RM_PLATE_T) {
   for(column=[0:columns-1],row=[0:rows-1])
     translate([grid_positions(columns)[column],
-               grid_positions(rows)[row],RM_PLATE_T])
+               grid_positions(rows)[row],thickness])
       mirror([0,0,1]) port_cut();
 }
 
-module plate_corner_through_cuts(columns,rows) {
+module plate_corner_through_cuts(columns,rows,thickness=RM_PLATE_T) {
   for(column=[0:columns-1],row=[0:rows-1])
     if(is_corner_index(column,row,columns,rows))
       translate([grid_positions(columns)[column],grid_positions(rows)[row],
                  -RM_EPS])
-        cylinder(h=RM_PLATE_T+2*RM_EPS,d=RM_M3_CLEARANCE);
+        cylinder(h=thickness+2*RM_EPS,d=RM_M3_CLEARANCE);
 }
 
-module plate_all_through_cuts(columns,rows) {
+module plate_all_through_cuts(columns,rows,thickness=RM_PLATE_T) {
   for(x=grid_positions(columns),y=grid_positions(rows))
     translate([x,y,-RM_EPS])
-      cylinder(h=RM_PLATE_T+2*RM_EPS,d=RM_M3_CLEARANCE);
+      cylinder(h=thickness+2*RM_EPS,d=RM_M3_CLEARANCE);
 }
 
 // Public plate: dimensions are port counts, not millimetres.
-module plate(columns,rows) {
+module plate(columns,rows,thickness=RM_PLATE_T) {
   assert(columns >= 2 && rows >= 2 &&
          columns == floor(columns) && rows == floor(rows),
          "Plate dimensions must be integers of at least 2x2");
+  assert(thickness >= RM_PLATE_T,
+         "Plate thickness must retain the 4 mm interface minimum");
   difference() {
-    plate_body(columns,rows);
-    plate_port_cuts(columns,rows);
-    plate_corner_through_cuts(columns,rows);
+    plate_body(columns,rows,thickness);
+    plate_port_cuts(columns,rows,thickness);
+    plate_corner_through_cuts(columns,rows,thickness);
   }
 }
 
 // Plate with an M3 clearance path through every otherwise standard port.
-module through_plate(columns,rows) {
+module through_plate(columns,rows,thickness=RM_PLATE_T) {
   assert(columns >= 2 && rows >= 2 &&
          columns == floor(columns) && rows == floor(rows),
          "Through-plate dimensions must be integers of at least 2x2");
+  assert(thickness >= RM_PLATE_T,
+         "Plate thickness must retain the 4 mm interface minimum");
   difference() {
-    plate_body(columns,rows);
-    plate_port_cuts(columns,rows);
-    plate_all_through_cuts(columns,rows);
+    plate_body(columns,rows,thickness);
+    plate_port_cuts(columns,rows,thickness);
+    plate_all_through_cuts(columns,rows,thickness);
+  }
+}
+
+// 3x3, 8 mm plate for an H25T metal horn/hub with a 16 mm, 4xM3 pattern.
+// The four hub screws replace the corner ports; the five remaining stations
+// retain the standard RobotSkin female interface.
+module h25t_horn_plate_3x3(thickness=2*RM_PLATE_T,
+                            hub_pattern=RM_H25T_HUB_PATTERN) {
+  assert(thickness >= 2*RM_PLATE_T,
+         "The H25T horn plate requires 8 mm thickness");
+  assert(hub_pattern > 0 && hub_pattern < 2*RM_GRID,
+         "H25T hub pattern must fit inside the 3x3 plate");
+  difference() {
+    plate_body(3,3,thickness);
+    for(x=grid_positions(3),y=grid_positions(3))
+      if(x == 0 || y == 0)
+        translate([x,y,thickness]) mirror([0,0,1]) port_cut();
+    for(x=[-hub_pattern/2,hub_pattern/2],
+        y=[-hub_pattern/2,hub_pattern/2]) {
+      translate([x,y,-RM_EPS])
+        cylinder(h=thickness+2*RM_EPS,d=RM_H25T_HUB_HOLE_D);
+      translate([x,y,thickness-RM_H25T_HUB_COUNTERBORE_DEPTH])
+        cylinder(h=RM_H25T_HUB_COUNTERBORE_DEPTH+RM_EPS,
+                 d=RM_M3_HEAD_CLEARANCE_D);
+    }
   }
 }
 

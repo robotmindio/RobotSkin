@@ -30,6 +30,7 @@ is not a safety component. A production release requires every gate in
 | RM-DN-TH35-A | `din_rail_adapter.stl` | A | TH35 end-slide adapter |
 | RM-CC-GRV1-A | `grove_cable_clip.stl` | A | Grove cable clip |
 | RM-PC-UNO3-C | `uno_carrier.stl` | C | Solid UNO R3-form-factor carrier |
+| RM-SV-H25T-A | `h25t_horn_plate_3x3.stl` | A | H25T 16 mm-hub to 3×3 plate adapter |
 
 ## Authoritative hardware BOM
 
@@ -42,6 +43,8 @@ dimension and material requirement is met.
 | HW-INS-M3-334 | Heat-set insert, M3 female, 3 mm long, 4.0 mm OD | RobotSkin port; UNO standoff | 1 per lock |
 | HW-SCR-M3X6-PH | M3×6 pan-head machine screw | Standard RobotSkin lock | 1 per lock |
 | HW-SCR-M3X4-PH | M3×4 pan-head machine screw | UNO PCB | 4 |
+| HW-SCR-M3X8-PH | M3×8 pan-head machine screw | H25T horn plate | 4 |
+| HW-HUB-H25T-16-4M3 | H25T metal horn/hub, 16 mm square 4×M3 threaded pattern | H25T horn plate | 1 |
 | HW-SCR-M25X6-TF | M2.5×6 thread-forming screw for plastic | Grove PCB | 4 |
 | HW-NUT-1420-HX | 1/4-20 hex nut, 11.3 mm maximum across flats, 5.8 mm maximum thick | Tripod adapter | 1 |
 | HW-SCR-M5-PH | M5 screw sized for extrusion engagement | 2020 adapter | 2 |
@@ -63,6 +66,7 @@ standoff insert after passing through a 1.6 mm PCB.
 | Tripod adapter | V0.1 plate | 1/4-20 tripod screw | Maximum 4.5 mm screw entry into adapter |
 | AprilTag holder | V0.1 plate | 50×50 mm printed card | No optical-range claim; print tag at exact scale |
 | Cable clip | V0.1 plate | 7.5 mm nominal flat Grove cable | Verify cable jacket compression before repeated use |
+| H25T horn plate | Five V0.1 female ports | H25T metal horn/hub, 16 mm square 4×M3 pattern | Verify supplied horn pattern; 25T spline alone is insufficient |
 
 Compatibility means nominal mechanical geometry only until the applicable
 qualification record in `QUALITY.md` is complete.
