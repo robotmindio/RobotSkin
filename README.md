@@ -1,14 +1,22 @@
 # RobotSkin
 
-RobotSkin is a printable, screw-lockable skin for electronics, sensors, and
-small robotics. Start with a plate, add an adapter or carrier, and reuse the
-same 10 mm connector grid throughout.
+<p align="center">
+  <img src="docs/assets/hero-grove.png" alt="A Grove sensor carrier locked to a RobotSkin plate" width="760">
+</p>
 
-It is an OpenSCAD design library plus ready-to-print STL exports. The current
-V0.1 release is engineering hardware: print and test a calibration part before
-committing to a larger build.
+**Print a mechanical skin for your electronics.** RobotSkin turns sensors,
+microcontrollers, cameras, and mounting surfaces into one reusable building
+system. Print a plate, add a carrier or adapter, and lock the result with the
+same 10 mm connector grid.
 
-## What you can build today
+It is an OpenSCAD design library with ready-to-print STL exports—made for FDM
+printers, prototypes that change, and projects that should not need a new
+custom enclosure every time.
+
+> **V0.1 is engineering hardware.** Print the calibration part before a larger
+> build; the interface is reusable, but it is not yet load-rated.
+
+## One interface, many jobs
 
 - **Structural surfaces:** 8×8 plates and smaller full-through mounting plates.
 - **Structures:** flat, inner-corner, and outer-corner joins.
@@ -17,10 +25,18 @@ committing to a larger build.
 - **Mounting adapters:** AprilTag, camera-tripod, 20-series extrusion, and TH35
   DIN rail adapters.
 
+<p align="center">
+  <img src="docs/assets/uno-carrier.png" alt="UNO-format carrier on a RobotSkin plate" width="48%">
+  <img src="docs/assets/adapters.png" alt="RobotSkin mounting adapters" width="48%">
+</p>
+
 Every part shares the same connector: a blind octagonal port accepts a hollow
 octagonal peg. Press it together for a temporary fit; for a permanent joint,
 install an M3×3×4 heat-set insert in the plate port and fasten it through the
 peg centre with an M3×6 pan-head screw.
+
+That means a Grove carrier, a DIN mount, and a tripod adapter all attach to the
+same plate without inventing another mechanical standard.
 
 ## Start here
 
