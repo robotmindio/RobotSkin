@@ -53,9 +53,9 @@ tag card gently under the four corner tabs; no adhesive is required.
   plate. Bolt the plate to the horn through the four M3 holes at 7 mm radius,
   using four M3×8 pan-head screws.
 - `h25t_port_cube_3x3`: heat-set inserts in the drive plate's four corner
-  ports, press in the hub's four lower pegs, then drive four M3×35 pan-head
-  screws through the matching top-corner ports. Remove these four screws to
-  service the horn centre screw.
+  ports, press in the hub's four lower pegs, then lock them through the recessed
+  top-corner M3 access bores. Remove these four screws to service the horn
+  centre screw.
 
 ## UNO-format carrier
 

@@ -45,7 +45,7 @@ dimension and material requirement is met.
 | HW-SCR-M3X6-PH | M3×6 pan-head machine screw | Standard RobotSkin lock | 1 per lock |
 | HW-SCR-M3X4-PH | M3×4 pan-head machine screw | UNO PCB | 4 |
 | HW-SCR-M3X8-PH | M3×8 pan-head machine screw | H25T horn plate | 4 |
-| HW-SCR-M3X35-PH | M3×35 pan-head machine screw | H25T end-effector hub lock | 4 |
+| HW-SCR-M3X10-PH | M3×10 pan-head machine screw | H25T end-effector hub lock | 4 |
 | HW-HUB-STS3215-H25T | Supplied STS3215 H25T horn, 4×M3 at 7 mm radius | H25T horn plate | 1 |
 | HW-SCR-M25X6-TF | M2.5×6 thread-forming screw for plastic | Grove PCB | 4 |
 | HW-NUT-1420-HX | 1/4-20 hex nut, 11.3 mm maximum across flats, 5.8 mm maximum thick | Tripod adapter | 1 |
@@ -69,7 +69,7 @@ standoff insert after passing through a 1.6 mm PCB.
 | AprilTag holder | V0.1 plate | 50×50 mm printed card | No optical-range claim; print tag at exact scale |
 | Cable clip | V0.1 plate | 7.5 mm nominal flat Grove cable | Verify cable jacket compression before repeated use |
 | H25T drive plate | Four V0.1 corner female ports with M3-through paths | STS3215/LeRobot H25T horn, 4×M3 at 7 mm radius | Install the supplied centre screw before attaching the plate |
-| H25T end-effector hub | H25T drive plate | Five top ports plus three ports on each vertical face | Flat edge-centre top stations prevent port intersections; four M3×35 locks enter from the top corners |
+| H25T end-effector hub | H25T drive plate | Four top ports plus two ports on each vertical face | Five 22 mm top M3 access bores; four corner paths lock into the drive plate |
 
 Compatibility means nominal mechanical geometry only until the applicable
 qualification record in `QUALITY.md` is complete.

@@ -37,6 +37,7 @@ RM_M3_HEAD_CLEARANCE_D = 6.2;
 RM_STS3215_HUB_RADIUS = 7;
 RM_H25T_HUB_HOLE_D = RM_M3_CLEARANCE;
 RM_H25T_HUB_COUNTERBORE_DEPTH = 3;
+RM_H25T_CUBE_ACCESS_DEPTH = 22;
 RM_M5_CLEARANCE_D = 5.5;
 RM_TAG_BORDER = 3;
 RM_TAG_CARD_T = 0.4;
@@ -339,11 +340,11 @@ module h25t_horn_plate_3x3(thickness=2*RM_PLATE_T,
   }
 }
 
-// Single-print 30x30 mm end-effector hub for the H25T drive plate.  The top
-// has five ports (centre plus corners); each vertical face has its central
-// vertical line of three full ports.  Four M3x35 screws lock the hub.
+// Single-print 30x30 mm end-effector hub for the H25T drive plate.
 module h25t_port_cube_3x3() {
   size = grid_size(3);
+  assert(RM_H25T_CUBE_ACCESS_DEPTH < size,
+         "H25T screw access bores must retain a structural floor");
   difference() {
     union() {
       translate([-size/2,-size/2,0])
@@ -354,24 +355,30 @@ module h25t_port_cube_3x3() {
     }
     // Top face.
     for(x=grid_positions(3),y=grid_positions(3))
-      if((x == 0 && y == 0) || (x != 0 && y != 0))
+      if((x == 0) != (y == 0))
         translate([x,y,size]) mirror([0,0,1]) port_cut();
-    // Front, back, left, and right faces; Z uses the same 3x3 grid.
+    // Deep access for the five M3 paths at the centre and corners.
+    for(x=grid_positions(3),y=grid_positions(3))
+      if((x == 0 && y == 0) || (x != 0 && y != 0)) {
+        translate([x,y,-RM_PORT_DEPTH-RM_EPS])
+          cylinder(h=size+RM_PORT_DEPTH+2*RM_EPS,d=RM_M3_CLEARANCE);
+        translate([x,y,size-RM_H25T_CUBE_ACCESS_DEPTH])
+          cylinder(h=RM_H25T_CUBE_ACCESS_DEPTH+RM_EPS,
+                   d=RM_M3_HEAD_CLEARANCE_D);
+      }
+    // The upper side stations stay flat to clear the new top ports.
     for(x=grid_positions(3),z=grid_positions(3)) {
-      if(x == 0) {
+      if(x == 0 && z != 10) {
         translate([x,-size/2,z+size/2]) rotate([-90,0,0]) port_cut();
         translate([x,size/2,z+size/2]) rotate([90,0,0]) port_cut();
       }
     }
     for(y=grid_positions(3),z=grid_positions(3)) {
-      if(y == 0) {
+      if(y == 0 && z != 10) {
         translate([-size/2,y,z+size/2]) rotate([0,90,0]) port_cut();
         translate([size/2,y,z+size/2]) rotate([0,-90,0]) port_cut();
       }
     }
-    for(x=grid_positions(3),y=grid_positions(3))
-      if(x != 0 && y != 0)
-        translate([x,y,0]) connector_screw_cut(body_t=size);
   }
 }
 
