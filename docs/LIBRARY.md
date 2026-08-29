@@ -39,16 +39,17 @@ continues the 3.4 mm M3 centre path through the backing wall at every station.
 Join counts control their connector field without changing the shared port,
 peg, hardware, or fit standard.
 
-`h25t_horn_plate_3x3()` is an 8 mm, 30×30 mm servo adapter. It reserves its
+`h25t_horn_plate_3x3()` is an 8 mm, 30×30 mm STS3215 drive plate. It reserves its
 four cardinal stations for the STS3215/LeRobot H25T horn's 4×M3 pattern at
-7 mm radius, leaves a counterbored M3 centre path for the shaft screw, and
-keeps four corner RobotSkin ports. It attaches to the supplied horn; it does
-not print a servo spline.
+7 mm radius, clears the horn's centre-screw head from below, and keeps four
+corner RobotSkin ports with M3-through paths. Install the supplied centre
+screw before fastening the drive plate; it does not print a servo spline.
 
 `h25t_port_cube_3x3()` mates to those four corner ports with lower pegs and
 provides a 30 mm cube with 3×3 RobotSkin female ports on its other five faces.
-The four lower peg screw paths continue to matching top ports, so all four
-locks remain accessible from above.
+The four lower peg screw paths continue to matching top-corner ports. Lock the
+hub using four M3×35 pan-head screws from above into heat-set inserts in the
+drive plate; the pegs locate the joint and the screws carry it.
 
 `grove_carrier()` accepts the documented Grove board families: widths of 20 or
 40 mm and lengths of 20, 40, or 60 mm. Its RobotSkin M3 lock stations remain

@@ -276,11 +276,10 @@ module through_plate(columns,rows,thickness=RM_PLATE_T) {
   }
 }
 
-// 3x3, 8 mm plate for the LeRobot STS3215 H25T horn.  Its 4xM3 horn holes
+// 3x3 drive plate for the LeRobot STS3215 H25T horn.  Its 4xM3 horn holes
 // sit 7 mm from the centre, so the four corner stations remain RobotSkin.
-// The centre is a clear,
-// counterbored path for the horn's supplied shaft screw; the four cardinal
-// stations are reserved for the horn hardware.
+// The underside pocket clears the horn's centre-screw head; install that
+// supplied screw before bolting this plate to the horn.
 module h25t_horn_plate_3x3(thickness=2*RM_PLATE_T,
                             hub_radius=RM_STS3215_HUB_RADIUS) {
   assert(thickness >= 2*RM_PLATE_T,
@@ -292,9 +291,10 @@ module h25t_horn_plate_3x3(thickness=2*RM_PLATE_T,
     for(x=grid_positions(3),y=grid_positions(3))
       if(x != 0 && y != 0)
         translate([x,y,thickness]) mirror([0,0,1]) port_cut();
+    plate_corner_through_cuts(3,3,thickness);
     translate([0,0,-RM_EPS])
       cylinder(h=thickness+2*RM_EPS,d=RM_M3_CLEARANCE);
-    translate([0,0,thickness-RM_H25T_HUB_COUNTERBORE_DEPTH])
+    translate([0,0,-RM_EPS])
       cylinder(h=RM_H25T_HUB_COUNTERBORE_DEPTH+RM_EPS,
                d=RM_M3_HEAD_CLEARANCE_D);
     for(angle=[0:90:270])
@@ -308,9 +308,9 @@ module h25t_horn_plate_3x3(thickness=2*RM_PLATE_T,
   }
 }
 
-// Single-print 30 mm cube for the H25T horn plate.  Four lower pegs mate to
-// its corner ports; their M3 paths continue to the matching top ports so
-// the cube can be locked after the horn's centre screw is installed.
+// Single-print 30 mm end-effector hub for the H25T drive plate.  Four lower
+// pegs locate it in the plate's corner ports.  Four M3x35 screws enter through
+// the matching top ports and lock into the plate's heat-set inserts.
 module h25t_port_cube_3x3() {
   size = grid_size(3);
   difference() {
