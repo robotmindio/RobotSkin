@@ -306,14 +306,13 @@ module lekiwi_lidar_base(ld06_hole_d=RM_LD06_HOLE_D,
       if((x != -5 || y != 20) &&
          !((x == -35 || x == -15) && (y == -20 || y == 20)))
         translate([x,y,3*RM_PLATE_T]) mirror([0,0,1]) port_cut();
-    for(x=[-35,-25,-15,-5],y=grid_positions(5))
-      if(x != -5 || y != 20)
-        translate([x,y,-RM_EPS])
-          cylinder(h=3*RM_PLATE_T+2*RM_EPS,d=RM_M3_CLEARANCE);
-    for(x=[-35,-15],y=[-20,20])
+    for(x=[-35,-15],y=[-20,20]) {
+      translate([x,y,-RM_EPS])
+        cylinder(h=3*RM_PLATE_T+2*RM_EPS,d=RM_M3_CLEARANCE);
       translate([x,y,3*RM_PLATE_T-RM_LOCK_SCREW_LENGTH])
         cylinder(h=RM_LOCK_SCREW_LENGTH+RM_EPS,
                  d=RM_M3_HEAD_CLEARANCE_D);
+    }
     for(side=[-1,1]) {
       position = [20+side*RM_LD06_HOLE_SPACING/2,
                   -5+side*RM_LD06_HOLE_SPACING/2];
