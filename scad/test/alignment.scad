@@ -1,4 +1,4 @@
-include <../lib/robotmind.scad>
+include <../lib/robotskin.scad>
 
 assert(grid_size(8) == 80 && grid_size(3) == 30,
        "Plate size must be derived from its port count");
@@ -18,9 +18,9 @@ assert(is_corner_index(0,0,8,8) && is_corner_index(7,7,8,8) &&
 assert(grove_hole_spacing([20,20]) == [16,16] &&
        grove_hole_spacing([40,60]) == [36,56] &&
        grove_lock_x(20) == 15 && grove_lock_x(40) == 25,
-       "Grove board and RobotMind stations must remain grid-derived");
+       "Grove board and RobotSkin stations must remain grid-derived");
 assert(grid_station_outside(31) == 35 && grid_station_outside(28) == 35,
-       "External lock stations must remain on the RobotMind grid");
+       "External lock stations must remain on the RobotSkin grid");
 assert(RM_TRIPOD_BODY_T-RM_TRIPOD_NUT_H >= 2,
        "Tripod nut pocket must retain a structural roof");
 uno_holes = centred_points(RM_UNO_HOLES,RM_UNO_SIZE);
@@ -29,7 +29,7 @@ assert(near(uno_holes[0][0],-20.29) && near(uno_holes[0][1],-24.13) &&
        "UNO mounting holes must retain the official asymmetric layout");
 assert(RM_UNO_LOCK_X+RM_GRID/2 < RM_UNO_SIZE[0]/2 &&
        RM_UNO_LOCK_Y+RM_GRID/2 < RM_UNO_SIZE[1]/2,
-       "UNO RobotMind locks must remain hidden below the board");
+       "UNO RobotSkin locks must remain hidden below the board");
 assert(RM_TEST_MALE_FITS == [0,0.05,0.10,0.15,0.20],
        "Tolerance coupon must retain its documented five male fits");
 assert(RM_TEST_INSERT_BORES == [3.75,3.80,3.85,3.90,3.95],

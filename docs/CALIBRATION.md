@@ -1,4 +1,4 @@
-# RobotMind calibration
+# RobotSkin calibration
 
 Build the dedicated tolerance kit with `./scripts/build_test_parts.sh`. It
 writes only to `test-stl/`, not the production `stl/` directory.

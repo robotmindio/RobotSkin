@@ -14,7 +14,7 @@ python "$PROJECT_DIR/scripts/validate_stl.py" "$PROJECT_DIR"/stl/*.stl
 
 STAGE_ROOT="$(mktemp -d)"
 trap 'rm -rf "$STAGE_ROOT"' EXIT
-PACKAGE_NAME="robotmind-modular-ecosystem-$VERSION"
+PACKAGE_NAME="robotskin-$VERSION"
 PACKAGE_DIR="$STAGE_ROOT/$PACKAGE_NAME"
 mkdir -p "$PACKAGE_DIR"
 

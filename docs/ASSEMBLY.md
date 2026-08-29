@@ -1,4 +1,4 @@
-# RobotMind assembly
+# RobotSkin assembly
 
 Use the numbered sequence in
 [`ASSEMBLY_DRAWINGS.svg`](ASSEMBLY_DRAWINGS.svg) as the visual assembly guide.
@@ -34,7 +34,7 @@ tag card gently under the four corner tabs; no adhesive is required.
 ## External mounting adapters
 
 - `tripod_adapter`: place a standard 1/4-20 hex nut in the top pocket, then
-  attach a RobotMind plate over it using two M3×6 screws from the recessed
+  attach a RobotSkin plate over it using two M3×6 screws from the recessed
   underside stations. The plate traps the nut. Thread the tripod screw no more
   than 4.5 mm into the adapter.
 - `profile_2020_adapter`: use two M5 screws through the exposed end holes into

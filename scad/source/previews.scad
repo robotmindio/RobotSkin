@@ -1,4 +1,4 @@
-include <../lib/robotmind.scad>
+include <../lib/robotskin.scad>
 
 SCENE = "overview"; // overview, port, flat, angle, outer_angle, grove, grove_family, uno, adapters
 assert(SCENE=="overview" || SCENE=="port" || SCENE=="flat" || SCENE=="angle" ||

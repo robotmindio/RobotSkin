@@ -7,7 +7,7 @@
     .peg{fill:#f5b72d;stroke:#9a6710;stroke-width:.55}.rule{stroke:#9aabb8;stroke-width:.35}
   </style>
   <rect width="210" height="297" fill="white"/>
-  <text x="12" y="14" class="title">RobotMind — parts and connection vocabulary</text>
+  <text x="12" y="14" class="title">RobotSkin — parts and connection vocabulary</text>
   <text x="12" y="20" class="b">Print at 100% on A4. Orange = join/peg; blue = plate/carrier/adapter.</text>
   <line x1="12" y1="24" x2="198" y2="24" class="rule"/>
 

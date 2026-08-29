@@ -1,4 +1,4 @@
-# RobotMind V0.1 product definition
+# RobotSkin V0.1 product definition
 
 `VERSION` is the product-package version. Part geometry uses revision letters;
 changing fit, interfaces, hole locations, or external dimensions requires a new
@@ -39,8 +39,8 @@ dimension and material requirement is met.
 
 | Hardware ID | Approved engineering specification | Used by | Quantity |
 |---|---|---|---:|
-| HW-INS-M3-334 | Heat-set insert, M3 female, 3 mm long, 4.0 mm OD | RobotMind port; UNO standoff | 1 per lock |
-| HW-SCR-M3X6-PH | M3×6 pan-head machine screw | Standard RobotMind lock | 1 per lock |
+| HW-INS-M3-334 | Heat-set insert, M3 female, 3 mm long, 4.0 mm OD | RobotSkin port; UNO standoff | 1 per lock |
+| HW-SCR-M3X6-PH | M3×6 pan-head machine screw | Standard RobotSkin lock | 1 per lock |
 | HW-SCR-M3X4-PH | M3×4 pan-head machine screw | UNO PCB | 4 |
 | HW-SCR-M25X6-TF | M2.5×6 thread-forming screw for plastic | Grove PCB | 4 |
 | HW-NUT-1420-HX | 1/4-20 hex nut, 11.3 mm maximum across flats, 5.8 mm maximum thick | Tripod adapter | 1 |
@@ -53,7 +53,7 @@ standoff insert after passing through a 1.6 mm PCB.
 
 ## Compatibility matrix
 
-| Product | RobotMind plate | Payload / external standard | Status and limit |
+| Product | RobotSkin plate | Payload / external standard | Status and limit |
 |---|---|---|---|
 | Flat and angle joins | Any plate using the V0.1 10 mm port grid | — | Geometry verified; physical qualification pending |
 | Grove carriers | V0.1 ports | Nominal 20/40 × 20/40/60 mm Grove PCB | Board-specific connector/component clearance must be checked |

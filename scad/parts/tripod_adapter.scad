@@ -1,2 +1,2 @@
-include <../lib/robotmind.scad>
+include <../lib/robotskin.scad>
 tripod_adapter();

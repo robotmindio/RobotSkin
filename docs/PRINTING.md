@@ -1,4 +1,4 @@
-# RobotMind V0.1 FDM print profile
+# RobotSkin V0.1 FDM print profile
 
 This is the release baseline, not a promise that every printer needs identical
 settings. Calibrate `RM_PEG_FIT` and `RM_INSERT_BORE` before production.

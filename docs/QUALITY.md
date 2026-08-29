@@ -1,4 +1,4 @@
-# RobotMind V0.1 acceptance and rating plan
+# RobotSkin V0.1 acceptance and rating plan
 
 V0.1-alpha is unrated engineering-evaluation hardware. Do not use it to support
 people, safety equipment, suspended loads, or valuable equipment. Publishing a

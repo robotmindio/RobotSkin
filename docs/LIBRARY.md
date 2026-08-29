@@ -1,6 +1,6 @@
-# RobotMind OpenSCAD library
+# RobotSkin OpenSCAD library
 
-Include `scad/lib/robotmind.scad`. Dimensions passed to public part modules are
+Include `scad/lib/robotskin.scad`. Dimensions passed to public part modules are
 port counts unless a parameter explicitly says otherwise.
 
 ```text
@@ -36,7 +36,7 @@ Join counts control their connector field without changing the shared port,
 peg, hardware, or fit standard.
 
 `grove_carrier()` accepts the documented Grove board families: widths of 20 or
-40 mm and lengths of 20, 40, or 60 mm. Its RobotMind M3 lock stations remain
+40 mm and lengths of 20, 40, or 60 mm. Its RobotSkin M3 lock stations remain
 outside the PCB footprint. Four raised bosses accept top-installed M2.5
 thread-forming screws, so assembly needs no inaccessible underside nuts.
 The repository exports all five documented combinations as production entry
@@ -44,13 +44,13 @@ points.
 
 `uno_carrier()` follows the official 68.58×53.34 mm UNO outline and asymmetric
 four-hole pattern. Its main body is one continuous flat plate interrupted only
-by screw paths. Four symmetric RobotMind locks remain hidden below the board.
+by screw paths. Four symmetric RobotSkin locks remain hidden below the board.
 
 `apriltag_holder()` accepts a square size or `[width,height]` and retains the
 printed card between four corner shelves and tabs. Its two M3 stations are
 outside the image area and remain accessible.
 
-The mounting adapters deliberately expose RobotMind in the useful direction:
+The mounting adapters deliberately expose RobotSkin in the useful direction:
 `tripod_adapter()` places two upward pegs under a plate, while the 2020-profile
 and DIN-rail adapters provide female ports for carriers. The DIN part is a
 rigid end-slide mount, not a material-dependent snap clip.

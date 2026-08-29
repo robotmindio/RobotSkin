@@ -1,4 +1,4 @@
-// RobotMind public design library.
+// RobotSkin public design library.
 $fn = 32;
 
 // Mechanical standard: tune fits here, not in individual parts.

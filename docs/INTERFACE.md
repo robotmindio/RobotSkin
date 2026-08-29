@@ -1,4 +1,4 @@
-# RobotMind interface
+# RobotSkin interface
 
 The production base plate is `plate(8,8)`: 80×80×4 mm with a full 8×8,
 10 mm-pitch port grid. The library derives other plate dimensions from the
@@ -62,9 +62,9 @@ identical plates flat-back to flat-back and fasten them through the four corner
 ports; no adhesive or second plate design is required.
 
 `through_plate(columns,rows)` is the mounting-oriented variant: every grid
-station remains a standard RobotMind port while its M3 centre continues through
+station remains a standard RobotSkin port while its M3 centre continues through
 the full plate. The production exports are 5×3 (50×30 mm) and 5×8 (50×80 mm).
 
-The Grove carrier keeps its two RobotMind lock stations outside the PCB
+The Grove carrier keeps its two RobotSkin lock stations outside the PCB
 footprint. The PCB sits 3 mm above the carrier on four bosses and is retained
 from above; its blind pilots leave 2 mm of plastic below the screw path.
