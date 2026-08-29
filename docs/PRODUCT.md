@@ -31,7 +31,7 @@ is not a safety component. A production release requires every gate in
 | RM-CC-GRV1-A | `grove_cable_clip.stl` | A | Grove cable clip |
 | RM-PC-UNO3-C | `uno_carrier.stl` | C | Solid UNO R3-form-factor carrier |
 | RM-SV-H25T-D | `h25t_horn_plate_3x3.stl` | D | STS3215 H25T 7 mm-radius drive plate with horn-screw clearance |
-| RM-SV-H25C-E | `h25t_port_cube_3x3.stl` | E | STS3215 drive plate to compact 3×3-top RobotSkin end-effector hub |
+| RM-SV-H25C-F | `h25t_port_cube_3x3.stl` | F | STS3215 drive plate to compact five-face RobotSkin end-effector hub |
 
 ## Authoritative hardware BOM
 
@@ -45,7 +45,7 @@ dimension and material requirement is met.
 | HW-SCR-M3X6-PH | M3×6 pan-head machine screw | Standard RobotSkin lock | 1 per lock |
 | HW-SCR-M3X4-PH | M3×4 pan-head machine screw | UNO PCB | 4 |
 | HW-SCR-M3X8-PH | M3×8 pan-head machine screw | H25T horn plate | 4 |
-| HW-SCR-M3X40-PH | M3×40 pan-head machine screw | H25T end-effector hub lock | 4 |
+| HW-SCR-M3X35-PH | M3×35 pan-head machine screw | H25T end-effector hub lock | 4 |
 | HW-HUB-STS3215-H25T | Supplied STS3215 H25T horn, 4×M3 at 7 mm radius | H25T horn plate | 1 |
 | HW-SCR-M25X6-TF | M2.5×6 thread-forming screw for plastic | Grove PCB | 4 |
 | HW-NUT-1420-HX | 1/4-20 hex nut, 11.3 mm maximum across flats, 5.8 mm maximum thick | Tripod adapter | 1 |
@@ -69,7 +69,7 @@ standoff insert after passing through a 1.6 mm PCB.
 | AprilTag holder | V0.1 plate | 50×50 mm printed card | No optical-range claim; print tag at exact scale |
 | Cable clip | V0.1 plate | 7.5 mm nominal flat Grove cable | Verify cable jacket compression before repeated use |
 | H25T drive plate | Four V0.1 corner female ports with M3-through paths | STS3215/LeRobot H25T horn, 4×M3 at 7 mm radius | Install the supplied centre screw before attaching the plate |
-| H25T end-effector hub | H25T drive plate | Nine top ports plus three ports on each vertical face | Raised top cap prevents port intersections; four M3×40 locks enter from the top corners |
+| H25T end-effector hub | H25T drive plate | Five top ports plus three ports on each vertical face | Flat edge-centre top stations prevent port intersections; four M3×35 locks enter from the top corners |
 
 Compatibility means nominal mechanical geometry only until the applicable
 qualification record in `QUALITY.md` is complete.

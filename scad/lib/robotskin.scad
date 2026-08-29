@@ -308,24 +308,23 @@ module h25t_horn_plate_3x3(thickness=2*RM_PLATE_T,
   }
 }
 
-// Single-print 30x30 mm end-effector hub for the H25T drive plate.  A 4 mm
-// top cap separates its full 3x3 port grid from the centred three-port lines
-// on the vertical faces.  Four M3x40 screws lock the hub.
+// Single-print 30x30 mm end-effector hub for the H25T drive plate.  The top
+// has five ports (centre plus corners); each vertical face has its central
+// vertical line of three full ports.  Four M3x35 screws lock the hub.
 module h25t_port_cube_3x3() {
   size = grid_size(3);
-  top = size+RM_PLATE_T;
   difference() {
     union() {
       translate([-size/2,-size/2,0])
         rounded_box([size,size,size],RM_PLATE_R);
-      translate([0,0,size]) plate_body(3,3);
       for(x=grid_positions(3),y=grid_positions(3))
         if(x != 0 && y != 0)
           translate([x,y,0]) connector_peg();
     }
     // Top face.
     for(x=grid_positions(3),y=grid_positions(3))
-      translate([x,y,top]) mirror([0,0,1]) port_cut();
+      if((x == 0 && y == 0) || (x != 0 && y != 0))
+        translate([x,y,size]) mirror([0,0,1]) port_cut();
     // Front, back, left, and right faces; Z uses the same 3x3 grid.
     for(x=grid_positions(3),z=grid_positions(3)) {
       if(x == 0) {
@@ -341,7 +340,7 @@ module h25t_port_cube_3x3() {
     }
     for(x=grid_positions(3),y=grid_positions(3))
       if(x != 0 && y != 0)
-        translate([x,y,0]) connector_screw_cut(body_t=top);
+        translate([x,y,0]) connector_screw_cut(body_t=size);
   }
 }
 
