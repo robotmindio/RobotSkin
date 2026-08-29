@@ -4,8 +4,8 @@ assert(grid_size(8) == 80 && grid_size(3) == 30,
        "Plate size must be derived from its port count");
 assert(2*RM_PLATE_T == 8 && RM_STS3215_HUB_RADIUS == 7,
        "The H25T horn plate must remain a double-thickness 3x3 interface");
-assert(grid_size(3)+RM_GRID == 40 && RM_M3_CLEARANCE < RM_INSERT_BORE,
-       "The H25T hub must retain its 40 mm body and M3 lock paths");
+assert(grid_size(3) == 30 && RM_M3_CLEARANCE < RM_INSERT_BORE,
+       "The H25T hub must retain its 30 mm body and M3 lock paths");
 assert(grid_positions(2) == [-5,5] &&
        grid_positions(3) == [-10,0,10] &&
        grid_positions(8) == [-35,-25,-15,-5,5,15,25,35],

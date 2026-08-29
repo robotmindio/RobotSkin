@@ -46,11 +46,12 @@ corner RobotSkin ports with M3-through paths. Install the supplied centre
 screw before fastening the drive plate; it does not print a servo spline.
 
 `h25t_port_cube_3x3()` mates to those four corner ports with lower pegs and
-provides a 40 mm hub with 3×3 RobotSkin female ports on its other five faces.
-Each 30 mm port grid is inset 5 mm from the edge, which preserves every port
-at a corner. The four lower peg screw paths continue to matching top-corner
-ports. Lock the hub using four M3×45 pan-head screws from above into heat-set
-inserts in the drive plate; the pegs locate the joint and the screws carry it.
+provides a 30 mm hub. Its top has five female ports (centre and corners), and
+each vertical face has a centred vertical line of three. The other top stations
+are flat so full perpendicular sockets never intersect. The four lower peg
+screw paths continue to matching top-corner ports. Lock the hub using four
+M3×35 pan-head screws from above into heat-set inserts in the drive plate; the
+pegs locate the joint and the screws carry it.
 
 `grove_carrier()` accepts the documented Grove board families: widths of 20 or
 40 mm and lengths of 20, 40, or 60 mm. Its RobotSkin M3 lock stations remain
