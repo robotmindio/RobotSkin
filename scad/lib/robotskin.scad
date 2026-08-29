@@ -355,11 +355,11 @@ module h25t_port_cube_3x3() {
     }
     // Top face.
     for(x=grid_positions(3),y=grid_positions(3))
-      if((x == 0) != (y == 0))
+      if(x == 0 || y == 0)
         translate([x,y,size]) mirror([0,0,1]) port_cut();
-    // Deep access for the five M3 paths at the centre and corners.
+    // Deep access for the four corner M3 paths.
     for(x=grid_positions(3),y=grid_positions(3))
-      if((x == 0 && y == 0) || (x != 0 && y != 0)) {
+      if(x != 0 && y != 0) {
         translate([x,y,-RM_PORT_DEPTH-RM_EPS])
           cylinder(h=size+RM_PORT_DEPTH+2*RM_EPS,d=RM_M3_CLEARANCE);
         translate([x,y,size-RM_H25T_CUBE_ACCESS_DEPTH])
