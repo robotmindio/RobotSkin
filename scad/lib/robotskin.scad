@@ -283,21 +283,27 @@ module lekiwi_lidar_base(ld06_hole_d=RM_LD06_HOLE_D) {
   assert(ld06_hole_d >= 2 && ld06_hole_d <= 3,
          "LD06 M2 clearance must stay within 2..3 mm");
   difference() {
-    linear_extrude(height=RM_PLATE_T)
-      offset(r=RM_GRID/2) offset(delta=-RM_GRID/2)
-        polygon([[-40,-25],[-10,-25],[-10,-15],[40,-15],
-                 [40,25],[-40,25]]);
+    union() {
+      translate([0,0,RM_PLATE_T])
+        linear_extrude(height=2*RM_PLATE_T)
+          offset(r=RM_GRID/2) offset(delta=-RM_GRID/2)
+            polygon([[-40,-25],[40,-25],[40,15],[-10,15],
+                     [-10,25],[-40,25]]);
+      translate([-40,-25,0])
+        rounded_box([30,50,RM_PLATE_T],RM_GRID/2);
+    }
     for(x=[-35,-25,-15,-5],y=grid_positions(5))
-      if(x != -5 || y != -20)
-        translate([x,y,RM_PLATE_T]) mirror([0,0,1]) port_cut();
+      if(x != -5 || y != 20)
+        translate([x,y,3*RM_PLATE_T]) mirror([0,0,1]) port_cut();
     for(x=[-35,-25,-15,-5],y=grid_positions(5))
-      if(x != -5 || y != -20)
+      if(x != -5 || y != 20)
         translate([x,y,-RM_EPS])
-          cylinder(h=RM_PLATE_T+2*RM_EPS,d=RM_M3_CLEARANCE);
+          cylinder(h=3*RM_PLATE_T+2*RM_EPS,d=RM_M3_CLEARANCE);
     for(side=[-1,1])
       translate([20+side*RM_LD06_HOLE_SPACING/2,
-                 5+side*RM_LD06_HOLE_SPACING/2,-RM_EPS])
-        cylinder(h=RM_PLATE_T+2*RM_EPS,d=ld06_hole_d);
+                 -5+side*RM_LD06_HOLE_SPACING/2,
+                 RM_PLATE_T-RM_EPS])
+        cylinder(h=2*RM_PLATE_T+2*RM_EPS,d=ld06_hole_d);
   }
 }
 
