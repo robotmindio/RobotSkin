@@ -65,8 +65,9 @@ four-hole pattern. Its main body is one continuous flat plate interrupted only
 by screw paths. Four symmetric RobotSkin locks remain hidden below the board.
 
 `rpi5_usb_carrier()` fits a Raspberry Pi 5 beside a Waveshare PCIe TO USB 3.2
-Gen1 Board (C). The two PCBs sit on 5 mm standoffs above a compact 120×90 mm
-carrier, with their long edges adjacent; the Waveshare USB ports face outward.
+Gen1 Board (C). The two PCBs sit on 5 mm standoffs above a compact 120×100 mm
+carrier, with their long edges adjacent and mounting rows aligned; the
+Waveshare USB ports face outward.
 Eight RobotSkin locks attach the empty carrier before either PCB is installed.
 
 `apriltag_holder()` accepts a square size or `[width,height]` and retains the

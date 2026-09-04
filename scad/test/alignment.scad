@@ -43,6 +43,9 @@ assert(RM_RPI5_USB_CARRIER_SIZE[0] >=
 assert(len(rpi5_usb_locks()) == 8 &&
        len(waveshare_usb_c_holes()) == 4,
        "Raspberry Pi 5 carrier needs eight RobotSkin locks and four USB-board mounts");
+assert(near(-39+RM_GRID/2,-29-RM_GRID/2) &&
+       near(19+RM_GRID/2,29-RM_GRID/2),
+       "Raspberry Pi 5 and Waveshare screw rows must stay aligned");
 assert(RM_TEST_MALE_FITS == [0,0.05,0.10,0.15,0.20],
        "Tolerance coupon must retain its documented five male fits");
 assert(RM_TEST_INSERT_BORES == [3.75,3.80,3.85,3.90,3.95],

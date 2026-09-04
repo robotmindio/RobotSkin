@@ -72,9 +72,9 @@ Install the empty carrier at its eight hidden RobotSkin locks before mounting
 either PCB. Place the Raspberry Pi 5 on the left standoffs and the Waveshare
 PCIe TO USB 3.2 Gen1 Board (C) on the right standoffs, with its USB ports
 facing the outer edge. The PCB long edges sit adjacent, as in the Waveshare
-side-mounting layout. Use eight M2.5×6 thread-forming screws (four per PCB),
-then route the supplied 16-pin PCIe cable between the boards. Keep the top open
-for the Pi cooler and GPIO access.
+side-mounting layout, and their mounting rows align. Use eight M2.5×6
+thread-forming screws (four per PCB), then route the supplied 16-pin PCIe cable
+between the boards. Keep the top open for the Pi cooler and GPIO access.
 
 ## Plate mounting
 
