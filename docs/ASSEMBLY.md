@@ -66,6 +66,15 @@ after passing through a 1.6 mm PCB it can bottom beyond the 3 mm insert.
 The exported UNO STL stands on its long frame edge for printing; its module in
 the OpenSCAD library remains in assembly orientation.
 
+## Raspberry Pi 5 USB carrier
+
+Install the empty carrier at its eight hidden RobotSkin locks before mounting
+either PCB. Place the Raspberry Pi 5 on the left standoffs and the Waveshare
+PCIe TO USB 3.2 Gen1 Board (C) on the right standoffs, with its USB ports
+facing outward. Use eight M2.5×6 thread-forming screws (four per PCB), then
+route the supplied 16-pin PCIe cable between the boards. Keep the top open for
+the Pi cooler and GPIO access.
+
 ## Plate mounting
 
 The four corner ports have an M3 clearance bore through the backing wall. Use

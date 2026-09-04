@@ -29,6 +29,7 @@ profile_2020_adapter();
 din_rail_adapter();
 grove_cable_clip();
 uno_carrier();
+rpi5_usb_carrier();
 ```
 
 `plate()` requires integer dimensions of at least 2×2. Width and height are
@@ -62,6 +63,11 @@ points.
 `uno_carrier()` follows the official 68.58×53.34 mm UNO outline and asymmetric
 four-hole pattern. Its main body is one continuous flat plate interrupted only
 by screw paths. Four symmetric RobotSkin locks remain hidden below the board.
+
+`rpi5_usb_carrier()` fits a Raspberry Pi 5 beside a Waveshare PCIe TO USB 3.2
+Gen1 Board (C). The two PCBs sit on 5 mm standoffs above a 190×70 mm carrier;
+the Waveshare board installs with its USB ports facing the carrier's right edge.
+Eight RobotSkin locks attach the empty carrier before either PCB is installed.
 
 `apriltag_holder()` accepts a square size or `[width,height]` and retains the
 printed card between four corner shelves and tabs. Its two M3 stations are
