@@ -64,7 +64,7 @@ RM_RPI5_SIZE = [85,56];
 RM_RPI5_HOLES = [[3.5,3.5],[61.5,3.5],[3.5,52.5],[61.5,52.5]];
 RM_WAVESHARE_USB_C_SIZE = [87,57.5];
 RM_WAVESHARE_USB_C_HOLE_SPACING = [58,30.5];
-RM_RPI5_USB_CARRIER_SIZE = [120,100];
+RM_RPI5_USB_CARRIER_SIZE = [120,97];
 RM_RPI5_USB_GAP = 0.5;
 RM_RPI5_USB_STANDOFF_H = 5;
 RM_RPI5_USB_STANDOFF_D = 7;
@@ -710,6 +710,7 @@ module rpi5_usb_standoff_cut(position) {
 }
 
 module rpi5_usb_carrier() {
+  carrier_center_y = -0.5;
   pi_center_x = -(RM_WAVESHARE_USB_C_SIZE[1]+RM_RPI5_USB_GAP)/2;
   usb_center_x = (RM_RPI5_SIZE[1]+RM_RPI5_USB_GAP)/2;
   pi_center_y = RM_GRID/2;
@@ -727,7 +728,7 @@ module rpi5_usb_carrier() {
   difference() {
     union() {
       translate([-RM_RPI5_USB_CARRIER_SIZE[0]/2,
-                 -RM_RPI5_USB_CARRIER_SIZE[1]/2,0])
+                 carrier_center_y-RM_RPI5_USB_CARRIER_SIZE[1]/2,0])
         rounded_box([RM_RPI5_USB_CARRIER_SIZE[0],
                      RM_RPI5_USB_CARRIER_SIZE[1],RM_CARRIER_T],
                     RM_ADAPTER_R);
