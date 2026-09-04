@@ -38,8 +38,9 @@ assert(RM_RPI5_SIZE == [85,56] &&
        "Raspberry Pi 5 and Waveshare Board (C) footprints must remain exact");
 assert(RM_RPI5_USB_CARRIER_SIZE[0] >=
        RM_RPI5_SIZE[1]+RM_RPI5_USB_GAP+RM_WAVESHARE_USB_C_SIZE[1] &&
-       RM_RPI5_USB_CARRIER_SIZE[1] >= RM_WAVESHARE_USB_C_SIZE[0],
-       "Raspberry Pi 5 carrier must retain both PCB clearances");
+       RM_RPI5_USB_CARRIER_SIZE[1] >=
+       RM_WAVESHARE_USB_C_HOLE_SPACING[0]+RM_RPI5_USB_STANDOFF_D,
+       "Raspberry Pi 5 carrier must span both PCBs and standoff rows");
 assert(len(rpi5_usb_locks()) == 8 &&
        len(waveshare_usb_c_holes()) == 4,
        "Raspberry Pi 5 carrier needs eight RobotSkin locks and four USB-board mounts");
@@ -47,8 +48,8 @@ assert(near(-39+RM_GRID/2,-29-RM_GRID/2) &&
        near(19+RM_GRID/2,29-RM_GRID/2),
        "Raspberry Pi 5 and Waveshare screw rows must stay aligned");
 assert(RM_RPI5_USB_CARRIER_SIZE[1] ==
-       RM_WAVESHARE_USB_C_SIZE[0]+RM_GRID,
-       "Raspberry Pi 5 carrier must keep only a 0.5 mm ensemble border");
+       RM_WAVESHARE_USB_C_HOLE_SPACING[0]+RM_RPI5_USB_STANDOFF_D+1,
+       "Raspberry Pi 5 carrier must keep only 0.5 mm beyond each standoff row");
 assert(RM_TEST_MALE_FITS == [0,0.05,0.10,0.15,0.20],
        "Tolerance coupon must retain its documented five male fits");
 assert(RM_TEST_INSERT_BORES == [3.75,3.80,3.85,3.90,3.95],

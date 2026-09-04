@@ -64,7 +64,7 @@ RM_RPI5_SIZE = [85,56];
 RM_RPI5_HOLES = [[3.5,3.5],[61.5,3.5],[3.5,52.5],[61.5,52.5]];
 RM_WAVESHARE_USB_C_SIZE = [87,37.5];
 RM_WAVESHARE_USB_C_HOLE_SPACING = [58,30.5];
-RM_RPI5_USB_CARRIER_SIZE = [100,97];
+RM_RPI5_USB_CARRIER_SIZE = [100,66];
 RM_RPI5_USB_GAP = 0.5;
 RM_RPI5_USB_STANDOFF_H = 5;
 RM_RPI5_USB_STANDOFF_D = 7;
@@ -710,7 +710,7 @@ module rpi5_usb_standoff_cut(position) {
 }
 
 module rpi5_usb_carrier() {
-  carrier_center_y = -0.5;
+  carrier_center_y = -RM_GRID/2;
   pi_center_x = -(RM_WAVESHARE_USB_C_SIZE[1]+RM_RPI5_USB_GAP)/2;
   usb_center_x = (RM_RPI5_SIZE[1]+RM_RPI5_USB_GAP)/2;
   pi_center_y = RM_GRID/2;
@@ -723,8 +723,9 @@ module rpi5_usb_carrier() {
   assert(RM_RPI5_USB_CARRIER_SIZE[0] >=
          RM_RPI5_SIZE[1]+RM_RPI5_USB_GAP+RM_WAVESHARE_USB_C_SIZE[1],
          "Carrier must cover both PCBs and their cable gap");
-  assert(RM_RPI5_USB_CARRIER_SIZE[1] >= RM_WAVESHARE_USB_C_SIZE[0],
-         "Carrier must cover the Waveshare PCB");
+  assert(RM_RPI5_USB_CARRIER_SIZE[1] >=
+         RM_WAVESHARE_USB_C_HOLE_SPACING[0]+RM_RPI5_USB_STANDOFF_D,
+         "Carrier must cover both aligned standoff rows");
   difference() {
     union() {
       translate([-RM_RPI5_USB_CARRIER_SIZE[0]/2,
