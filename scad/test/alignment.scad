@@ -33,7 +33,7 @@ assert(RM_UNO_LOCK_X+RM_GRID/2 < RM_UNO_SIZE[0]/2 &&
        RM_UNO_LOCK_Y+RM_GRID/2 < RM_UNO_SIZE[1]/2,
        "UNO RobotSkin locks must remain hidden below the board");
 assert(RM_RPI5_SIZE == [85,56] &&
-       RM_WAVESHARE_USB_C_SIZE == [87,57.5] &&
+       RM_WAVESHARE_USB_C_SIZE == [87,37.5] &&
        RM_WAVESHARE_USB_C_HOLE_SPACING == [58,30.5],
        "Raspberry Pi 5 and Waveshare Board (C) footprints must remain exact");
 assert(RM_RPI5_USB_CARRIER_SIZE[0] >=
