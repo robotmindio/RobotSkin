@@ -30,6 +30,7 @@ din_rail_adapter();
 grove_cable_clip();
 uno_carrier();
 rpi5_usb_carrier();
+rpi5_table();
 ```
 
 `plate()` requires integer dimensions of at least 2×2. Width and height are
@@ -69,6 +70,11 @@ Gen1 Board (C). The two PCBs sit on 5 mm standoffs above a compact 100×66 mm
 carrier, with their long edges adjacent and mounting rows aligned; the
 Waveshare USB ports face outward.
 Eight RobotSkin locks attach the empty carrier before either PCB is installed.
+
+`rpi5_table()` is an open-sided 120×100 mm protective top on four RobotSkin
+legs. Its underside sits 30 mm above the plate, clearing the carrier-mounted
+Raspberry Pi 5 with the official active cooler. Recessed access bores retain
+the standard M3×6 lock screws at all four feet.
 
 `apriltag_holder()` accepts a square size or `[width,height]` and retains the
 printed card between four corner shelves and tabs. Its two M3 stations are

@@ -31,6 +31,7 @@ is not a safety component. A production release requires every gate in
 | RM-CC-GRV1-A | `grove_cable_clip.stl` | A | Grove cable clip |
 | RM-PC-UNO3-C | `uno_carrier.stl` | C | Solid UNO R3-form-factor carrier |
 | RM-PC-RPI5U-A | `rpi5_usb_carrier.stl` | A | Raspberry Pi 5 + Waveshare USB Board (C) carrier |
+| RM-PC-RPI5T-A | `rpi5_table.stl` | A | Raspberry Pi 5 open protection table |
 | RM-SV-H25T-D | `h25t_horn_plate_3x3.stl` | D | STS3215 H25T 7 mm-radius drive plate with horn-screw clearance |
 | RM-SV-H25C-F | `h25t_port_cube_3x3.stl` | F | STS3215 drive plate to compact five-face RobotSkin end-effector hub |
 
@@ -65,6 +66,7 @@ standoff insert after passing through a 1.6 mm PCB.
 | Grove carriers | V0.1 ports | Nominal 20/40 × 20/40/60 mm Grove PCB | Board-specific connector/component clearance must be checked |
 | UNO carrier | V0.1 ports | Arduino UNO R3 mechanical outline and asymmetric holes | Mechanical pattern only; connector clearance must be checked per clone |
 | Raspberry Pi 5 USB carrier | V0.1 ports | Raspberry Pi 5; Waveshare PCIe TO USB 3.2 Gen1 Board (C) | Mount the Waveshare PCB with USB ports facing outward; retain both PCBs with M2.5×6 thread-forming screws |
+| Raspberry Pi 5 table | Four V0.1 ports | Raspberry Pi 5 USB carrier with official active cooler | 30 mm open-sided clearance; unrated protective top, not a safety component |
 | 2020 adapter | V0.1 pegs/carriers | 20-series, 6 mm slot, M5 T-nuts | Not for slot-5, slot-8, or 40-series profiles without verification |
 | DIN adapter | V0.1 pegs/carriers | EN 60715 TH35 rail | Slides on from a free rail end; it is not a front-snap clip |
 | Tripod adapter | V0.1 plate | 1/4-20 tripod screw | Maximum 4.5 mm screw entry into adapter |

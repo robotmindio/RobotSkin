@@ -76,6 +76,14 @@ side-mounting layout, and their mounting rows align. Use eight M2.5×6
 thread-forming screws (four per PCB), then route the supplied 16-pin PCIe cable
 between the boards. Keep the top open for the Pi cooler and GPIO access.
 
+## Raspberry Pi 5 protection table
+
+Mount the populated Raspberry Pi carrier first. Align the table's four feet
+with the surrounding RobotSkin ports, keeping every leg outside the carrier,
+then press the table into place. For a locked installation, drive one M3×6
+pan-head screw down each leg's access bore into the plate insert. Keep all four
+open sides unobstructed so the active cooler can exhaust air.
+
 ## Plate mounting
 
 The four corner ports have an M3 clearance bore through the backing wall. Use

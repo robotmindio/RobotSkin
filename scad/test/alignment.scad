@@ -50,6 +50,16 @@ assert(near(-39+RM_GRID/2,-29-RM_GRID/2) &&
 assert(RM_RPI5_USB_CARRIER_SIZE[1] ==
        RM_WAVESHARE_USB_C_HOLE_SPACING[0]+RM_RPI5_USB_STANDOFF_D+1,
        "Raspberry Pi 5 carrier must keep only 0.5 mm beyond each standoff row");
+assert(RM_RPI5_TABLE_SIZE == [120,100] &&
+       len(rpi5_table_locks()) == 4,
+       "Raspberry Pi 5 table must cover the assembly on four RobotSkin locks");
+assert(RM_RPI5_TABLE_CLEARANCE >=
+       RM_CARRIER_T+RM_RPI5_USB_STANDOFF_H+1.6+13.7+5,
+       "Raspberry Pi 5 table must clear the PCB and active cooler with airflow space");
+for(position=rpi5_table_locks())
+  assert(abs(position[0])-RM_RPI5_TABLE_LEG_D/2 >=
+         RM_RPI5_USB_CARRIER_SIZE[0]/2,
+         "Raspberry Pi 5 table legs must remain outside the carrier");
 assert(RM_TEST_MALE_FITS == [0,0.05,0.10,0.15,0.20],
        "Tolerance coupon must retain its documented five male fits");
 assert(RM_TEST_INSERT_BORES == [3.75,3.80,3.85,3.90,3.95],
@@ -80,6 +90,7 @@ translate([270,60,0]) din_rail_adapter();
 translate([310,60,0]) grove_cable_clip();
 translate([380,100,0]) uno_carrier();
 translate([500,100,0]) rpi5_usb_carrier();
+translate([650,100,0]) rpi5_table();
 translate([100,0,0]) connector_grid(2,2,direction="up");
 translate([130,0,0])
   difference() {

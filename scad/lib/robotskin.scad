@@ -68,6 +68,9 @@ RM_RPI5_USB_CARRIER_SIZE = [100,66];
 RM_RPI5_USB_GAP = 0.5;
 RM_RPI5_USB_STANDOFF_H = 5;
 RM_RPI5_USB_STANDOFF_D = 7;
+RM_RPI5_TABLE_SIZE = [120,100];
+RM_RPI5_TABLE_CLEARANCE = 30;
+RM_RPI5_TABLE_LEG_D = 9;
 RM_LD06_HOLE_D = 2.4;
 RM_LD06_HOLE_SPACING = 28.2;
 RM_LD06_INSERT_BORE = 3.7;
@@ -751,6 +754,34 @@ module rpi5_usb_carrier() {
     for(position=locks)
       translate([position[0],position[1],0])
         connector_screw_cut(body_t=RM_CARRIER_T);
+  }
+}
+
+// Open protective table for the Raspberry Pi 5 and USB-board assembly.
+function rpi5_table_locks() =
+  [for(x=[-55,55],y=[-45,45]) [x,y]];
+
+module rpi5_table() {
+  locks = rpi5_table_locks();
+  difference() {
+    union() {
+      translate([-RM_RPI5_TABLE_SIZE[0]/2,-RM_RPI5_TABLE_SIZE[1]/2,
+                 RM_RPI5_TABLE_CLEARANCE])
+        rounded_box([RM_RPI5_TABLE_SIZE[0],RM_RPI5_TABLE_SIZE[1],
+                     RM_CARRIER_T],RM_CARRIER_R);
+      for(position=locks) {
+        translate([position[0],position[1],0])
+          cylinder(h=RM_RPI5_TABLE_CLEARANCE+RM_EPS,d=RM_RPI5_TABLE_LEG_D);
+        translate([position[0],position[1],0]) connector_peg();
+      }
+    }
+    for(position=locks) {
+      translate([position[0],position[1],0])
+        connector_screw_cut(body_t=RM_CARRIER_T);
+      translate([position[0],position[1],RM_CARRIER_T-RM_EPS])
+        cylinder(h=RM_RPI5_TABLE_CLEARANCE+RM_CARRIER_T+2*RM_EPS,
+                 d=RM_M3_HEAD_CLEARANCE_D);
+    }
   }
 }
 
