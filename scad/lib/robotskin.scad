@@ -64,8 +64,8 @@ RM_RPI5_SIZE = [85,56];
 RM_RPI5_HOLES = [[3.5,3.5],[61.5,3.5],[3.5,52.5],[61.5,52.5]];
 RM_WAVESHARE_USB_C_SIZE = [87,57.5];
 RM_WAVESHARE_USB_C_HOLE_SPACING = [58,30.5];
-RM_RPI5_USB_CARRIER_SIZE = [190,70];
-RM_RPI5_USB_GAP = 11;
+RM_RPI5_USB_CARRIER_SIZE = [120,90];
+RM_RPI5_USB_GAP = 0.5;
 RM_RPI5_USB_STANDOFF_H = 5;
 RM_RPI5_USB_STANDOFF_D = 7;
 RM_LD06_HOLE_D = 2.4;
@@ -687,10 +687,10 @@ module uno_carrier() {
 }
 
 // Raspberry Pi 5 and Waveshare PCIe TO USB 3.2 Gen1 Board (C) carrier.
-// The Pi sits on the left; install the Waveshare board with its USB ports
-// facing the carrier's right edge so the PCIe cable stays between the boards.
+// The Pi sits on the left; the boards share their long edge and the USB ports
+// face the carrier's outer edge, as in Waveshare's side-mount arrangement.
 function rpi5_usb_locks() =
-  [for(x=[-65,-35,35,65],y=[-15,15]) [x,y]];
+  [for(x=[-45,-15,5,35],y=[-15,15]) [x,y]];
 function waveshare_usb_c_holes() =
   [for(x=[-RM_WAVESHARE_USB_C_HOLE_SPACING[0]/2,
           RM_WAVESHARE_USB_C_HOLE_SPACING[0]/2],
@@ -710,15 +710,17 @@ module rpi5_usb_standoff_cut(position) {
 }
 
 module rpi5_usb_carrier() {
-  pi_center_x = -(RM_WAVESHARE_USB_C_SIZE[0]+RM_RPI5_USB_GAP)/2;
-  usb_center_x = (RM_RPI5_SIZE[0]+RM_RPI5_USB_GAP)/2;
-  pi_holes = centred_points(RM_RPI5_HOLES,RM_RPI5_SIZE);
-  usb_holes = waveshare_usb_c_holes();
+  pi_center_x = -(RM_WAVESHARE_USB_C_SIZE[1]+RM_RPI5_USB_GAP)/2;
+  usb_center_x = (RM_RPI5_SIZE[1]+RM_RPI5_USB_GAP)/2;
+  pi_holes = [for(position=centred_points(RM_RPI5_HOLES,RM_RPI5_SIZE))
+                [-position[1],position[0]]];
+  usb_holes = [for(position=waveshare_usb_c_holes())
+                 [-position[1],position[0]]];
   locks = rpi5_usb_locks();
   assert(RM_RPI5_USB_CARRIER_SIZE[0] >=
-         RM_RPI5_SIZE[0]+RM_RPI5_USB_GAP+RM_WAVESHARE_USB_C_SIZE[0],
+         RM_RPI5_SIZE[1]+RM_RPI5_USB_GAP+RM_WAVESHARE_USB_C_SIZE[1],
          "Carrier must cover both PCBs and their cable gap");
-  assert(RM_RPI5_USB_CARRIER_SIZE[1] >= RM_WAVESHARE_USB_C_SIZE[1],
+  assert(RM_RPI5_USB_CARRIER_SIZE[1] >= RM_WAVESHARE_USB_C_SIZE[0],
          "Carrier must cover the Waveshare PCB");
   difference() {
     union() {

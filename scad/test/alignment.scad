@@ -37,8 +37,8 @@ assert(RM_RPI5_SIZE == [85,56] &&
        RM_WAVESHARE_USB_C_HOLE_SPACING == [58,30.5],
        "Raspberry Pi 5 and Waveshare Board (C) footprints must remain exact");
 assert(RM_RPI5_USB_CARRIER_SIZE[0] >=
-       RM_RPI5_SIZE[0]+RM_RPI5_USB_GAP+RM_WAVESHARE_USB_C_SIZE[0] &&
-       RM_RPI5_USB_CARRIER_SIZE[1] >= RM_WAVESHARE_USB_C_SIZE[1],
+       RM_RPI5_SIZE[1]+RM_RPI5_USB_GAP+RM_WAVESHARE_USB_C_SIZE[1] &&
+       RM_RPI5_USB_CARRIER_SIZE[1] >= RM_WAVESHARE_USB_C_SIZE[0],
        "Raspberry Pi 5 carrier must retain both PCB clearances");
 assert(len(rpi5_usb_locks()) == 8 &&
        len(waveshare_usb_c_holes()) == 4,
