@@ -21,11 +21,13 @@ carrier only supplies peg guidance and a screw-clearance path.
 Each join tile has eight identical lock stations: four on each attached plate.
 For ordinary permanent assembly, use the four stations farthest from the seam
 or corner. Use all eight when maximum strength is required.
-The Grove 16×2 LCD carrier fits only Seeed Studio 104020111. Use its two M3
-lock stations outside the PCB footprint. Fasten the carrier first, then place
-the LCD on its four standoffs and drive M2.5 thread-forming screws into the
-blind pilots from above. The M3 locks remain accessible without removing the
-LCD. Press-fit-only assembly remains removable.
+Each Grove carrier has two M3 lock stations outside its PCB footprint. Fasten
+the carrier first, then place the specified PCB on its standoffs and drive the
+required thread-forming screws into the blind pilots from above: two M2 for
+the 2×2 Gesture carrier, three M2 for the 4×2 IMU carrier, or four M2.5 for
+the LCD.
+The M3 locks remain accessible without removing the PCB. Press-fit-only
+assembly remains removable.
 
 The large rectangular opening between the LCD standoffs is only PCB and
 connector clearance: leave it empty. Do not heat-set an insert in that opening

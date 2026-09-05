@@ -29,8 +29,13 @@ RM_CARRIER_T = RM_JOIN_T;
 RM_CARRIER_R = 3;
 RM_GROVE_STANDOFF_H = 3;
 RM_GROVE_STANDOFF_D = 5;
+RM_GROVE_M2_PILOT_D = 1.7;
 RM_GROVE_M2_5_PILOT_D = 2.1;
 RM_GROVE_M2_5_PILOT_DEPTH = 5;
+RM_GROVE_GESTURE_SIZE = [20,20];
+RM_GROVE_GESTURE_HOLES = [[0,-10],[0,10]];
+RM_GROVE_IMU_9DOF_SIZE = [40,20];
+RM_GROVE_IMU_9DOF_HOLES = [[-20,0],[10,-10],[10,10]];
 RM_GROVE_LCD_16X2_SIZE = [80,40];
 RM_GROVE_LCD_16X2_HOLES = [[2,2],[78,2],[2,38],[78,38]];
 RM_ADAPTER_R = 3;
@@ -499,6 +504,51 @@ module outer_angle_join(width_ports=2,depth_ports=2,plate_t=RM_PLATE_T) {
 module grove_pcb_standoff(position) {
   translate([position[0],position[1],RM_CARRIER_T-RM_EPS])
     cylinder(h=RM_GROVE_STANDOFF_H+RM_EPS,d=RM_GROVE_STANDOFF_D);
+}
+
+// Seeed Studio 101020083 Grove Gesture v1.0: 20x20 mm PCB with two
+// 2.2 mm mounting holes on its vertical centre line. M2 screws retain the PCB.
+module grove_carrier_2x2() {
+  body_size = [40,28];
+  difference() {
+    union() {
+      translate([-body_size[0]/2,-body_size[1]/2,0])
+        rounded_box([body_size[0],body_size[1],RM_CARRIER_T],RM_CARRIER_R);
+      for(x=[-15,15])
+        translate([x,0,0]) connector_peg();
+      for(position=RM_GROVE_GESTURE_HOLES) grove_pcb_standoff(position);
+    }
+    for(x=[-15,15])
+      translate([x,0,0]) connector_screw_cut(body_t=RM_CARRIER_T);
+    for(position=RM_GROVE_GESTURE_HOLES)
+      translate([position[0],position[1],RM_CARRIER_T+RM_GROVE_STANDOFF_H-
+                         RM_GROVE_M2_5_PILOT_DEPTH])
+        cylinder(h=RM_GROVE_M2_5_PILOT_DEPTH+RM_EPS,
+                 d=RM_GROVE_M2_PILOT_D);
+  }
+}
+
+// Seeed Studio 101020585 Grove IMU 9DOF (ICM20600 + AK09918): 40x20 mm PCB
+// with three 2.2 mm mounting holes, one at the left edge and two at the right.
+// M2 screws retain the PCB.
+module grove_carrier_4x2() {
+  body_size = [60,28];
+  difference() {
+    union() {
+      translate([-body_size[0]/2,-body_size[1]/2,0])
+        rounded_box([body_size[0],body_size[1],RM_CARRIER_T],RM_CARRIER_R);
+      for(x=[-25,25])
+        translate([x,0,0]) connector_peg();
+      for(position=RM_GROVE_IMU_9DOF_HOLES) grove_pcb_standoff(position);
+    }
+    for(x=[-25,25])
+      translate([x,0,0]) connector_screw_cut(body_t=RM_CARRIER_T);
+    for(position=RM_GROVE_IMU_9DOF_HOLES)
+      translate([position[0],position[1],RM_CARRIER_T+RM_GROVE_STANDOFF_H-
+                         RM_GROVE_M2_5_PILOT_DEPTH])
+        cylinder(h=RM_GROVE_M2_5_PILOT_DEPTH+RM_EPS,
+                 d=RM_GROVE_M2_PILOT_D);
+  }
 }
 
 // Seeed Studio 104020111 Grove 16x2 LCD (White on Blue): 80x40 mm PCB,

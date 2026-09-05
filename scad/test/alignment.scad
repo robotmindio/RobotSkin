@@ -18,6 +18,12 @@ assert(is_corner_index(0,0,8,8) && is_corner_index(7,7,8,8) &&
        is_corner_index(2,4,3,5) && !is_corner_index(1,1,3,5),
        "Corner mounting ports must work for every plate size");
 lcd_holes = centred_points(RM_GROVE_LCD_16X2_HOLES,RM_GROVE_LCD_16X2_SIZE);
+assert(RM_GROVE_GESTURE_SIZE == [20,20] &&
+       RM_GROVE_GESTURE_HOLES == [[0,-10],[0,10]],
+       "Grove Gesture 2x2 footprint must retain its two 20 mm-spaced holes");
+assert(RM_GROVE_IMU_9DOF_SIZE == [40,20] &&
+       RM_GROVE_IMU_9DOF_HOLES == [[-20,0],[10,-10],[10,10]],
+       "Grove IMU 9DOF 4x2 footprint must retain its three-hole pattern");
 assert(RM_GROVE_LCD_16X2_SIZE == [80,40] &&
        lcd_holes == [[-38,-18],[38,-18],[-38,18],[38,18]],
        "Grove 16x2 LCD footprint must retain its 76 x 36 mm hole pattern");
@@ -81,6 +87,8 @@ translate([0,100,0]) through_plate(5,8);
 translate([30,0,0]) flat_join(1,1);
 translate([50,0,0]) angle_join(1,1);
 translate([75,0,0]) outer_angle_join(1,1);
+translate([100,20,0]) grove_carrier_2x2();
+translate([100,45,0]) grove_carrier_4x2();
 translate([100,70,0]) grove_lcd_16x2_carrier();
 translate([190,60,0]) tripod_adapter();
 translate([230,60,0]) profile_2020_adapter();

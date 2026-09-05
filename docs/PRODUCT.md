@@ -21,6 +21,8 @@ is not a safety component. A production release requires every gate in
 | RM-JF-0202-A | `flat_join.stl` | A | 2×2 + 2×2 coplanar join |
 | RM-JI-0202-B | `angle_join.stl` | B | 2×2 + 2×2 inside 90° flush-butt join |
 | RM-JO-0202-B | `outer_angle_join.stl` | B | 2×2 + 2×2 outside 90° flush-butt join |
+| RM-GR-0202-A | `grove_carrier_2x2.stl` | A | Seeed Studio 101020083 Grove Gesture v1.0 carrier |
+| RM-GR-0402-A | `grove_carrier_4x2.stl` | A | Seeed Studio 101020585 Grove IMU 9DOF carrier |
 | RM-GR-L162-A | `grove_lcd_16x2_carrier.stl` | A | Seeed Studio 104020111 Grove 16×2 LCD carrier |
 | RM-TR-1420-A | `tripod_adapter.stl` | A | 1/4-20 tripod adapter |
 | RM-PF-2020-A | `profile_2020_adapter.stl` | A | 20-series slot-6 adapter |
@@ -46,7 +48,8 @@ dimension and material requirement is met.
 | HW-SCR-M3X8-PH | M3×8 pan-head machine screw | H25T horn plate | 4 |
 | HW-SCR-M3X10-PH | M3×10 pan-head machine screw | H25T end-effector hub lock | 4 |
 | HW-HUB-STS3215-H25T | Supplied STS3215 H25T horn, 4×M3 at 7 mm radius | H25T horn plate | 1 |
-| HW-SCR-M25X6-TF | M2.5×6 thread-forming screw for plastic | Grove PCB | 4 |
+| HW-SCR-M2X6-TF | M2×6 thread-forming screw for plastic | Grove 2×2 or 4×2 PCB | 2 or 3 |
+| HW-SCR-M25X6-TF | M2.5×6 thread-forming screw for plastic | Grove LCD PCB | 4 |
 | HW-NUT-1420-HX | 1/4-20 hex nut, 11.3 mm maximum across flats, 5.8 mm maximum thick | Tripod adapter | 1 |
 | HW-SCR-M5-PH | M5 screw sized for extrusion engagement | 2020 adapter | 2 |
 | HW-NUT-M5-T20S6 | M5 T-nut for 20-series slot-6 extrusion | 2020 adapter | 2 |
@@ -60,6 +63,8 @@ standoff insert after passing through a 1.6 mm PCB.
 | Product | RobotSkin plate | Payload / external standard | Status and limit |
 |---|---|---|---|
 | Flat and angle joins | Any plate using the V0.1 10 mm port grid | — | Geometry verified; physical qualification pending |
+| Grove 2×2 carrier | V0.1 ports | Seeed Studio 101020083 Grove Gesture v1.0, 20×20 mm PCB and two 2.2 mm holes | Geometry verified; physical fit pending; other 20×20 Grove boards require matching hole positions |
+| Grove 4×2 carrier | V0.1 ports | Seeed Studio 101020585 Grove IMU 9DOF, 40×20 mm PCB and asymmetric three 2.2 mm holes | Geometry verified; physical fit pending; other 40×20 Grove boards require matching hole positions |
 | Grove 16×2 LCD carrier | V0.1 ports | Seeed Studio 104020111, 80×40 mm PCB and 76×36 mm hole pitch | Geometry verified; physical fit pending |
 | UNO carrier | V0.1 ports | Arduino UNO R3 mechanical outline and asymmetric holes | Mechanical pattern only; connector clearance must be checked per clone |
 | Raspberry Pi 5 USB carrier | V0.1 ports | Raspberry Pi 5; Waveshare PCIe TO USB 3.2 Gen1 Board (C) | Mount the Waveshare PCB with USB ports facing outward; retain both PCBs with M2.5×6 thread-forming screws |

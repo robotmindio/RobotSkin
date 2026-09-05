@@ -20,7 +20,7 @@ custom enclosure every time.
 
 - **Structural surfaces:** 8×8 plates and smaller full-through mounting plates.
 - **Structures:** flat, inner-corner, and outer-corner joins.
-- **Electronics:** a Seeed 104020111 Grove 16×2 LCD carrier, a cable clip, and a solid UNO-format
+- **Electronics:** Seeed Grove 2×2 Gesture, 4×2 IMU 9DOF, and 16×2 LCD carriers, a cable clip, and a solid UNO-format
   carrier.
 - **Mounting adapters:** camera-tripod, 20-series extrusion, and TH35 DIN rail
   adapters, plus an H25T servo-horn plate.

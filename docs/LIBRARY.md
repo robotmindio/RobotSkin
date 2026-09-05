@@ -22,6 +22,8 @@ h25t_port_cube_3x3();
 flat_join(width_ports=2, depth_ports=2);
 angle_join(width_ports=2, depth_ports=2);
 outer_angle_join(width_ports=2, depth_ports=2, plate_t=RM_PLATE_T);
+grove_carrier_2x2();
+grove_carrier_4x2();
 grove_lcd_16x2_carrier();
 tripod_adapter();
 profile_2020_adapter();
@@ -52,6 +54,13 @@ female ports; the corners are 22 mm deep M3 head-access bores. Each vertical fac
 keeps its lower two centred ports and leaves its upper station flat to prevent
 intersection. Four corner screw paths continue through the lower pegs into the
 drive-plate inserts.
+
+`grove_carrier_2x2()` fits the Seeed Studio 101020083 Grove Gesture v1.0:
+its 20×20 mm PCB and two 2.2 mm holes on the centre line. `grove_carrier_4x2()`
+fits the Seeed Studio 101020585 Grove IMU 9DOF (ICM20600 + AK09918): its
+40×20 mm PCB and asymmetric three-hole pattern. Both retain their PCB with
+top-installed M2 thread-forming screws; they do not imply fit for other Grove
+modules with the same nominal outline.
 
 `grove_lcd_16x2_carrier()` fits only the Seeed Studio 104020111 Grove 16×2 LCD
 (White on Blue): its 80×40 mm PCB and four 2.5 mm mounting holes at a 76×36 mm
