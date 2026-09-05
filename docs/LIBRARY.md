@@ -22,7 +22,7 @@ h25t_port_cube_3x3();
 flat_join(width_ports=2, depth_ports=2);
 angle_join(width_ports=2, depth_ports=2);
 outer_angle_join(width_ports=2, depth_ports=2, plate_t=RM_PLATE_T);
-grove_carrier(board_size=[20,20]);
+grove_lcd_16x2_carrier();
 tripod_adapter();
 profile_2020_adapter();
 din_rail_adapter();
@@ -53,12 +53,10 @@ keeps its lower two centred ports and leaves its upper station flat to prevent
 intersection. Four corner screw paths continue through the lower pegs into the
 drive-plate inserts.
 
-`grove_carrier()` accepts the documented Grove board families: widths of 20 or
-40 mm and lengths of 20, 40, or 60 mm. Its RobotSkin M3 lock stations remain
-outside the PCB footprint. Four raised bosses accept top-installed M2.5
-thread-forming screws, so assembly needs no inaccessible underside nuts.
-The repository exports all five documented combinations as production entry
-points.
+`grove_lcd_16x2_carrier()` fits only the Seeed Studio 104020111 Grove 16×2 LCD
+(White on Blue): its 80×40 mm PCB and four 2.5 mm mounting holes at a 76×36 mm
+pitch. The two RobotSkin M3 lock stations remain outside the PCB footprint;
+four raised bosses accept top-installed M2.5 thread-forming screws.
 
 `uno_carrier()` follows the official 68.58×53.34 mm UNO outline and asymmetric
 four-hole pattern. Its main body is one continuous flat plate interrupted only
@@ -93,7 +91,7 @@ plate_corner_through_cuts(columns, rows);
 plate_all_through_cuts(columns, rows);
 join_panel(width, min_row, max_row);
 join_leg(width, length);
-pcb_standoff(position);
+grove_pcb_standoff(position);
 ```
 
 Directions are `down`, `forward`, `up`, and `backward`. Screw and port modules

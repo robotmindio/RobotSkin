@@ -1,8 +1,8 @@
 include <../lib/robotskin.scad>
 
-SCENE = "overview"; // overview, port, flat, angle, outer_angle, grove, grove_family, uno, adapters
+SCENE = "overview"; // overview, port, flat, angle, outer_angle, grove, uno, adapters
 assert(SCENE=="overview" || SCENE=="port" || SCENE=="flat" || SCENE=="angle" ||
-       SCENE=="outer_angle" || SCENE=="grove" || SCENE=="grove_family" ||
+       SCENE=="outer_angle" || SCENE=="grove" ||
        SCENE=="uno" || SCENE=="adapters",
        "Unknown preview scene");
 
@@ -20,7 +20,7 @@ module overview_scene() {
   color(JOIN_COLOR) translate([45,-30,0]) flat_join();
   color(JOIN_COLOR) translate([45,35,0]) angle_join();
   color(JOIN_COLOR) translate([145,30,0]) outer_angle_join();
-  color(CARRIER_COLOR) translate([105,-20,0]) grove_carrier();
+  color(CARRIER_COLOR) translate([105,-20,0]) grove_lcd_16x2_carrier();
 }
 
 module port_scene() {
@@ -71,19 +71,11 @@ module outer_angle_scene() {
 }
 
 module grove_scene() {
-  color(PLATE_COLOR) plate(5,4);
-  color(CARRIER_COLOR) translate([0,0,RM_PLATE_T]) grove_carrier();
+  color(PLATE_COLOR) plate(12,6);
+  color(CARRIER_COLOR) translate([0,0,RM_PLATE_T]) grove_lcd_16x2_carrier();
   color([0.10,0.55,0.28,0.85])
-    translate([-10,-10,RM_PLATE_T+RM_CARRIER_T+RM_GROVE_STANDOFF_H])
-      rounded_box([20,20,1.6],1);
-}
-
-module grove_family_scene() {
-  color(CARRIER_COLOR) translate([-65,-35,0]) grove_carrier([20,20]);
-  color(CARRIER_COLOR) translate([-15,-25,0]) grove_carrier([20,40]);
-  color(CARRIER_COLOR) translate([35,-15,0]) grove_carrier([20,60]);
-  color(CARRIER_COLOR) translate([95,-25,0]) grove_carrier([40,40]);
-  color(CARRIER_COLOR) translate([165,-15,0]) grove_carrier([40,60]);
+    translate([-40,-20,RM_PLATE_T+RM_CARRIER_T+RM_GROVE_STANDOFF_H])
+      rounded_box([80,40,1.6],1);
 }
 
 module uno_scene() {
@@ -108,6 +100,5 @@ if(SCENE=="flat") flat_scene();
 if(SCENE=="angle") angle_scene();
 if(SCENE=="outer_angle") outer_angle_scene();
 if(SCENE=="grove") grove_scene();
-if(SCENE=="grove_family") grove_family_scene();
 if(SCENE=="uno") uno_scene();
 if(SCENE=="adapters") adapters_scene();

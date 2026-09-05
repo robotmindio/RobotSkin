@@ -1,2 +1,2 @@
 include <../lib/robotskin.scad>
-grove_carrier([40,60]);
+through_plate(8,8);

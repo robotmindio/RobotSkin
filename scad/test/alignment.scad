@@ -17,10 +17,10 @@ assert(outer_rows(2) == [9,19],
 assert(is_corner_index(0,0,8,8) && is_corner_index(7,7,8,8) &&
        is_corner_index(2,4,3,5) && !is_corner_index(1,1,3,5),
        "Corner mounting ports must work for every plate size");
-assert(grove_hole_spacing([20,20]) == [16,16] &&
-       grove_hole_spacing([40,60]) == [36,56] &&
-       grove_lock_x(20) == 15 && grove_lock_x(40) == 25,
-       "Grove board and RobotSkin stations must remain grid-derived");
+lcd_holes = centred_points(RM_GROVE_LCD_16X2_HOLES,RM_GROVE_LCD_16X2_SIZE);
+assert(RM_GROVE_LCD_16X2_SIZE == [80,40] &&
+       lcd_holes == [[-38,-18],[38,-18],[-38,18],[38,18]],
+       "Grove 16x2 LCD footprint must retain its 76 x 36 mm hole pattern");
 assert(grid_station_outside(31) == 35 && grid_station_outside(28) == 35,
        "External lock stations must remain on the RobotSkin grid");
 assert(RM_TRIPOD_BODY_T-RM_TRIPOD_NUT_H >= 2,
@@ -81,8 +81,7 @@ translate([0,100,0]) through_plate(5,8);
 translate([30,0,0]) flat_join(1,1);
 translate([50,0,0]) angle_join(1,1);
 translate([75,0,0]) outer_angle_join(1,1);
-translate([100,40,0]) grove_carrier([20,40]);
-translate([100,100,0]) grove_carrier([40,60]);
+translate([100,70,0]) grove_lcd_16x2_carrier();
 translate([190,60,0]) tripod_adapter();
 translate([230,60,0]) profile_2020_adapter();
 translate([270,60,0]) din_rail_adapter();

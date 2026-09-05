@@ -16,15 +16,12 @@ is not a safety component. A production release requires every gate in
 | RM-PL-0808-A | `plate_8x8.stl` | A | 80×80 mm single-sided plate |
 | RM-PT-0503-A | `through_plate_5x3.stl` | A | 50×30 mm plate, every port M3-through |
 | RM-PT-0508-A | `through_plate_5x8.stl` | A | 50×80 mm plate, every port M3-through |
+| RM-PT-0808-A | `through_plate_8x8.stl` | A | 80×80 mm plate, every port M3-through |
 | RM-PT-1210-A | `through_plate_12x10.stl` | A | 120×100 mm plate, every port M3-through |
 | RM-JF-0202-A | `flat_join.stl` | A | 2×2 + 2×2 coplanar join |
 | RM-JI-0202-B | `angle_join.stl` | B | 2×2 + 2×2 inside 90° flush-butt join |
 | RM-JO-0202-B | `outer_angle_join.stl` | B | 2×2 + 2×2 outside 90° flush-butt join |
-| RM-GR-2020-A | `grove_carrier_20x20.stl` | A | Grove 20×20 carrier |
-| RM-GR-2040-A | `grove_carrier_20x40.stl` | A | Grove 20×40 carrier |
-| RM-GR-2060-A | `grove_carrier_20x60.stl` | A | Grove 20×60 carrier |
-| RM-GR-4040-A | `grove_carrier_40x40.stl` | A | Grove 40×40 carrier |
-| RM-GR-4060-A | `grove_carrier_40x60.stl` | A | Grove 40×60 carrier |
+| RM-GR-L162-A | `grove_lcd_16x2_carrier.stl` | A | Seeed Studio 104020111 Grove 16×2 LCD carrier |
 | RM-TR-1420-A | `tripod_adapter.stl` | A | 1/4-20 tripod adapter |
 | RM-PF-2020-A | `profile_2020_adapter.stl` | A | 20-series slot-6 adapter |
 | RM-DN-TH35-A | `din_rail_adapter.stl` | A | TH35 end-slide adapter |
@@ -63,7 +60,7 @@ standoff insert after passing through a 1.6 mm PCB.
 | Product | RobotSkin plate | Payload / external standard | Status and limit |
 |---|---|---|---|
 | Flat and angle joins | Any plate using the V0.1 10 mm port grid | — | Geometry verified; physical qualification pending |
-| Grove carriers | V0.1 ports | Nominal 20/40 × 20/40/60 mm Grove PCB | Board-specific connector/component clearance must be checked |
+| Grove 16×2 LCD carrier | V0.1 ports | Seeed Studio 104020111, 80×40 mm PCB and 76×36 mm hole pitch | Geometry verified; physical fit pending |
 | UNO carrier | V0.1 ports | Arduino UNO R3 mechanical outline and asymmetric holes | Mechanical pattern only; connector clearance must be checked per clone |
 | Raspberry Pi 5 USB carrier | V0.1 ports | Raspberry Pi 5; Waveshare PCIe TO USB 3.2 Gen1 Board (C) | Mount the Waveshare PCB with USB ports facing outward; retain both PCBs with M2.5×6 thread-forming screws |
 | Raspberry Pi 5 table | Four V0.1 ports | Raspberry Pi 5 USB carrier with official active cooler | 30 mm open-sided clearance; unrated protective top, not a safety component |

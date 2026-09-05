@@ -20,7 +20,7 @@ custom enclosure every time.
 
 - **Structural surfaces:** 8×8 plates and smaller full-through mounting plates.
 - **Structures:** flat, inner-corner, and outer-corner joins.
-- **Electronics:** Grove sensor carriers, a cable clip, and a solid UNO-format
+- **Electronics:** a Seeed 104020111 Grove 16×2 LCD carrier, a cable clip, and a solid UNO-format
   carrier.
 - **Mounting adapters:** camera-tripod, 20-series extrusion, and TH35 DIN rail
   adapters, plus an H25T servo-horn plate.
@@ -35,7 +35,7 @@ octagonal peg. Press it together for a temporary fit; for a permanent joint,
 install an M3×3×4 heat-set insert in the plate port and fasten it through the
 peg centre with an M3×6 pan-head screw.
 
-That means a Grove carrier, a DIN mount, and a tripod adapter all attach to the
+That means a Grove LCD carrier, a DIN mount, and a tripod adapter all attach to the
 same plate without inventing another mechanical standard.
 
 ## Start here

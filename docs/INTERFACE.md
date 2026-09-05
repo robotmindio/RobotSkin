@@ -17,7 +17,7 @@ mounting.
 | Peg root / tip | 8.3 / 7.7 mm across flats |
 | Peg depth | 2.2 mm |
 | Permanent lock | M3×6 pan-head screw, 2 mm insert engagement |
-| Grove PCB retention | M2.5×6 thread-forming screw, 2.1 mm blind pilot |
+| Grove 16×2 LCD retention | M2.5×6 thread-forming screw, 2.1 mm blind pilot |
 | Profile 2020 mounting | Two M5 clearance holes, 30 mm apart |
 | DIN rail | EN 60715 TH35 rigid end-slide channel |
 | Tripod | Captive 1/4-20 hex nut, 4.5 mm maximum screw entry |
@@ -59,8 +59,9 @@ ports; no adhesive or second plate design is required.
 `through_plate(columns,rows)` is the mounting-oriented variant: every grid
 station remains a standard RobotSkin port while its M3 centre continues through
 the full plate. The production exports are 5×3 (50×30 mm), 5×8 (50×80 mm),
-and 12×10 (120×100 mm).
+8×8 (80×80 mm), and 12×10 (120×100 mm).
 
-The Grove carrier keeps its two RobotSkin lock stations outside the PCB
-footprint. The PCB sits 3 mm above the carrier on four bosses and is retained
-from above; its blind pilots leave 2 mm of plastic below the screw path.
+The Grove 16×2 LCD carrier fits only Seeed Studio 104020111. Its two RobotSkin
+lock stations remain outside the 80×40 mm PCB footprint. The LCD sits 3 mm
+above the carrier on four bosses at its 76×36 mm hole pitch and is retained
+from above; the blind pilots leave 2 mm of plastic below the screw path.

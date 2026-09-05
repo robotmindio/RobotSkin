@@ -27,11 +27,12 @@ RM_JOIN_T = 4;
 RM_JOIN_PANEL_R = 3;
 RM_CARRIER_T = RM_JOIN_T;
 RM_CARRIER_R = 3;
-RM_GROVE_EDGE = 4;
 RM_GROVE_STANDOFF_H = 3;
 RM_GROVE_STANDOFF_D = 5;
 RM_GROVE_M2_5_PILOT_D = 2.1;
 RM_GROVE_M2_5_PILOT_DEPTH = 5;
+RM_GROVE_LCD_16X2_SIZE = [80,40];
+RM_GROVE_LCD_16X2_HOLES = [[2,2],[78,2],[2,38],[78,38]];
 RM_ADAPTER_R = 3;
 RM_M3_HEAD_CLEARANCE_D = 6.2;
 RM_STS3215_HUB_RADIUS = 7;
@@ -99,9 +100,6 @@ function flat_rows(depth_ports) =
          edge_rows(depth_ports));
 function outer_rows(depth_ports,plate_t=RM_PLATE_T) =
   [for(row=edge_rows(depth_ports)) plate_t+row];
-function grove_hole_spacing(board_size) =
-  [board_size[0]-RM_GROVE_EDGE,board_size[1]-RM_GROVE_EDGE];
-function grove_lock_x(board_width) = board_width/2+RM_GRID/2;
 function grid_station_outside(distance) =
   ceil((distance-RM_GRID/2)/RM_GRID)*RM_GRID+RM_GRID/2;
 function centred_points(points,size) =
@@ -498,41 +496,33 @@ module outer_angle_join(width_ports=2,depth_ports=2,plate_t=RM_PLATE_T) {
   }
 }
 
-module pcb_standoff(position) {
+module grove_pcb_standoff(position) {
   translate([position[0],position[1],RM_CARRIER_T-RM_EPS])
     cylinder(h=RM_GROVE_STANDOFF_H+RM_EPS,d=RM_GROVE_STANDOFF_D);
 }
 
-// Grove carrier. Board width is 20 or 40 mm; length is 20, 40, or 60 mm.
-module grove_carrier(board_size=[20,20]) {
-  assert((board_size[0] == 20 || board_size[0] == 40) &&
-         (board_size[1] == 20 || board_size[1] == 40 || board_size[1] == 60),
-         "Grove board_size must use a documented 20/40 x 20/40/60 mm format");
-  hole_spacing = grove_hole_spacing(board_size);
-  lock_x = grove_lock_x(board_size[0]);
-  body_size = [board_size[0]+2*RM_GRID,board_size[1]+2*RM_GROVE_EDGE];
+// Seeed Studio 104020111 Grove 16x2 LCD (White on Blue): 80x40 mm PCB,
+// with four 2.5 mm holes 2 mm from each edge.
+module grove_lcd_16x2_carrier() {
+  holes = centred_points(RM_GROVE_LCD_16X2_HOLES,RM_GROVE_LCD_16X2_SIZE);
+  body_size = [100,48];
   difference() {
     union() {
       translate([-body_size[0]/2,-body_size[1]/2,0])
         rounded_box([body_size[0],body_size[1],RM_CARRIER_T],RM_CARRIER_R);
-      for(x=[-lock_x,lock_x])
+      for(x=[-45,45])
         translate([x,0,0]) connector_peg();
-      for(x=[-hole_spacing[0]/2,hole_spacing[0]/2],
-          y=[-hole_spacing[1]/2,hole_spacing[1]/2])
-        pcb_standoff([x,y]);
+      for(position=holes) grove_pcb_standoff(position);
     }
-    for(x=[-lock_x,lock_x])
+    for(x=[-45,45])
       translate([x,0,0]) connector_screw_cut(body_t=RM_CARRIER_T);
-    for(x=[-hole_spacing[0]/2,hole_spacing[0]/2],
-        y=[-hole_spacing[1]/2,hole_spacing[1]/2])
-      translate([x,y,RM_CARRIER_T+RM_GROVE_STANDOFF_H-
+    for(position=holes)
+      translate([position[0],position[1],RM_CARRIER_T+RM_GROVE_STANDOFF_H-
                          RM_GROVE_M2_5_PILOT_DEPTH])
         cylinder(h=RM_GROVE_M2_5_PILOT_DEPTH+RM_EPS,
                  d=RM_GROVE_M2_5_PILOT_D);
-    translate([-hole_spacing[0]/2+RM_GROVE_STANDOFF_D/2,
-               -hole_spacing[1]/2+RM_GROVE_STANDOFF_D/2,-RM_EPS])
-      rounded_box([hole_spacing[0]-RM_GROVE_STANDOFF_D,
-                   hole_spacing[1]-RM_GROVE_STANDOFF_D,
+    translate([-35.5,-15.5,-RM_EPS])
+      rounded_box([71,31,
                    RM_CARRIER_T+2*RM_EPS],1);
   }
 }
