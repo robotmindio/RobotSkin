@@ -58,7 +58,8 @@ ports; no adhesive or second plate design is required.
 
 `through_plate(columns,rows)` is the mounting-oriented variant: every grid
 station remains a standard RobotSkin port while its M3 centre continues through
-the full plate. The production exports are 5×3 (50×30 mm) and 5×8 (50×80 mm).
+the full plate. The production exports are 5×3 (50×30 mm), 5×8 (50×80 mm),
+and 12×10 (120×100 mm).
 
 The Grove carrier keeps its two RobotSkin lock stations outside the PCB
 footprint. The PCB sits 3 mm above the carrier on four bosses and is retained

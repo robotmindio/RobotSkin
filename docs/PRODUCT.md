@@ -16,6 +16,7 @@ is not a safety component. A production release requires every gate in
 | RM-PL-0808-A | `plate_8x8.stl` | A | 80×80 mm single-sided plate |
 | RM-PT-0503-A | `through_plate_5x3.stl` | A | 50×30 mm plate, every port M3-through |
 | RM-PT-0508-A | `through_plate_5x8.stl` | A | 50×80 mm plate, every port M3-through |
+| RM-PT-1210-A | `through_plate_12x10.stl` | A | 120×100 mm plate, every port M3-through |
 | RM-JF-0202-A | `flat_join.stl` | A | 2×2 + 2×2 coplanar join |
 | RM-JI-0202-B | `angle_join.stl` | B | 2×2 + 2×2 inside 90° flush-butt join |
 | RM-JO-0202-B | `outer_angle_join.stl` | B | 2×2 + 2×2 outside 90° flush-butt join |

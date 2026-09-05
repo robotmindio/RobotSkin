@@ -50,7 +50,7 @@ assert(near(-39+RM_GRID/2,-29-RM_GRID/2) &&
 assert(RM_RPI5_USB_CARRIER_SIZE[1] ==
        RM_WAVESHARE_USB_C_HOLE_SPACING[0]+RM_RPI5_USB_STANDOFF_D+1,
        "Raspberry Pi 5 carrier must keep only 0.5 mm beyond each standoff row");
-assert(RM_RPI5_TABLE_SIZE == [120,100] &&
+assert(RM_RPI5_TABLE_SIZE == [grid_size(12),grid_size(10)] &&
        len(rpi5_table_locks()) == 4,
        "Raspberry Pi 5 table must cover the assembly on four RobotSkin locks");
 assert(RM_RPI5_TABLE_CLEARANCE >=
