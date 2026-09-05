@@ -23,7 +23,6 @@ flat_join(width_ports=2, depth_ports=2);
 angle_join(width_ports=2, depth_ports=2);
 outer_angle_join(width_ports=2, depth_ports=2, plate_t=RM_PLATE_T);
 grove_carrier(board_size=[20,20]);
-apriltag_holder(tag_size=50, border=RM_TAG_BORDER);
 tripod_adapter();
 profile_2020_adapter();
 din_rail_adapter();
@@ -75,10 +74,6 @@ Eight RobotSkin locks attach the empty carrier before either PCB is installed.
 legs. Its underside sits 30 mm above the plate, clearing the carrier-mounted
 Raspberry Pi 5 with the official active cooler. Recessed access bores retain
 the standard M3×6 lock screws at all four feet.
-
-`apriltag_holder()` accepts a square size or `[width,height]` and retains the
-printed card between four corner shelves and tabs. Its two M3 stations are
-outside the image area and remain accessible.
 
 The mounting adapters deliberately expose RobotSkin in the useful direction:
 `tripod_adapter()` places two upward pegs under a plate, while the 2020-profile

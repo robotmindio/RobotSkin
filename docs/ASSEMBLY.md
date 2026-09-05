@@ -31,11 +31,6 @@ connector clearance: leave it empty. Do not heat-set an insert in that opening
 or in the carrier. The brass M3 inserts belong exclusively in the matching
 female ports of the RobotSkin plate.
 
-## AprilTag holder
-
-Attach the empty frame through its two exposed M3 stations. Flex the printed
-tag card gently under the four corner tabs; no adhesive is required.
-
 ## External mounting adapters
 
 - `tripod_adapter`: place a standard 1/4-20 hex nut in the top pocket, then

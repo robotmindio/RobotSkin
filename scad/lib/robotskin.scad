@@ -39,9 +39,6 @@ RM_H25T_HUB_HOLE_D = RM_M3_CLEARANCE;
 RM_H25T_HUB_COUNTERBORE_DEPTH = 3;
 RM_H25T_CUBE_ACCESS_DEPTH = 22;
 RM_M5_CLEARANCE_D = 5.5;
-RM_TAG_BORDER = 3;
-RM_TAG_CARD_T = 0.4;
-RM_TAG_TAB = 4;
 RM_TRIPOD_BODY_T = 8;
 RM_TRIPOD_CLEARANCE_D = 6.8;
 RM_TRIPOD_NUT_AF = 11.3;
@@ -537,42 +534,6 @@ module grove_carrier(board_size=[20,20]) {
       rounded_box([hole_spacing[0]-RM_GROVE_STANDOFF_D,
                    hole_spacing[1]-RM_GROVE_STANDOFF_D,
                    RM_CARRIER_T+2*RM_EPS],1);
-  }
-}
-
-module apriltag_holder(tag_size=50,border=RM_TAG_BORDER) {
-  assert(!is_list(tag_size) || len(tag_size) == 2,
-         "AprilTag size must be a number or [width,height]");
-  tag = is_list(tag_size) ? tag_size : [tag_size,tag_size];
-  assert(tag[0] > 0 && tag[1] > 0 && border >= RM_TAG_BORDER,
-         "AprilTag size must be positive and border at least RM_TAG_BORDER");
-  outer = [tag[0]+2*border,tag[1]+2*border];
-  lock_x = grid_station_outside(outer[0]/2+RM_M3_HEAD_CLEARANCE_D/2);
-  difference() {
-    union() {
-      difference() {
-        translate([-outer[0]/2,-outer[1]/2,0])
-          rounded_box([outer[0],outer[1],RM_JOIN_T],RM_ADAPTER_R);
-        translate([-tag[0]/2,-tag[1]/2,-RM_EPS])
-          cube([tag[0],tag[1],RM_JOIN_T+2*RM_EPS]);
-      }
-      for(side=[-1,1])
-        linear_extrude(height=RM_JOIN_T) hull() {
-          translate([side*lock_x,0]) circle(d=RM_GRID);
-          translate([side*(outer[0]/2-border/2),0])
-            square([border,2*border],center=true);
-        }
-      for(x=[-tag[0]/2-border,tag[0]/2-RM_TAG_TAB],
-          y=[-tag[1]/2-border,tag[1]/2-RM_TAG_TAB]) {
-        translate([x,y,0])
-          cube([RM_TAG_TAB+border,RM_TAG_TAB+border,RM_JOIN_T-1]);
-        translate([x,y,RM_JOIN_T-RM_TAG_CARD_T])
-          cube([RM_TAG_TAB+border,RM_TAG_TAB+border,RM_TAG_CARD_T]);
-      }
-      for(x=[-lock_x,lock_x]) translate([x,0,0]) connector_peg();
-    }
-    for(x=[-lock_x,lock_x])
-      translate([x,0,0]) connector_screw_cut(body_t=RM_JOIN_T);
   }
 }
 

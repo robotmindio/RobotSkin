@@ -22,8 +22,8 @@ custom enclosure every time.
 - **Structures:** flat, inner-corner, and outer-corner joins.
 - **Electronics:** Grove sensor carriers, a cable clip, and a solid UNO-format
   carrier.
-- **Mounting adapters:** AprilTag, camera-tripod, 20-series extrusion, and TH35
-  DIN rail adapters, plus an H25T servo-horn plate.
+- **Mounting adapters:** camera-tripod, 20-series extrusion, and TH35 DIN rail
+  adapters, plus an H25T servo-horn plate.
 
 <p align="center">
   <img src="docs/assets/uno-carrier.png" alt="UNO-format carrier on a RobotSkin plate" width="48%">

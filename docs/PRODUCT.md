@@ -25,7 +25,6 @@ is not a safety component. A production release requires every gate in
 | RM-GR-2060-A | `grove_carrier_20x60.stl` | A | Grove 20×60 carrier |
 | RM-GR-4040-A | `grove_carrier_40x40.stl` | A | Grove 40×40 carrier |
 | RM-GR-4060-A | `grove_carrier_40x60.stl` | A | Grove 40×60 carrier |
-| RM-AT-0050-A | `apriltag_holder_50.stl` | A | 50 mm AprilTag holder |
 | RM-TR-1420-A | `tripod_adapter.stl` | A | 1/4-20 tripod adapter |
 | RM-PF-2020-A | `profile_2020_adapter.stl` | A | 20-series slot-6 adapter |
 | RM-DN-TH35-A | `din_rail_adapter.stl` | A | TH35 end-slide adapter |
@@ -71,7 +70,6 @@ standoff insert after passing through a 1.6 mm PCB.
 | 2020 adapter | V0.1 pegs/carriers | 20-series, 6 mm slot, M5 T-nuts | Not for slot-5, slot-8, or 40-series profiles without verification |
 | DIN adapter | V0.1 pegs/carriers | EN 60715 TH35 rail | Slides on from a free rail end; it is not a front-snap clip |
 | Tripod adapter | V0.1 plate | 1/4-20 tripod screw | Maximum 4.5 mm screw entry into adapter |
-| AprilTag holder | V0.1 plate | 50×50 mm printed card | No optical-range claim; print tag at exact scale |
 | Cable clip | V0.1 plate | 7.5 mm nominal flat Grove cable | Verify cable jacket compression before repeated use |
 | H25T drive plate | Four V0.1 corner female ports with M3-through paths | STS3215/LeRobot H25T horn, 4×M3 at 7 mm radius | All five horn screws install from the port face |
 | H25T end-effector hub | H25T drive plate | Five top ports plus two ports on each vertical face | Four 22 mm corner M3 access bores lock into the drive plate |

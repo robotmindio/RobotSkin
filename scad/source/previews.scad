@@ -96,11 +96,10 @@ module uno_scene() {
 }
 
 module adapters_scene() {
-  color(CARRIER_COLOR) translate([-90,20,0]) apriltag_holder(50);
-  color(JOIN_COLOR) translate([-20,20,0]) tripod_adapter();
-  color(CARRIER_COLOR) translate([35,20,0]) profile_2020_adapter();
-  color(CARRIER_COLOR) translate([90,20,0]) din_rail_adapter();
-  color(JOIN_COLOR) translate([135,20,0]) grove_cable_clip();
+  color(JOIN_COLOR) translate([-75,20,0]) tripod_adapter();
+  color(CARRIER_COLOR) translate([-20,20,0]) profile_2020_adapter();
+  color(CARRIER_COLOR) translate([35,20,0]) din_rail_adapter();
+  color(JOIN_COLOR) translate([80,20,0]) grove_cable_clip();
 }
 
 if(SCENE=="overview") overview_scene();
