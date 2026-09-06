@@ -26,6 +26,10 @@ assert(RM_GROVE_IMU_9DOF_SIZE == [40,20] &&
        "Grove IMU 9DOF 4x2 footprint must retain its three-hole pattern");
 assert(2*15+octagon_d(peg_root_af()) <= RM_GROVE_IMU_9DOF_SIZE[0],
        "Grove 4x2 locks must stay within the 40 mm PCB length");
+assert(RM_PJ030_SIZE == [40,20] && RM_PJ030_PCB_T == 1.6,
+       "PJ030 controller clip must retain its 40 x 20 x 1.6 mm PCB envelope");
+assert(2*15+octagon_d(peg_root_af()) <= RM_PJ030_SIZE[0],
+       "PJ030 locks must stay within the 40 mm PCB length");
 assert(RM_GROVE_LCD_16X2_SIZE == [80,40] &&
        lcd_holes == [[-38,-18],[38,-18],[-38,18],[38,18]],
        "Grove 16x2 LCD footprint must retain its 76 x 36 mm hole pattern");
@@ -92,6 +96,7 @@ translate([75,0,0]) outer_angle_join(1,1);
 translate([100,20,0]) grove_carrier_2x2();
 translate([100,45,0]) grove_carrier_4x2();
 translate([100,70,0]) grove_lcd_16x2_carrier();
+translate([170,20,0]) ld06_pj030_clip_carrier();
 translate([190,60,0]) tripod_adapter();
 translate([230,60,0]) profile_2020_adapter();
 translate([270,60,0]) din_rail_adapter();

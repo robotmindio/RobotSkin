@@ -69,3 +69,8 @@ The LCD carrier fits only Seeed Studio 104020111: its two RobotSkin lock
 stations remain outside the 80×40 mm PCB footprint, while four bosses match
 its 76×36 mm hole pitch. All Grove PCB pilots are blind and leave 2 mm of
 plastic below the screw path.
+
+`ld06_pj030_clip_carrier()` is the no-hole alternative for the 40×20×1.6 mm
+LD06 PJ030 controller. Its two RobotSkin locks remain within the 40 mm body
+length; the PCB is retained by four flexible lips on the long edges, with both
+connector ends left unobstructed.

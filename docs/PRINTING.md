@@ -23,6 +23,7 @@ printer. Orientations are already encoded in the production exports.
 |---|---|
 | Plate and H25T horn plate | Flat back on bed; no support |
 | Flat join and Grove carriers | Peg-side up; no support |
+| LD06 PJ030 clip carrier | Peg-side up; no support; inspect all four flexible lips before use |
 | Inside/outside angle joins | As exported; local support below the horizontal connector row |
 | UNO carrier | Long frame edge on bed; local support only beneath horizontal connector details when bridging fails |
 | Raspberry Pi table | Tabletop on bed, legs and pegs upward; no support |

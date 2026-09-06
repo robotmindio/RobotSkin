@@ -29,6 +29,12 @@ the LCD.
 The M3 locks remain accessible without removing the PCB. Press-fit-only
 assembly remains removable.
 
+The LD06 PJ030 clip carrier uses no PCB screws. Attach its two diagonal
+RobotSkin pegs first, then press the 40×20 mm controller down through the four
+side lips. Keep its two short ends clear for the LD06 and host connectors.
+Remove it by easing both lips on one long edge outward before lifting the PCB;
+do not lever against components.
+
 The large rectangular opening between the LCD standoffs is only PCB and
 connector clearance: leave it empty. Do not heat-set an insert in that opening
 or in the carrier. The brass M3 inserts belong exclusively in the matching

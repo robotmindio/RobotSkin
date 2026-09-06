@@ -24,6 +24,7 @@ angle_join(width_ports=2, depth_ports=2);
 outer_angle_join(width_ports=2, depth_ports=2, plate_t=RM_PLATE_T);
 grove_carrier_2x2();
 grove_carrier_4x2();
+ld06_pj030_clip_carrier();
 grove_lcd_16x2_carrier();
 tripod_adapter();
 profile_2020_adapter();
@@ -63,6 +64,11 @@ top-installed M2 thread-forming screws; they do not imply fit for other Grove
 modules with the same nominal outline.
 The 4×2 carrier base is 40 mm long, matching the PCB; both RobotSkin locks
 sit underneath it at ±15 mm rather than extending the carrier at either end.
+
+`ld06_pj030_clip_carrier()` holds the 40×20×1.6 mm LD06 PJ030 controller
+without PCB mounting holes. Its open centre clears underside components; four
+small flexible lips press over the two long PCB edges. The 40 mm body length
+does not extend beyond the controller, and both short connector ends stay open.
 
 `grove_lcd_16x2_carrier()` fits only the Seeed Studio 104020111 Grove 16×2 LCD
 (White on Blue): its 80×40 mm PCB and four 2.5 mm mounting holes at a 76×36 mm

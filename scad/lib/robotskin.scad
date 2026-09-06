@@ -38,6 +38,8 @@ RM_GROVE_IMU_9DOF_SIZE = [40,20];
 RM_GROVE_IMU_9DOF_HOLES = [[-20,0],[10,-10],[10,10]];
 RM_GROVE_LCD_16X2_SIZE = [80,40];
 RM_GROVE_LCD_16X2_HOLES = [[2,2],[78,2],[2,38],[78,38]];
+RM_PJ030_SIZE = [40,20];
+RM_PJ030_PCB_T = 1.6;
 RM_ADAPTER_R = 3;
 RM_M3_HEAD_CLEARANCE_D = 6.2;
 RM_STS3215_HUB_RADIUS = 7;
@@ -548,6 +550,46 @@ module grove_carrier_4x2() {
                          RM_GROVE_M2_5_PILOT_DEPTH])
         cylinder(h=RM_GROVE_M2_5_PILOT_DEPTH+RM_EPS,
                  d=RM_GROVE_M2_PILOT_D);
+  }
+}
+
+// LD06 PJ030 controller: 40x20 mm PCB without mounting holes. The open centre
+// clears underside components; four flexible side lips retain a 1.6 mm PCB.
+module ld06_pj030_clip_carrier() {
+  body_size = [RM_PJ030_SIZE[0],RM_PJ030_SIZE[1]+0.5];
+  rim = 1.25;
+  clip_w = 4;
+  clip_t = 0.8;
+  clip_h = 4;
+  clip_clearance = 0.25;
+  lip_depth = 0.75;
+  lip_overlap = 0.1;
+  difference() {
+    union() {
+      difference() {
+        translate([-body_size[0]/2,-body_size[1]/2,0])
+          rounded_box([body_size[0],body_size[1],RM_CARRIER_T],RM_CARRIER_R);
+        translate([-(body_size[0]-2*rim)/2,-(body_size[1]-2*rim)/2,-RM_EPS])
+          rounded_box([body_size[0]-2*rim,body_size[1]-2*rim,
+                       RM_CARRIER_T+2*RM_EPS],1);
+      }
+      for(x=[-15,15],side=[-1,1]) {
+        wall_y = side > 0 ? RM_PJ030_SIZE[1]/2+clip_clearance-RM_EPS :
+                            -RM_PJ030_SIZE[1]/2-clip_clearance-clip_t+RM_EPS;
+        lip_y = side > 0 ? RM_PJ030_SIZE[1]/2-lip_depth :
+                           -RM_PJ030_SIZE[1]/2-clip_clearance;
+        translate([x-clip_w/2,wall_y,RM_CARRIER_T])
+          cube([clip_w,clip_t,clip_h]);
+        translate([x-clip_w/2,lip_y,
+                   RM_CARRIER_T+RM_PJ030_PCB_T-lip_overlap])
+          cube([clip_w,lip_depth+clip_clearance,clip_t]);
+      }
+      for(position=[[-15,10],[15,-10]])
+        translate([position[0],position[1],0]) connector_peg();
+    }
+    for(position=[[-15,10],[15,-10]])
+      translate([position[0],position[1],0])
+        connector_screw_cut(body_t=RM_CARRIER_T);
   }
 }
 
