@@ -24,6 +24,8 @@ assert(RM_GROVE_GESTURE_SIZE == [20,20] &&
 assert(RM_GROVE_IMU_9DOF_SIZE == [40,20] &&
        RM_GROVE_IMU_9DOF_HOLES == [[-20,0],[10,-10],[10,10]],
        "Grove IMU 9DOF 4x2 footprint must retain its three-hole pattern");
+assert(2*15+octagon_d(peg_root_af()) <= RM_GROVE_IMU_9DOF_SIZE[0],
+       "Grove 4x2 locks must stay within the 40 mm PCB length");
 assert(RM_GROVE_LCD_16X2_SIZE == [80,40] &&
        lcd_holes == [[-38,-18],[38,-18],[-38,18],[38,18]],
        "Grove 16x2 LCD footprint must retain its 76 x 36 mm hole pattern");

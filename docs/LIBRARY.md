@@ -61,6 +61,8 @@ fits the Seeed Studio 101020585 Grove IMU 9DOF (ICM20600 + AK09918): its
 40×20 mm PCB and asymmetric three-hole pattern. Both retain their PCB with
 top-installed M2 thread-forming screws; they do not imply fit for other Grove
 modules with the same nominal outline.
+The 4×2 carrier base is 40 mm long, matching the PCB; both RobotSkin locks
+sit underneath it at ±15 mm rather than extending the carrier at either end.
 
 `grove_lcd_16x2_carrier()` fits only the Seeed Studio 104020111 Grove 16×2 LCD
 (White on Blue): its 80×40 mm PCB and four 2.5 mm mounting holes at a 76×36 mm

@@ -22,7 +22,7 @@ is not a safety component. A production release requires every gate in
 | RM-JI-0202-B | `angle_join.stl` | B | 2×2 + 2×2 inside 90° flush-butt join |
 | RM-JO-0202-B | `outer_angle_join.stl` | B | 2×2 + 2×2 outside 90° flush-butt join |
 | RM-GR-0202-A | `grove_carrier_2x2.stl` | A | Seeed Studio 101020083 Grove Gesture v1.0 carrier |
-| RM-GR-0402-A | `grove_carrier_4x2.stl` | A | Seeed Studio 101020585 Grove IMU 9DOF carrier |
+| RM-GR-0402-B | `grove_carrier_4x2.stl` | B | 40 mm-long Seeed Studio 101020585 Grove IMU 9DOF carrier |
 | RM-GR-L162-A | `grove_lcd_16x2_carrier.stl` | A | Seeed Studio 104020111 Grove 16×2 LCD carrier |
 | RM-TR-1420-A | `tripod_adapter.stl` | A | 1/4-20 tripod adapter |
 | RM-PF-2020-A | `profile_2020_adapter.stl` | A | 20-series slot-6 adapter |
@@ -64,7 +64,7 @@ standoff insert after passing through a 1.6 mm PCB.
 |---|---|---|---|
 | Flat and angle joins | Any plate using the V0.1 10 mm port grid | — | Geometry verified; physical qualification pending |
 | Grove 2×2 carrier | V0.1 ports | Seeed Studio 101020083 Grove Gesture v1.0, 20×20 mm PCB and two 2.2 mm holes | Geometry verified; physical fit pending; other 20×20 Grove boards require matching hole positions |
-| Grove 4×2 carrier | V0.1 ports | Seeed Studio 101020585 Grove IMU 9DOF, 40×20 mm PCB and asymmetric three 2.2 mm holes | Geometry verified; physical fit pending; other 40×20 Grove boards require matching hole positions |
+| Grove 4×2 carrier | V0.1 ports | Seeed Studio 101020585 Grove IMU 9DOF, 40×20 mm PCB and asymmetric three 2.2 mm holes | 40 mm-long base with locks beneath the PCB; geometry verified; physical fit pending; other 40×20 Grove boards require matching hole positions |
 | Grove 16×2 LCD carrier | V0.1 ports | Seeed Studio 104020111, 80×40 mm PCB and 76×36 mm hole pitch | Geometry verified; physical fit pending |
 | UNO carrier | V0.1 ports | Arduino UNO R3 mechanical outline and asymmetric holes | Mechanical pattern only; connector clearance must be checked per clone |
 | Raspberry Pi 5 USB carrier | V0.1 ports | Raspberry Pi 5; Waveshare PCIe TO USB 3.2 Gen1 Board (C) | Mount the Waveshare PCB with USB ports facing outward; retain both PCBs with M2.5×6 thread-forming screws |

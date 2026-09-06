@@ -532,16 +532,16 @@ module grove_carrier_2x2() {
 // with three 2.2 mm mounting holes, one at the left edge and two at the right.
 // M2 screws retain the PCB.
 module grove_carrier_4x2() {
-  body_size = [60,28];
+  body_size = [RM_GROVE_IMU_9DOF_SIZE[0],28];
   difference() {
     union() {
       translate([-body_size[0]/2,-body_size[1]/2,0])
         rounded_box([body_size[0],body_size[1],RM_CARRIER_T],RM_CARRIER_R);
-      for(x=[-25,25])
+      for(x=[-15,15])
         translate([x,0,0]) connector_peg();
       for(position=RM_GROVE_IMU_9DOF_HOLES) grove_pcb_standoff(position);
     }
-    for(x=[-25,25])
+    for(x=[-15,15])
       translate([x,0,0]) connector_screw_cut(body_t=RM_CARRIER_T);
     for(position=RM_GROVE_IMU_9DOF_HOLES)
       translate([position[0],position[1],RM_CARRIER_T+RM_GROVE_STANDOFF_H-
