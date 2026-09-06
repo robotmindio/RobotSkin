@@ -553,42 +553,28 @@ module grove_carrier_4x2() {
   }
 }
 
-// LD06 PJ030 controller: 40x20 mm PCB without mounting holes. The open centre
-// clears underside components; four flexible side lips retain a 1.6 mm PCB.
-module ld06_pj030_clip_carrier() {
-  body_size = [RM_PJ030_SIZE[0],RM_PJ030_SIZE[1]+0.5];
-  rim = 1.25;
-  clip_w = 4;
-  clip_t = 0.8;
-  clip_h = 4;
-  clip_clearance = 0.25;
-  lip_depth = 0.75;
-  lip_overlap = 0.1;
+// One of two identical pressure rails for the holeless 40x20x1.6 mm LD06
+// PJ030 controller. Mount the rails facing each other on plate rows 30 mm
+// apart; their grooves then retain the PCB edges at a 20 mm clear span.
+module ld06_pj030_clip_rail() {
+  length = RM_PJ030_SIZE[0];
+  body_h = RM_CARRIER_T;
+  wall_h = body_h+2.4;
+  groove_h = RM_PJ030_PCB_T-0.05;
   difference() {
     union() {
-      difference() {
-        translate([-body_size[0]/2,-body_size[1]/2,0])
-          rounded_box([body_size[0],body_size[1],RM_CARRIER_T],RM_CARRIER_R);
-        translate([-(body_size[0]-2*rim)/2,-(body_size[1]-2*rim)/2,-RM_EPS])
-          rounded_box([body_size[0]-2*rim,body_size[1]-2*rim,
-                       RM_CARRIER_T+2*RM_EPS],1);
+      hull() {
+        translate([-length/2,-9,0]) cube([length,10.2,0.8]);
+        translate([-length/2,-1.2,body_h-0.8]) cube([length,2.4,0.8]);
       }
-      for(x=[-15,15],side=[-1,1]) {
-        wall_y = side > 0 ? RM_PJ030_SIZE[1]/2+clip_clearance-RM_EPS :
-                            -RM_PJ030_SIZE[1]/2-clip_clearance-clip_t+RM_EPS;
-        lip_y = side > 0 ? RM_PJ030_SIZE[1]/2-lip_depth :
-                           -RM_PJ030_SIZE[1]/2-clip_clearance;
-        translate([x-clip_w/2,wall_y,RM_CARRIER_T])
-          cube([clip_w,clip_t,clip_h]);
-        translate([x-clip_w/2,lip_y,
-                   RM_CARRIER_T+RM_PJ030_PCB_T-lip_overlap])
-          cube([clip_w,lip_depth+clip_clearance,clip_t]);
-      }
-      for(position=[[-15,10],[15,-10]])
-        translate([position[0],position[1],0]) connector_peg();
+      translate([-length/2,-1.2,body_h-0.8])
+        cube([length,1.1,wall_h-body_h+0.8]);
+      translate([-length/2+1,-0.1,body_h+groove_h])
+        cube([length-2,1,0.8]);
+      for(x=[-15,15]) translate([x,-5,0]) connector_peg();
     }
-    for(position=[[-15,10],[15,-10]])
-      translate([position[0],position[1],0])
+    for(x=[-15,15])
+      translate([x,-5,0])
         connector_screw_cut(body_t=RM_CARRIER_T);
   }
 }
