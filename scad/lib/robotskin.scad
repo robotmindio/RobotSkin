@@ -40,6 +40,8 @@ RM_GROVE_LCD_16X2_SIZE = [80,40];
 RM_GROVE_LCD_16X2_HOLES = [[2,2],[78,2],[2,38],[78,38]];
 RM_PJ030_SIZE = [40,20];
 RM_PJ030_PCB_T = 1.6;
+RM_PJ030_CLAMP_PRELOAD = 0.1;
+RM_PJ030_CLAMP_T = RM_LOCK_SCREW_LENGTH-RM_INSERT_DEPTH+0.2;
 RM_ADAPTER_R = 3;
 RM_M3_HEAD_CLEARANCE_D = 6.2;
 RM_STS3215_HUB_RADIUS = 7;
@@ -553,29 +555,41 @@ module grove_carrier_4x2() {
   }
 }
 
-// One of two identical pressure rails for the holeless 40x20x1.6 mm LD06
-// PJ030 controller. Mount the rails facing each other on plate rows 30 mm
-// apart; their grooves then retain the PCB edges at a 20 mm clear span.
-module ld06_pj030_clip_rail() {
+// One of two bases for the holeless 40x20x1.6 mm LD06 PJ030 controller.
+// A matching bolted bar clamps the PCB edge; two bases use four plate locks.
+module ld06_pj030_clamp_base() {
   length = RM_PJ030_SIZE[0];
-  body_h = RM_CARRIER_T;
-  wall_h = body_h+2.4;
-  groove_h = RM_PJ030_PCB_T-0.05;
+  top = RM_CARRIER_T+RM_PJ030_PCB_T-RM_PJ030_CLAMP_PRELOAD;
   difference() {
     union() {
-      hull() {
-        translate([-length/2,-9,0]) cube([length,10.2,0.8]);
-        translate([-length/2,-1.2,body_h-0.8]) cube([length,2.4,0.8]);
-      }
-      translate([-length/2,-1.2,body_h-0.8])
-        cube([length,1.1,wall_h-body_h+0.8]);
-      translate([-length/2+1,-0.1,body_h+groove_h])
-        cube([length-2,1,0.8]);
-      for(x=[-15,15]) translate([x,-5,0]) connector_peg();
+      translate([-length/2,-10,0]) cube([length,9.9,top]);
+      translate([-length/2,-0.1,0]) cube([length,1.3,RM_CARRIER_T]);
+      for(x=[-5,5]) translate([x,-5,0]) connector_peg();
     }
-    for(x=[-15,15])
+    for(x=[-5,5])
       translate([x,-5,0])
-        connector_screw_cut(body_t=RM_CARRIER_T);
+        connector_screw_cut(body_t=top);
+    for(x=[-5,5])
+      translate([x,-5,RM_CARRIER_T])
+        cylinder(h=top-RM_CARRIER_T+RM_EPS,d=RM_M3_HEAD_CLEARANCE_D);
+    for(x=[-14,14])
+      translate([x,-5,top]) mirror([0,0,1]) heat_set_insert_cut();
+  }
+}
+
+// Print two. The outside spine carries the screws; the two short inner pads
+// apply preload to the PCB without covering its components or connectors.
+module ld06_pj030_clamp_bar() {
+  difference() {
+    union() {
+      translate([-19,-9,0]) rounded_box([38,8,RM_PJ030_CLAMP_T],1);
+      for(x=[-14,14])
+        translate([x-2.5,-1,0])
+          rounded_box([5,2,RM_PJ030_CLAMP_T],0.5);
+    }
+    for(x=[-14,14])
+      translate([x,-5,-RM_EPS])
+        cylinder(h=RM_PJ030_CLAMP_T+2*RM_EPS,d=RM_M3_CLEARANCE);
   }
 }
 

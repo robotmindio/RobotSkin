@@ -70,8 +70,8 @@ stations remain outside the 80×40 mm PCB footprint, while four bosses match
 its 76×36 mm hole pitch. All Grove PCB pilots are blind and leave 2 mm of
 plastic below the screw path.
 
-`ld06_pj030_clip_rail()` is the no-hole alternative for the 40×20×1.6 mm LD06
-PJ030 controller. Two identical 40 mm rails mount facing inward on plate rows
-30 mm apart. Their continuous 1.55 mm slots pressure-fit the long PCB edges;
-four total RobotSkin locks sit outside the PCB while both connector ends remain
-unobstructed.
+`ld06_pj030_clamp_base()` and `ld06_pj030_clamp_bar()` retain the holeless
+40×20×1.6 mm LD06 PJ030 controller. Two 40 mm bases mount facing inward on
+plate rows 30 mm apart and use four total RobotSkin locks. Two bars use four
+M3×6 screws and dedicated M3 inserts to clamp the long PCB edges with 0.1 mm
+nominal preload. Both connector ends remain unobstructed.

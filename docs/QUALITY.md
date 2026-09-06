@@ -21,6 +21,7 @@ operator, date, sample count, measurements, failures, and disposition.
 | Locked joint | 5 flat and 5 angle joints | M3×6 tightens without bottoming, stripping, or distortion |
 | Plate flatness | 5 plates, flat reference surface | Maximum corner lift 1.0 mm before assembly |
 | PCB carrier | 3 carriers with intended real PCB | All fasteners or clips engage; no board bending; connectors and antenna remain accessible |
+| PJ030 vibration retention | 3 populated clamp assemblies, production-equivalent robot vibration profile | No PCB migration, loose screws or inserts, cracks, connector strain, or loss of controller function |
 | Printability | Every SKU in release profile | Completes in documented orientation with only documented supports |
 
 ## Load qualification and published rating

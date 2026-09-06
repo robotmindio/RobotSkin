@@ -29,16 +29,20 @@ the LCD.
 The M3 locks remain accessible without removing the PCB. Press-fit-only
 assembly remains removable.
 
-The LD06 PJ030 clip carrier uses no PCB screws. Print two copies of the rail.
-Mount their peg rows 30 mm apart with the grooves facing inward; this leaves a
-20 mm span between the grooves. Lock all four pegs before sliding the 40×20 mm
-controller into the 1.55 mm slots from either end. Both short ends remain open
-for the LD06 and host connectors. Slide the PCB out to remove it; do not lever
-against components.
+The LD06 PJ030 clamp uses no PCB mounting holes. Print two clamp bases and two
+clamp bars. Heat-set two M3×3×4 inserts into each base's exposed clamp pockets.
+Mount the base peg rows 30 mm apart with the 1.2 mm ledges facing inward, then
+lock all four pegs to the RobotSkin plate. Set the 40×20 mm controller on the
+ledges and fasten each bar with two M3×6 screws. The short pads overlap only
+1 mm of each PCB edge; confirm they touch bare PCB rather than a component.
+Tighten evenly until the board cannot move, without bending it. For vibration
+service, apply removable threadlocker only to the metal insert threads and
+keep it off the printed plastic. Both short ends remain open for connectors.
 
 The large rectangular opening between the LCD standoffs is only PCB and
 connector clearance: leave it empty. Do not heat-set an insert in that opening
-or in the carrier. The brass M3 inserts belong exclusively in the matching
+or in the LCD carrier. Except for the dedicated PJ030 clamp pockets and PCB
+standoffs explicitly described above, brass M3 inserts belong in the matching
 female ports of the RobotSkin plate.
 
 ## External mounting adapters

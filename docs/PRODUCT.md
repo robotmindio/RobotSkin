@@ -23,7 +23,7 @@ is not a safety component. A production release requires every gate in
 | RM-JO-0202-B | `outer_angle_join.stl` | B | 2×2 + 2×2 outside 90° flush-butt join |
 | RM-GR-0202-A | `grove_carrier_2x2.stl` | A | Seeed Studio 101020083 Grove Gesture v1.0 carrier |
 | RM-GR-0402-B | `grove_carrier_4x2.stl` | B | 40 mm-long Seeed Studio 101020585 Grove IMU 9DOF carrier |
-| RM-LD-PJ03-B | `ld06_pj030_clip_carrier.stl` | B | One pressure rail for LD06 PJ030 controller; print two |
+| RM-LD-PJ03-C | `ld06_pj030_clip_carrier.stl`; `ld06_pj030_clamp_bar.stl` | C | Bolted edge clamp for LD06 PJ030 controller; print two of each |
 | RM-GR-L162-A | `grove_lcd_16x2_carrier.stl` | A | Seeed Studio 104020111 Grove 16×2 LCD carrier |
 | RM-TR-1420-A | `tripod_adapter.stl` | A | 1/4-20 tripod adapter |
 | RM-PF-2020-A | `profile_2020_adapter.stl` | A | 20-series slot-6 adapter |
@@ -43,8 +43,8 @@ dimension and material requirement is met.
 
 | Hardware ID | Approved engineering specification | Used by | Quantity |
 |---|---|---|---:|
-| HW-INS-M3-334 | Heat-set insert, M3 female, 3 mm long, 4.0 mm OD | RobotSkin port; UNO standoff | 1 per lock |
-| HW-SCR-M3X6-PH | M3×6 pan-head machine screw | Standard RobotSkin lock | 1 per lock |
+| HW-INS-M3-334 | Heat-set insert, M3 female, 3 mm long, 4.0 mm OD | RobotSkin port; UNO standoff; PJ030 clamp | 1 per lock or clamp screw |
+| HW-SCR-M3X6-PH | M3×6 pan-head machine screw | Standard RobotSkin lock; PJ030 clamp | 1 per lock or clamp screw |
 | HW-SCR-M3X4-PH | M3×4 pan-head machine screw | UNO PCB | 4 |
 | HW-SCR-M3X8-PH | M3×8 pan-head machine screw | H25T horn plate | 4 |
 | HW-SCR-M3X10-PH | M3×10 pan-head machine screw | H25T end-effector hub lock | 4 |
@@ -66,7 +66,7 @@ standoff insert after passing through a 1.6 mm PCB.
 | Flat and angle joins | Any plate using the V0.1 10 mm port grid | — | Geometry verified; physical qualification pending |
 | Grove 2×2 carrier | V0.1 ports | Seeed Studio 101020083 Grove Gesture v1.0, 20×20 mm PCB and two 2.2 mm holes | Geometry verified; physical fit pending; other 20×20 Grove boards require matching hole positions |
 | Grove 4×2 carrier | V0.1 ports | Seeed Studio 101020585 Grove IMU 9DOF, 40×20 mm PCB and asymmetric three 2.2 mm holes | 40 mm-long base with locks beneath the PCB; geometry verified; physical fit pending; other 40×20 Grove boards require matching hole positions |
-| LD06 PJ030 clip carrier | Four V0.1 ports | 40×20×1.6 mm PJ030 controller without mounting holes | Two identical rails grip the long edges; print the STL twice; geometry verified, physical retention pending |
+| LD06 PJ030 clamp carrier | Four V0.1 ports | 40×20×1.6 mm PJ030 controller without mounting holes | Two bases and two bolted bars clamp both long edges; four PCB-clamp screws and four plate locks; geometry verified, vibration qualification pending |
 | Grove 16×2 LCD carrier | V0.1 ports | Seeed Studio 104020111, 80×40 mm PCB and 76×36 mm hole pitch | Geometry verified; physical fit pending |
 | UNO carrier | V0.1 ports | Arduino UNO R3 mechanical outline and asymmetric holes | Mechanical pattern only; connector clearance must be checked per clone |
 | Raspberry Pi 5 USB carrier | V0.1 ports | Raspberry Pi 5; Waveshare PCIe TO USB 3.2 Gen1 Board (C) | Mount the Waveshare PCB with USB ports facing outward; retain both PCBs with M2.5×6 thread-forming screws |
