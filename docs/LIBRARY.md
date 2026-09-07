@@ -29,6 +29,7 @@ profile_2020_adapter();
 din_rail_adapter();
 grove_cable_clip();
 uno_carrier();
+esp32_devkitc_carrier();
 ```
 
 `plate()` requires integer dimensions of at least 2×2. Width and height are
@@ -62,6 +63,11 @@ points.
 `uno_carrier()` follows the official 68.58×53.34 mm UNO outline and asymmetric
 four-hole pattern. Its main body is one continuous flat plate interrupted only
 by screw paths. Four symmetric RobotSkin locks remain hidden below the board.
+
+`esp32_devkitc_carrier()` fits the official 48.26×27.94 mm ESP32-DevKitC V4
+PCB with 25.4 mm pin-row spacing. The two header bodies rest on raised rails
+with the component side facing the carrier, so the pins point outward. Four
+end clips retain the PCB while the centre, USB end, and antenna end stay open.
 
 `apriltag_holder()` accepts a square size or `[width,height]` and retains the
 printed card between four corner shelves and tabs. Its two M3 stations are

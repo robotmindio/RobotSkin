@@ -32,6 +32,13 @@ assert(near(uno_holes[0][0],-20.29) && near(uno_holes[0][1],-24.13) &&
 assert(RM_UNO_LOCK_X+RM_GRID/2 < RM_UNO_SIZE[0]/2 &&
        RM_UNO_LOCK_Y+RM_GRID/2 < RM_UNO_SIZE[1]/2,
        "UNO RobotSkin locks must remain hidden below the board");
+assert(RM_ESP32_DEVKITC_PCB_SIZE == [48.26,27.94] &&
+       RM_ESP32_DEVKITC_HEADER_SPACING == 25.4,
+       "ESP32-DevKitC carrier must retain the official board geometry");
+assert(RM_ESP32_DEVKITC_BODY_SIZE[0]/2 >=
+       RM_ESP32_DEVKITC_PCB_SIZE[0]/2+
+       RM_ESP32_DEVKITC_CLIP_CLEARANCE+1.2,
+       "ESP32-DevKitC clips must stay supported by the carrier body");
 assert(RM_TEST_MALE_FITS == [0,0.05,0.10,0.15,0.20],
        "Tolerance coupon must retain its documented five male fits");
 assert(RM_TEST_INSERT_BORES == [3.75,3.80,3.85,3.90,3.95],
@@ -61,6 +68,7 @@ translate([230,60,0]) profile_2020_adapter();
 translate([270,60,0]) din_rail_adapter();
 translate([310,60,0]) grove_cable_clip();
 translate([380,100,0]) uno_carrier();
+translate([460,100,0]) esp32_devkitc_carrier();
 translate([100,0,0]) connector_grid(2,2,direction="up");
 translate([130,0,0])
   difference() {

@@ -60,6 +60,14 @@ RM_UNO_STANDOFF_H = 5;
 RM_UNO_STANDOFF_D = 7;
 RM_UNO_LOCK_X = 15;
 RM_UNO_LOCK_Y = 15;
+RM_ESP32_DEVKITC_PCB_SIZE = [48.26,27.94];
+RM_ESP32_DEVKITC_HEADER_SPACING = 25.4;
+RM_ESP32_DEVKITC_HEADER_W = 2.54;
+RM_ESP32_DEVKITC_HEADER_H = 2.5;
+RM_ESP32_DEVKITC_BOARD_T = 1.6;
+RM_ESP32_DEVKITC_SUPPORT_H = 4;
+RM_ESP32_DEVKITC_BODY_SIZE = [52,40];
+RM_ESP32_DEVKITC_CLIP_CLEARANCE = 0.2;
 RM_LD06_HOLE_D = 2.4;
 RM_LD06_HOLE_SPACING = 28.2;
 RM_LD06_INSERT_BORE = 3.7;
@@ -672,6 +680,54 @@ module uno_carrier() {
       }
     }
     for(position=holes) uno_standoff(position,cut=true);
+    for(position=locks)
+      translate([position[0],position[1],0])
+        connector_screw_cut(body_t=RM_CARRIER_T);
+  }
+}
+
+module esp32_devkitc_end_clip(side,y) {
+  pcb_end = RM_ESP32_DEVKITC_PCB_SIZE[0]/2;
+  board_top = RM_CARRIER_T+RM_ESP32_DEVKITC_SUPPORT_H+
+              RM_ESP32_DEVKITC_HEADER_H+RM_ESP32_DEVKITC_BOARD_T;
+  clip_t = 1.2;
+  clip_w = 3;
+  lip = 1;
+  mirror([side < 0 ? 1 : 0,0,0]) {
+    translate([pcb_end+RM_ESP32_DEVKITC_CLIP_CLEARANCE,
+               y-clip_w/2,RM_CARRIER_T-RM_EPS])
+      cube([clip_t,clip_w,board_top-RM_CARRIER_T+1+RM_EPS]);
+    translate([pcb_end-lip,y-clip_w/2,
+               board_top+RM_ESP32_DEVKITC_CLIP_CLEARANCE])
+      cube([lip+clip_t+RM_ESP32_DEVKITC_CLIP_CLEARANCE,clip_w,1]);
+  }
+}
+
+// The board installs component-side down so its two pin rows point outward.
+// The open centre clears underside components and both ends remain unobstructed.
+module esp32_devkitc_carrier() {
+  locks = [for(x=[-15,15],y=[-15,15]) [x,y]];
+  difference() {
+    union() {
+      translate([-RM_ESP32_DEVKITC_BODY_SIZE[0]/2,
+                 -RM_ESP32_DEVKITC_BODY_SIZE[1]/2,0])
+        rounded_box([RM_ESP32_DEVKITC_BODY_SIZE[0],
+                     RM_ESP32_DEVKITC_BODY_SIZE[1],RM_CARRIER_T],
+                    RM_CARRIER_R);
+      for(y=[-RM_ESP32_DEVKITC_HEADER_SPACING/2,
+              RM_ESP32_DEVKITC_HEADER_SPACING/2])
+        translate([-RM_ESP32_DEVKITC_PCB_SIZE[0]/2,
+                   y-RM_ESP32_DEVKITC_HEADER_W/2,RM_CARRIER_T-RM_EPS])
+          rounded_box([RM_ESP32_DEVKITC_PCB_SIZE[0],
+                       RM_ESP32_DEVKITC_HEADER_W,
+                       RM_ESP32_DEVKITC_SUPPORT_H+RM_EPS],0.5);
+      for(side=[-1,1],y=[-9.5,9.5])
+        esp32_devkitc_end_clip(side,y);
+      for(position=locks)
+        translate([position[0],position[1],0]) connector_peg();
+    }
+    translate([-20,-9,-RM_EPS])
+      rounded_box([40,18,RM_CARRIER_T+2*RM_EPS],1);
     for(position=locks)
       translate([position[0],position[1],0])
         connector_screw_cut(body_t=RM_CARRIER_T);

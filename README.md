@@ -20,8 +20,8 @@ custom enclosure every time.
 
 - **Structural surfaces:** 8×8 plates and smaller full-through mounting plates.
 - **Structures:** flat, inner-corner, and outer-corner joins.
-- **Electronics:** Grove sensor carriers, a cable clip, and a solid UNO-format
-  carrier.
+- **Electronics:** Grove carriers, a cable clip, a solid UNO-format carrier,
+  and an inverted ESP32-DevKitC V4 carrier with exposed pins.
 - **Mounting adapters:** AprilTag, camera-tripod, 20-series extrusion, and TH35
   DIN rail adapters, plus an H25T servo-horn plate.
 
