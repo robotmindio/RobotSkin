@@ -96,7 +96,9 @@ the standard M3×6 lock screws at all four feet.
 `esp32_devkitc_carrier()` fits the official 48.26×27.94 mm ESP32-DevKitC V4
 PCB with 25.4 mm pin-row spacing. The two header bodies rest on raised rails
 with the component side facing the carrier, so the pins point outward. Four
-end clips retain the PCB while the centre, USB end, and antenna end stay open.
+end clips retain the PCB; the raised rails clear its components while the USB
+and antenna ends stay open. Two centred RobotSkin locks match the compact
+carrier pattern.
 
 The mounting adapters deliberately expose RobotSkin in the useful direction:
 `tripod_adapter()` places two upward pegs under a plate, while the 2020-profile

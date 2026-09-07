@@ -95,7 +95,7 @@ open sides unobstructed so the active cooler can exhaust air.
 
 ## ESP32-DevKitC carrier
 
-Attach the empty carrier through its four hidden RobotSkin locks. Hook one
+Attach the empty carrier through its two hidden RobotSkin locks. Hook one
 short end of the ESP32-DevKitC V4 under two clips, component side toward the
 carrier, then flex the opposite clips just enough to seat the other end. The
 two pin rows point outward; the USB connector and antenna remain exposed.

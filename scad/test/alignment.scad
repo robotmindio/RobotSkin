@@ -82,8 +82,9 @@ assert(RM_ESP32_DEVKITC_PCB_SIZE == [48.26,27.94] &&
        "ESP32-DevKitC carrier must retain the official board geometry");
 assert(RM_ESP32_DEVKITC_BODY_SIZE[0]/2 >=
        RM_ESP32_DEVKITC_PCB_SIZE[0]/2+
-       RM_ESP32_DEVKITC_CLIP_CLEARANCE+1.2,
-       "ESP32-DevKitC clips must stay supported by the carrier body");
+       RM_ESP32_DEVKITC_CLIP_CLEARANCE+1.2 &&
+       RM_ESP32_DEVKITC_BODY_SIZE[1]-RM_ESP32_DEVKITC_PCB_SIZE[1] <= 0.1,
+       "ESP32-DevKitC carrier must support its clips without a wide border");
 assert(RM_TEST_MALE_FITS == [0,0.05,0.10,0.15,0.20],
        "Tolerance coupon must retain its documented five male fits");
 assert(RM_TEST_INSERT_BORES == [3.75,3.80,3.85,3.90,3.95],
