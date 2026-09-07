@@ -27,6 +27,7 @@ printer. Orientations are already encoded in the production exports.
 | Inside/outside angle joins | As exported; local support below the horizontal connector row |
 | UNO carrier | Long frame edge on bed; local support only beneath horizontal connector details when bridging fails |
 | Raspberry Pi table | Tabletop on bed, legs and pegs upward; no support |
+| ESP32-DevKitC carrier | Long frame edge on bed; local support beneath the clip lips only if bridging fails |
 | Tripod, 2020, DIN, cable clip | As exported; inspect slicer preview before first production run |
 
 Reject a print when a port or peg has missing perimeters, an insert pocket is
