@@ -95,12 +95,18 @@ open sides unobstructed so the active cooler can exhaust air.
 
 ## ESP32-S3 dual-USB-C carrier
 
-Attach the empty carrier through the required stations in its four-lock row.
-Align both black plastic header strips with the four jaws, component side
-toward the carrier, then press evenly above the headers until every detent is
-seated against the two antenna-end header stops. Release the clips from the
-header plastic before lifting the board. Both USB-C connectors and all pins
-remain exposed.
+Attach the empty carrier using its four consecutive RobotSkin lock stations
+before fitting the board. Orient components toward the frame and both yellow
+header strips and long pins away from it. Centre the PCB between the corner
+stops; lower it evenly onto the four edge seats. The four outside hooks must
+return over the outer edges of the yellow plastic, with no PCB bending.
+The seats touch the PCB edge underneath; the hooks retain the plastic above it.
+
+To remove it, gently move the two hooks on one side outward, lift that edge
+slightly, then disengage the other side. Do not pull the pins or pry against
+solder joints. Both central end openings remain free for the USB-C cables and
+the projecting antenna. Test cable insertion/removal and ten latch cycles on
+the first PETG print before using it on the robot. See [printing](PRINTING.md).
 
 ## Plate mounting
 

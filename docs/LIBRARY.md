@@ -93,12 +93,24 @@ legs. Its underside sits 30 mm above the plate, clearing the carrier-mounted
 Raspberry Pi 5 with the official active cooler. Recessed access bores retain
 the standard M3×6 lock screws at all four feet.
 
-`esp32_s3_devkitc_carrier()` fits the measured 57×25.4 mm dual-USB-C ESP32-S3
-board with two 22-pin rows at 22.86 mm spacing. Four long-stem jaws grip the
-plastic headers; short saddles support them without touching the PCB or pins.
-The open antenna end and ladder frame clear both USB-C connectors and reduce
-plastic beneath the components.
-Four RobotSkin locks form one uninterrupted 10 mm-pitch row.
+`esp32_s3_devkitc_carrier()` targets the user's dual-USB-C ESP32-S3 board.
+Confirmed header dimensions are 22 mm inside, 28 mm outside and 2 mm high:
+3 mm-wide strips on 25 mm centres. The 57 mm board-body length excludes the
+projecting antenna; the 28 mm PCB envelope, 1.6 mm PCB thickness and 2.54 mm
+pin pitch remain nominal assumptions, not additional caliper measurements.
+
+The 60×32.6 mm open frame has four consecutive RobotSkin locks. Four outside
+arms wrap around the PCB and catch the exposed header tops. Separate edge
+seats and corner stops locate the PCB without preloading the soldered rows.
+`RM_ESP32_S3_DEVKITC_SNAP_OVERLAP` (0.2 mm) and `SNAP_GAP` (0.2 mm, same prefix)
+control retention and vertical clearance. Increase overlap only after checking
+jumper clearance: nominal 2.54 mm housings have only 0.03 mm lateral clearance
+at the hooks. Physical fit, release force and durability are not yet verified.
+
+`scad/source/esp32_fit.scad` preserves the board/connector envelope and assembly
+preview. `python scripts/check_esp32_fit.py` checks unwanted intersections with
+the PCB, headers, pins, solder, nominal jumpers, USB cable plugs and lock-screw
+heads. It runs in the normal build; it is not a physical qualification test.
 
 The mounting adapters deliberately expose RobotSkin in the useful direction:
 `tripod_adapter()` places two upward pegs under a plate, while the 2020-profile

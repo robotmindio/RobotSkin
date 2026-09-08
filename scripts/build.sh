@@ -18,6 +18,7 @@ build() {
 
 echo "[OpenSCAD] alignment"
 openscad --export-format csg -o /dev/null "$TEST_DIR/alignment.scad"
+python "$PROJECT_DIR/scripts/check_esp32_fit.py"
 
 for source in "$PART_DIR"/*.scad; do
   build "$source"

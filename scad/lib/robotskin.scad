@@ -78,18 +78,19 @@ RM_RPI5_USB_STANDOFF_D = 7;
 RM_RPI5_TABLE_SIZE = [120,100];
 RM_RPI5_TABLE_CLEARANCE = 30;
 RM_RPI5_TABLE_LEG_D = 9;
-RM_ESP32_S3_DEVKITC_PCB_SIZE = [57,25.4];
-RM_ESP32_S3_DEVKITC_HEADER_SPACING = 22.86;
-RM_ESP32_S3_DEVKITC_HEADER_LENGTH = 55.88;
-RM_ESP32_S3_DEVKITC_HEADER_W = 2.54;
-RM_ESP32_S3_DEVKITC_HEADER_H = 2.5;
+// User measurements: 22 mm between header bodies, 28 mm outside, 2 mm high.
+// PCB envelope/thickness and pin pitch remain nominal; antenna extends past PCB.
+RM_ESP32_S3_DEVKITC_PCB_SIZE = [57,28];
+RM_ESP32_S3_DEVKITC_HEADER_SPACING = 25;
+RM_ESP32_S3_DEVKITC_HEADER_LENGTH = 22*2.54;
+RM_ESP32_S3_DEVKITC_HEADER_W = 3;
+RM_ESP32_S3_DEVKITC_HEADER_H = 2;
 RM_ESP32_S3_DEVKITC_BOARD_T = 1.6;
-RM_ESP32_S3_DEVKITC_SUPPORT_H = 3;
-RM_ESP32_S3_DEVKITC_BODY_SIZE = [59,26.4];
-RM_ESP32_S3_DEVKITC_BOARD_X = 4;
-RM_ESP32_S3_DEVKITC_BOARD_CLEARANCE = 0.2;
-RM_ESP32_S3_DEVKITC_SNAP_D = 0.8;
-RM_ESP32_S3_DEVKITC_CROSSBAR_W = 5;
+RM_ESP32_S3_DEVKITC_SUPPORT_H = 6;
+RM_ESP32_S3_DEVKITC_BODY_SIZE = [60,32.6];
+RM_ESP32_S3_DEVKITC_BOARD_CLEARANCE = 0.3;
+RM_ESP32_S3_DEVKITC_SNAP_OVERLAP = 0.2;
+RM_ESP32_S3_DEVKITC_SNAP_GAP = 0.2;
 RM_LD06_HOLE_D = 2.4;
 RM_LD06_HOLE_SPACING = 28.2;
 RM_LD06_INSERT_BORE = 3.7;
@@ -840,73 +841,77 @@ module rpi5_table() {
   }
 }
 
-module esp32_s3_header_jaw(x,y,side) {
-  length = 5;
-  wall = 1.2;
-  floor_z = RM_CARRIER_T+RM_ESP32_S3_DEVKITC_SUPPORT_H;
-  translate([x,y,0]) mirror([0,side < 0 ? 1 : 0,0]) {
-    translate([-length/2,RM_ESP32_S3_DEVKITC_HEADER_W/2,0])
-      cube([length,RM_ESP32_S3_DEVKITC_BOARD_CLEARANCE+wall,
-            RM_CARRIER_T]);
-    translate([-length/2,RM_ESP32_S3_DEVKITC_HEADER_W/2+
-               RM_ESP32_S3_DEVKITC_BOARD_CLEARANCE,RM_CARRIER_T-0.4])
-      cube([length,wall,floor_z+RM_ESP32_S3_DEVKITC_HEADER_H-
-            RM_CARRIER_T+0.4]);
-    translate([-length/2,RM_ESP32_S3_DEVKITC_HEADER_W/2+
-               RM_ESP32_S3_DEVKITC_BOARD_CLEARANCE+wall/2,
-               RM_CARRIER_T+wall/4])
-      rotate([0,90,0]) cylinder(h=length,d=wall,$fn=16);
-    translate([-length/2,RM_ESP32_S3_DEVKITC_HEADER_W/2+
-               RM_ESP32_S3_DEVKITC_BOARD_CLEARANCE,
-               floor_z+RM_ESP32_S3_DEVKITC_HEADER_H-0.65])
-      rotate([0,90,0])
-        cylinder(h=length,d=RM_ESP32_S3_DEVKITC_SNAP_D,$fn=16);
+function esp32_s3_pcb_z() = RM_CARRIER_T+RM_ESP32_S3_DEVKITC_SUPPORT_H;
+function esp32_s3_header_top() = esp32_s3_pcb_z()+
+  RM_ESP32_S3_DEVKITC_BOARD_T+RM_ESP32_S3_DEVKITC_HEADER_H;
+function esp32_s3_hook_tip() =
+  (RM_ESP32_S3_DEVKITC_HEADER_SPACING+RM_ESP32_S3_DEVKITC_HEADER_W)/2-
+  RM_ESP32_S3_DEVKITC_SNAP_OVERLAP;
+
+// Outside arms wrap around the PCB. The flat hook underside captures the
+// exposed header top, while the sloping top cams the arm outward on insertion.
+module esp32_s3_header_jaw(x,side) {
+  inner = RM_ESP32_S3_DEVKITC_PCB_SIZE[1]/2+
+          RM_ESP32_S3_DEVKITC_BOARD_CLEARANCE;
+  wall = 1.4;
+  width = 6;
+  latch_z = esp32_s3_header_top()+RM_ESP32_S3_DEVKITC_SNAP_GAP;
+  translate([x,0,0]) mirror([0,side < 0 ? 1 : 0,0]) {
+    translate([-width/2,inner,RM_CARRIER_T-RM_EPS])
+      rounded_box([width,wall,latch_z+0.8-RM_CARRIER_T+RM_EPS],0.4);
+    // A tapered foot widens the actual root; it does not invade the PCB seat.
+    translate([-width/2,0,0]) rotate([90,0,90])
+      linear_extrude(height=width)
+        polygon([[inner,RM_CARRIER_T-RM_EPS],
+                 [inner+wall+0.6,RM_CARRIER_T-RM_EPS],
+                 [inner+wall,RM_CARRIER_T+1],
+                 [inner,RM_CARRIER_T+1]]);
+    translate([-width/2,0,0]) rotate([90,0,90])
+      linear_extrude(height=width)
+        polygon([[esp32_s3_hook_tip(),latch_z],
+                 [inner+wall-0.2,latch_z],
+                 [inner+wall-0.2,latch_z+0.8],
+                 [inner,latch_z+0.8],
+                 [esp32_s3_hook_tip(),latch_z+0.15]]);
   }
 }
 
-// Push the inverted board into four long-stem jaws gripping the plastic headers.
-// The open ladder clears the USB-C ports and keeps the central antenna area open.
 function esp32_s3_devkitc_locks() = [for(x=[-15:10:15]) [x,0]];
 
+// Single open frame: four standard locks, four edge seats and four outside
+// snaps. End stops touch PCB corners, leaving USB and antenna centres open.
 module esp32_s3_devkitc_carrier() {
-  locks = esp32_s3_devkitc_locks();
-  frame_w = RM_ESP32_S3_DEVKITC_BODY_SIZE[1];
-  rail_x0 = RM_ESP32_S3_DEVKITC_BOARD_X-
-            RM_ESP32_S3_DEVKITC_PCB_SIZE[0]/2-1;
-  header_end = RM_ESP32_S3_DEVKITC_BOARD_X+
-               RM_ESP32_S3_DEVKITC_HEADER_LENGTH/2;
-  rail_x1 = header_end+RM_ESP32_S3_DEVKITC_BOARD_CLEARANCE+1.2;
-  rail_w = 3.5;
-  crossbar_w = RM_ESP32_S3_DEVKITC_CROSSBAR_W;
-  support_length = 7;
-  floor_z = RM_CARRIER_T+RM_ESP32_S3_DEVKITC_SUPPORT_H;
+  half_l = RM_ESP32_S3_DEVKITC_BODY_SIZE[0]/2;
+  half_w = RM_ESP32_S3_DEVKITC_BODY_SIZE[1]/2;
+  seat_y = 13.6;
   difference() {
     union() {
-      for(position=locks)
-        translate([position[0]-crossbar_w/2,-frame_w/2,0])
-          rounded_box([crossbar_w,frame_w,RM_CARRIER_T],1.5);
-      for(y=[-RM_ESP32_S3_DEVKITC_HEADER_SPACING/2,
-              RM_ESP32_S3_DEVKITC_HEADER_SPACING/2]) {
-        translate([rail_x0,y-rail_w/2,0])
-          rounded_box([rail_x1-rail_x0,rail_w,RM_CARRIER_T],1);
-        for(x=[-15,5,25])
-          translate([x-support_length/2,
-                     y-RM_ESP32_S3_DEVKITC_HEADER_W/2,RM_CARRIER_T-RM_EPS])
-            rounded_box([support_length,RM_ESP32_S3_DEVKITC_HEADER_W,
-                         RM_ESP32_S3_DEVKITC_SUPPORT_H+RM_EPS],0.5);
-        translate([header_end+RM_ESP32_S3_DEVKITC_BOARD_CLEARANCE,
-                   y-rail_w/2,RM_CARRIER_T-RM_EPS])
-          rounded_box([1.2,rail_w,
-                       floor_z+RM_ESP32_S3_DEVKITC_HEADER_H-
-                       RM_CARRIER_T+RM_EPS],0.5);
+      translate([-20,-5,0]) rounded_box([40,10,RM_CARRIER_T],1);
+      for(x=[-15,15])
+        translate([x-3,-half_w,0])
+          rounded_box([6,2*half_w,RM_CARRIER_T],1);
+      for(side=[-1,1]) mirror([0,side < 0 ? 1 : 0,0]) {
+        translate([-half_l,seat_y,0])
+          rounded_box([2*half_l,half_w-seat_y,RM_CARRIER_T],1);
+        // Seats are separate from the arms so the full arm can flex.
+        for(end=[-1,1]) mirror([end < 0 ? 1 : 0,0,0])
+          translate([18,seat_y,RM_CARRIER_T-RM_EPS])
+            rounded_box([half_l-18,half_w-seat_y,
+                         RM_ESP32_S3_DEVKITC_SUPPORT_H+RM_EPS],0.4);
+        for(end=[-1,1]) mirror([end < 0 ? 1 : 0,0,0])
+          translate([RM_ESP32_S3_DEVKITC_PCB_SIZE[0]/2+
+                     RM_ESP32_S3_DEVKITC_BOARD_CLEARANCE,seat_y,
+                     RM_CARRIER_T-RM_EPS])
+            rounded_box([half_l-RM_ESP32_S3_DEVKITC_PCB_SIZE[0]/2-
+                         RM_ESP32_S3_DEVKITC_BOARD_CLEARANCE,
+                         half_w-seat_y,esp32_s3_pcb_z()+
+                         RM_ESP32_S3_DEVKITC_BOARD_T-RM_CARRIER_T+RM_EPS],0.4);
       }
-      for(x=[-5,15],y=[-RM_ESP32_S3_DEVKITC_HEADER_SPACING/2,
-                         RM_ESP32_S3_DEVKITC_HEADER_SPACING/2])
-        esp32_s3_header_jaw(x,y,y < 0 ? 1 : -1);
-      for(position=locks)
+      for(x=[-12,12],side=[-1,1]) esp32_s3_header_jaw(x,side);
+      for(position=esp32_s3_devkitc_locks())
         translate([position[0],position[1],0]) connector_peg();
     }
-    for(position=locks)
+    for(position=esp32_s3_devkitc_locks())
       translate([position[0],position[1],0])
         connector_screw_cut(body_t=RM_CARRIER_T);
   }

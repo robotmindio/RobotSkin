@@ -22,7 +22,7 @@ mounting.
 | DIN rail | EN 60715 TH35 rigid end-slide channel |
 | Tripod | Captive 1/4-20 hex nut, 4.5 mm maximum screw entry |
 | UNO carrier | 68.58×53.34 mm outline, official asymmetric four-hole layout |
-| ESP32-S3 dual-USB-C carrier | Measured 57×25.4 mm PCB, 22.86 mm pin-row spacing, inverted |
+| ESP32-S3 dual-USB-C carrier | Header bodies: 22 mm inside, 28 mm outside, 2 mm high; pins outward; PCB body nominal 57×28 mm |
 
 The circular central boss carries the insert for its full 3 mm depth. A visible 4.6 mm,
 0.8 mm-deep entry cup leads into the 3.7 mm pilot, so the brass can start
