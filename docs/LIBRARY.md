@@ -34,7 +34,8 @@ grove_cable_clip();
 uno_carrier();
 rpi5_usb_carrier();
 rpi5_table();
-esp32_devkitc_carrier();
+esp32_s3_devkitc_carrier();
+esp32_s3_devkitc_end_cap();
 ```
 
 `plate()` requires integer dimensions of at least 2×2. Width and height are
@@ -93,12 +94,12 @@ legs. Its underside sits 30 mm above the plate, clearing the carrier-mounted
 Raspberry Pi 5 with the official active cooler. Recessed access bores retain
 the standard M3×6 lock screws at all four feet.
 
-`esp32_devkitc_carrier()` fits the official 48.26×27.94 mm ESP32-DevKitC V4
-PCB with 25.4 mm pin-row spacing. The two header bodies rest on raised rails
-with the component side facing the carrier, so the pins point outward. Four
-end clips retain the PCB; the raised rails clear its components while the USB
-and antenna ends stay open. Two centred RobotSkin locks match the compact
-carrier pattern.
+`esp32_s3_devkitc_carrier()` fits the official 62.74×25.40 mm
+ESP32-S3-DevKitC-1 with two 22-pin rows at 22.86 mm spacing. The board slides
+component-side down beneath two rigid antenna-end guides, leaving its pins and
+both USB-C ports exposed. A rigid end cap retains the USB-end corners with two
+horizontal M2.5 screws below the connectors. Six RobotSkin locks form one
+uninterrupted 10 mm-pitch row beneath the carrier.
 
 The mounting adapters deliberately expose RobotSkin in the useful direction:
 `tripod_adapter()` places two upward pegs under a plate, while the 2020-profile

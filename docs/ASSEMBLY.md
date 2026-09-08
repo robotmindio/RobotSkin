@@ -93,12 +93,14 @@ then press the table into place. For a locked installation, drive one M3×6
 pan-head screw down each leg's access bore into the plate insert. Keep all four
 open sides unobstructed so the active cooler can exhaust air.
 
-## ESP32-DevKitC carrier
+## ESP32-S3-DevKitC-1 carrier
 
-Attach the empty carrier through its two hidden RobotSkin locks. Hook one
-short end of the ESP32-DevKitC V4 under two clips, component side toward the
-carrier, then flex the opposite clips just enough to seat the other end. The
-two pin rows point outward; the USB connector and antenna remain exposed.
+Attach the empty carrier through the required stations in its six-lock row.
+Remove the USB-end cap, then slide the ESP32-S3-DevKitC-1 under the rigid
+antenna-end guides with its component side toward the carrier. Place the cap
+over the two USB-end PCB corners and install two M2.5×6 screws horizontally
+through the cap into the carrier. Both USB-C connectors and all pins remain
+exposed.
 
 ## Plate mounting
 

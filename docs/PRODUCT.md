@@ -32,7 +32,7 @@ is not a safety component. A production release requires every gate in
 | RM-PC-UNO3-C | `uno_carrier.stl` | C | Solid UNO R3-form-factor carrier |
 | RM-PC-RPI5U-A | `rpi5_usb_carrier.stl` | A | Raspberry Pi 5 + Waveshare USB Board (C) carrier |
 | RM-PC-RPI5T-A | `rpi5_table.stl` | A | Raspberry Pi 5 open protection table |
-| RM-PC-ESP32-A | `esp32_devkitc_carrier.stl` | A | Inverted ESP32-DevKitC V4 carrier |
+| RM-PC-ES3DC-B | `esp32_s3_devkitc_carrier.stl`; `esp32_s3_devkitc_end_cap.stl` | B | Inverted ESP32-S3-DevKitC-1 carrier and rigid USB-end cap |
 | RM-SV-H25T-D | `h25t_horn_plate_3x3.stl` | D | STS3215 H25T 7 mm-radius drive plate with horn-screw clearance |
 | RM-SV-H25C-F | `h25t_port_cube_3x3.stl` | F | STS3215 drive plate to compact five-face RobotSkin end-effector hub |
 
@@ -51,7 +51,7 @@ dimension and material requirement is met.
 | HW-SCR-M3X10-PH | M3×10 pan-head machine screw | H25T end-effector hub lock | 4 |
 | HW-HUB-STS3215-H25T | Supplied STS3215 H25T horn, 4×M3 at 7 mm radius | H25T horn plate | 1 |
 | HW-SCR-M2X6-TF | M2×6 thread-forming screw for plastic | Grove 2×2 or 4×2 PCB | 2 or 3 |
-| HW-SCR-M25X6-TF | M2.5×6 thread-forming screw for plastic | Grove LCD PCB | 4 |
+| HW-SCR-M25X6-TF | M2.5×6 thread-forming screw for plastic | Grove LCD PCB; ESP32-S3 retainer | 2 per ESP32-S3 carrier; 4 per Grove LCD |
 | HW-NUT-1420-HX | 1/4-20 hex nut, 11.3 mm maximum across flats, 5.8 mm maximum thick | Tripod adapter | 1 |
 | HW-SCR-M5-PH | M5 screw sized for extrusion engagement | 2020 adapter | 2 |
 | HW-NUT-M5-T20S6 | M5 T-nut for 20-series slot-6 extrusion | 2020 adapter | 2 |
@@ -72,7 +72,7 @@ standoff insert after passing through a 1.6 mm PCB.
 | UNO carrier | V0.1 ports | Arduino UNO R3 mechanical outline and asymmetric holes | Mechanical pattern only; connector clearance must be checked per clone |
 | Raspberry Pi 5 USB carrier | V0.1 ports | Raspberry Pi 5; Waveshare PCIe TO USB 3.2 Gen1 Board (C) | Mount the Waveshare PCB with USB ports facing outward; retain both PCBs with M2.5×6 thread-forming screws |
 | Raspberry Pi 5 table | Four V0.1 ports | Raspberry Pi 5 USB carrier with official active cooler | 30 mm open-sided clearance; unrated protective top, not a safety component |
-| ESP32-DevKitC carrier | V0.1 ports | Official ESP32-DevKitC V4, 48.26×27.94 mm PCB and 25.4 mm pin-row spacing | Installs component-side down; clone fit must be checked |
+| ESP32-S3-DevKitC-1 carrier | V0.1 ports | Official ESP32-S3-DevKitC-1, 62.74×25.40 mm PCB and 2×22 pins | Six continuous lock stations; rigid screw-on end cap; installs component-side down; clone fit must be checked |
 | 2020 adapter | V0.1 pegs/carriers | 20-series, 6 mm slot, M5 T-nuts | Not for slot-5, slot-8, or 40-series profiles without verification |
 | DIN adapter | V0.1 pegs/carriers | EN 60715 TH35 rail | Slides on from a free rail end; it is not a front-snap clip |
 | Tripod adapter | V0.1 plate | 1/4-20 tripod screw | Maximum 4.5 mm screw entry into adapter |
