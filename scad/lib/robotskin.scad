@@ -21,7 +21,6 @@ RM_PEG_GRIP = 0.5;
 RM_PEG_MIN_WALL = 0.7;
 RM_M3_NOMINAL_D = 3.0;
 RM_M3_CLEARANCE = 3.4;
-RM_M2_5_CLEARANCE = 2.8;
 RM_LOCK_SCREW_LENGTH = 6;
 RM_PLATE_R = 1;
 RM_JOIN_T = 4;
@@ -837,21 +836,26 @@ module rpi5_table() {
   }
 }
 
-module esp32_s3_devkitc_fixed_guide(side) {
-  pcb_end = RM_ESP32_S3_DEVKITC_PCB_SIZE[0]/2;
-  board_top = RM_CARRIER_T+RM_ESP32_S3_DEVKITC_SUPPORT_H+
-              RM_ESP32_S3_DEVKITC_HEADER_H+RM_ESP32_S3_DEVKITC_BOARD_T;
-  guide_y = side*4.5;
-  translate([pcb_end+RM_ESP32_S3_DEVKITC_BOARD_CLEARANCE,guide_y-2,
-             RM_CARRIER_T-RM_EPS])
-    cube([1.5,4,board_top-RM_CARRIER_T+1+RM_EPS]);
-  translate([pcb_end-1.5,guide_y-2,
-             board_top+RM_ESP32_S3_DEVKITC_BOARD_CLEARANCE])
-    cube([3.2,4,1]);
+module esp32_s3_header_jaw(x,y,side) {
+  length = 8;
+  wall = 1.6;
+  floor_z = RM_CARRIER_T+RM_ESP32_S3_DEVKITC_SUPPORT_H;
+  translate([x,y,0]) mirror([0,side < 0 ? 1 : 0,0]) {
+    translate([-length/2,RM_ESP32_S3_DEVKITC_HEADER_W/2-0.2,
+               floor_z-0.4])
+      cube([length,wall+RM_ESP32_S3_DEVKITC_BOARD_CLEARANCE+0.2,0.8]);
+    translate([-length/2,RM_ESP32_S3_DEVKITC_HEADER_W/2+
+               RM_ESP32_S3_DEVKITC_BOARD_CLEARANCE,floor_z-0.4])
+      cube([length,wall,RM_ESP32_S3_DEVKITC_HEADER_H+0.4]);
+    translate([-length/2,RM_ESP32_S3_DEVKITC_HEADER_W/2+
+               RM_ESP32_S3_DEVKITC_BOARD_CLEARANCE,
+               floor_z+RM_ESP32_S3_DEVKITC_HEADER_H-0.7])
+      rotate([0,90,0]) cylinder(h=length,d=0.9,$fn=16);
+  }
 }
 
-// Slide the board in component-side down from the USB end. Rigid antenna-end
-// guides and the screw-on end cap retain it without flexing printed features.
+// Push the inverted board into short jaws that grip its two plastic headers.
+// The PCB, pins, antenna, and USB-C connectors remain untouched.
 function esp32_s3_devkitc_locks() = [for(x=[-25:10:25]) [x,0]];
 
 module esp32_s3_devkitc_carrier() {
@@ -870,47 +874,16 @@ module esp32_s3_devkitc_carrier() {
           rounded_box([RM_ESP32_S3_DEVKITC_PCB_SIZE[0],
                        RM_ESP32_S3_DEVKITC_HEADER_W,
                        RM_ESP32_S3_DEVKITC_SUPPORT_H+RM_EPS],0.5);
-      for(side=[-1,1]) esp32_s3_devkitc_fixed_guide(side);
+      for(x=[-22,0,22],
+          y=[-RM_ESP32_S3_DEVKITC_HEADER_SPACING/2,
+              RM_ESP32_S3_DEVKITC_HEADER_SPACING/2])
+        esp32_s3_header_jaw(x,y,y < 0 ? 1 : -1);
       for(position=locks)
         translate([position[0],position[1],0]) connector_peg();
     }
-    for(y=[-5,5])
-      translate([-RM_ESP32_S3_DEVKITC_BODY_SIZE[0]/2-RM_EPS,y,
-                 RM_CARRIER_T/2])
-        rotate([0,90,0])
-          cylinder(h=4+RM_EPS,d=RM_GROVE_M2_5_PILOT_D);
     for(position=locks)
       translate([position[0],position[1],0])
         connector_screw_cut(body_t=RM_CARRIER_T);
-  }
-}
-
-module esp32_s3_devkitc_end_cap() {
-  pcb_end = RM_ESP32_S3_DEVKITC_PCB_SIZE[0]/2;
-  pcb_side = RM_ESP32_S3_DEVKITC_PCB_SIZE[1]/2;
-  body_end = RM_ESP32_S3_DEVKITC_BODY_SIZE[0]/2;
-  cap_t = 2.5;
-  board_top = RM_CARRIER_T+RM_ESP32_S3_DEVKITC_SUPPORT_H+
-              RM_ESP32_S3_DEVKITC_HEADER_H+RM_ESP32_S3_DEVKITC_BOARD_T;
-  difference() {
-    union() {
-      translate([-body_end-cap_t,-RM_ESP32_S3_DEVKITC_BODY_SIZE[1]/2,0])
-        rounded_box([cap_t,RM_ESP32_S3_DEVKITC_BODY_SIZE[1],RM_CARRIER_T],1);
-      for(side=[-1,1])
-        mirror([0,side < 0 ? 1 : 0,0]) {
-          translate([-body_end-cap_t,pcb_side-4,0])
-            cube([cap_t+body_end-pcb_end-
-                  RM_ESP32_S3_DEVKITC_BOARD_CLEARANCE,
-                  4,board_top+1+RM_ESP32_S3_DEVKITC_BOARD_CLEARANCE]);
-          translate([-body_end,pcb_side-4,
-                     board_top+RM_ESP32_S3_DEVKITC_BOARD_CLEARANCE])
-            cube([2.2,4,1]);
-        }
-    }
-    for(y=[-5,5])
-      translate([-body_end-cap_t-RM_EPS,y,RM_CARRIER_T/2])
-        rotate([0,90,0])
-          cylinder(h=cap_t+2*RM_EPS,d=RM_M2_5_CLEARANCE);
   }
 }
 

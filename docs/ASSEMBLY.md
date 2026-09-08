@@ -96,11 +96,10 @@ open sides unobstructed so the active cooler can exhaust air.
 ## ESP32-S3-DevKitC-1 carrier
 
 Attach the empty carrier through the required stations in its six-lock row.
-Remove the USB-end cap, then slide the ESP32-S3-DevKitC-1 under the rigid
-antenna-end guides with its component side toward the carrier. Place the cap
-over the two USB-end PCB corners and install two M2.5×6 screws horizontally
-through the cap into the carrier. Both USB-C connectors and all pins remain
-exposed.
+Align both black plastic header strips with the six jaws, component side
+toward the carrier, then press evenly above the headers until every detent is
+seated. Pull evenly on both plastic headers to remove the board; do not lever
+against the PCB. Both USB-C connectors and all pins remain exposed.
 
 ## Plate mounting
 

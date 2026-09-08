@@ -125,7 +125,6 @@ translate([380,100,0]) uno_carrier();
 translate([500,100,0]) rpi5_usb_carrier();
 translate([650,100,0]) rpi5_table();
 translate([780,100,0]) esp32_s3_devkitc_carrier();
-translate([780,60,0]) esp32_s3_devkitc_end_cap();
 translate([100,0,0]) connector_grid(2,2,direction="up");
 translate([130,0,0])
   difference() {
