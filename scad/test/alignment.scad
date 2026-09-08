@@ -77,16 +77,22 @@ for(position=rpi5_table_locks())
   assert(abs(position[0])-RM_RPI5_TABLE_LEG_D/2 >=
          RM_RPI5_USB_CARRIER_SIZE[0]/2,
          "Raspberry Pi 5 table legs must remain outside the carrier");
-assert(RM_ESP32_S3_DEVKITC_PCB_SIZE == [62.74,25.4] &&
-       RM_ESP32_S3_DEVKITC_HEADER_SPACING == 22.86,
-       "ESP32-S3-DevKitC-1 carrier must retain the official board geometry");
-assert(RM_ESP32_S3_DEVKITC_BODY_SIZE == [64,26] &&
-       RM_ESP32_S3_DEVKITC_BODY_SIZE[1]-
-       RM_ESP32_S3_DEVKITC_PCB_SIZE[1] <= 1,
+assert(RM_ESP32_S3_DEVKITC_PCB_SIZE == [57,25.4] &&
+       RM_ESP32_S3_DEVKITC_HEADER_SPACING == 22.86 &&
+       RM_ESP32_S3_DEVKITC_HEADER_LENGTH == 55.88,
+       "ESP32-S3 carrier must retain the measured 44-pin board geometry");
+assert(RM_ESP32_S3_DEVKITC_BODY_SIZE[1]-
+       RM_ESP32_S3_DEVKITC_PCB_SIZE[1] <= 1.1 &&
+       RM_ESP32_S3_DEVKITC_SNAP_D/2 >
+       RM_ESP32_S3_DEVKITC_BOARD_CLEARANCE,
        "ESP32-S3 carrier must stay close to the PCB footprint");
 assert(esp32_s3_devkitc_locks() ==
-       [[-25,0],[-15,0],[-5,0],[5,0],[15,0],[25,0]],
+       [[-15,0],[-5,0],[5,0],[15,0]],
        "ESP32-S3 carrier must keep one continuous 10 mm lock row");
+assert(RM_ESP32_S3_DEVKITC_BOARD_X+
+       RM_ESP32_S3_DEVKITC_PCB_SIZE[0]/2-
+       (15+RM_ESP32_S3_DEVKITC_CROSSBAR_W/2) >= 15,
+       "ESP32-S3 carrier must keep the central frame clear of the antenna");
 assert(RM_TEST_MALE_FITS == [0,0.05,0.10,0.15,0.20],
        "Tolerance coupon must retain its documented five male fits");
 assert(RM_TEST_INSERT_BORES == [3.75,3.80,3.85,3.90,3.95],

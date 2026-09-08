@@ -93,11 +93,12 @@ legs. Its underside sits 30 mm above the plate, clearing the carrier-mounted
 Raspberry Pi 5 with the official active cooler. Recessed access bores retain
 the standard M3×6 lock screws at all four feet.
 
-`esp32_s3_devkitc_carrier()` fits the official 62.74×25.40 mm
-ESP32-S3-DevKitC-1 with two 22-pin rows at 22.86 mm spacing. Three short inner
-jaws grip each plastic header body with rounded detents; no clip touches the
-PCB, pins, antenna, or USB-C ports. Six RobotSkin locks form one uninterrupted
-10 mm-pitch row beneath the one-piece carrier.
+`esp32_s3_devkitc_carrier()` fits the measured 57×25.4 mm dual-USB-C ESP32-S3
+board with two 22-pin rows at 22.86 mm spacing. Four long-stem jaws grip the
+plastic headers; short saddles support them without touching the PCB or pins.
+The open antenna end and ladder frame clear both USB-C connectors and reduce
+plastic beneath the components.
+Four RobotSkin locks form one uninterrupted 10 mm-pitch row.
 
 The mounting adapters deliberately expose RobotSkin in the useful direction:
 `tripod_adapter()` places two upward pegs under a plate, while the 2020-profile

@@ -93,13 +93,14 @@ then press the table into place. For a locked installation, drive one M3×6
 pan-head screw down each leg's access bore into the plate insert. Keep all four
 open sides unobstructed so the active cooler can exhaust air.
 
-## ESP32-S3-DevKitC-1 carrier
+## ESP32-S3 dual-USB-C carrier
 
-Attach the empty carrier through the required stations in its six-lock row.
-Align both black plastic header strips with the six jaws, component side
+Attach the empty carrier through the required stations in its four-lock row.
+Align both black plastic header strips with the four jaws, component side
 toward the carrier, then press evenly above the headers until every detent is
-seated. Pull evenly on both plastic headers to remove the board; do not lever
-against the PCB. Both USB-C connectors and all pins remain exposed.
+seated against the two antenna-end header stops. Release the clips from the
+header plastic before lifting the board. Both USB-C connectors and all pins
+remain exposed.
 
 ## Plate mounting
 
