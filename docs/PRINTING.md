@@ -27,11 +27,12 @@ printer. Orientations are already encoded in the production exports.
 | Inside/outside angle joins | As exported; local support below the horizontal connector row |
 | UNO carrier | Long frame edge on bed; local support only beneath horizontal connector details when bridging fails |
 | Raspberry Pi table | Tabletop on bed, legs and pegs upward; no support |
-| ESP32-S3 dual-USB-C carrier | Long frame edge on bed; local supports beneath horizontal arms, corner seats/stops and pegs; inspect support removal access |
+| ESP32-S3 dual-USB-C carrier | Long frame edge on bed; local supports beneath horizontal arms, side seats and pegs; inspect support removal access |
 | Tripod, 2020, DIN, cable clip | As exported; inspect slicer preview before first production run |
 
 For the ESP32 carrier, use the PETG baseline and the exported side orientation.
-Remove supports fully from the hook ramps and seats without bending the arms.
+Keep supports out of the 1 mm spring relief slots. Remove supports fully from
+the hook ramps and seats without bending the arms.
 The small 0.2 mm retaining overlap must survive slicing and printing; inspect
 it before inserting the board. Check that jumper housings can seat at the four
 hook positions. Do not force an oversized housing past a hook. Tune the header

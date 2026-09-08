@@ -14,7 +14,7 @@ done
 
 for mode in assembly part; do
   openscad --autocenter --viewall --projection=ortho --imgsize=1400,1000 \
-    --colorscheme=Tomorrow --camera=0,0,0,65,0,35,100 \
+    --colorscheme=Tomorrow --camera=0,0,0,45,0,35,100 \
     -D "MODE=\"$mode\"" -o "$RENDER_DIR/esp32_$mode.png" \
     "$PROJECT_DIR/scad/source/esp32_fit.scad"
 done

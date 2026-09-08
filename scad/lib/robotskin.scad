@@ -878,26 +878,32 @@ module esp32_s3_header_jaw(x,side) {
 
 function esp32_s3_devkitc_locks() = [for(x=[-15:10:15]) [x,0]];
 
-// Single open frame: four standard locks, four edge seats and four outside
-// snaps. End stops touch PCB corners, leaving USB and antenna centres open.
+// Solid central deck with continuous side cheeks. Narrow reliefs isolate the
+// four spring arms; both end openings clear the USB and projecting antenna.
 module esp32_s3_devkitc_carrier() {
   half_l = RM_ESP32_S3_DEVKITC_BODY_SIZE[0]/2;
   half_w = RM_ESP32_S3_DEVKITC_BODY_SIZE[1]/2;
   seat_y = 13.6;
   difference() {
     union() {
-      translate([-20,-5,0]) rounded_box([40,10,RM_CARRIER_T],1);
-      for(x=[-15,15])
-        translate([x-3,-half_w,0])
-          rounded_box([6,2*half_w,RM_CARRIER_T],1);
+      translate([-20,-half_w,0])
+        rounded_box([40,2*half_w,RM_CARRIER_T],2);
       for(side=[-1,1]) mirror([0,side < 0 ? 1 : 0,0]) {
         translate([-half_l,seat_y,0])
           rounded_box([2*half_l,half_w-seat_y,RM_CARRIER_T],1);
-        // Seats are separate from the arms so the full arm can flex.
-        for(end=[-1,1]) mirror([end < 0 ? 1 : 0,0,0])
-          translate([18,seat_y,RM_CARRIER_T-RM_EPS])
-            rounded_box([half_l-18,half_w-seat_y,
+        // One-millimetre slots beside each 6 mm arm preserve its free length.
+        for(span=[[-half_l,-16],[-8,8],[16,half_l]]) {
+          translate([span[0],seat_y,RM_CARRIER_T-RM_EPS])
+            rounded_box([span[1]-span[0],half_w-seat_y,
                          RM_ESP32_S3_DEVKITC_SUPPORT_H+RM_EPS],0.4);
+          translate([span[0],RM_ESP32_S3_DEVKITC_PCB_SIZE[1]/2+
+                     RM_ESP32_S3_DEVKITC_BOARD_CLEARANCE,RM_CARRIER_T-RM_EPS])
+            rounded_box([span[1]-span[0],half_w-
+                         RM_ESP32_S3_DEVKITC_PCB_SIZE[1]/2-
+                         RM_ESP32_S3_DEVKITC_BOARD_CLEARANCE,
+                         esp32_s3_header_top()+RM_ESP32_S3_DEVKITC_SNAP_GAP-
+                         RM_CARRIER_T+RM_EPS],0.5);
+        }
         for(end=[-1,1]) mirror([end < 0 ? 1 : 0,0,0])
           translate([RM_ESP32_S3_DEVKITC_PCB_SIZE[0]/2+
                      RM_ESP32_S3_DEVKITC_BOARD_CLEARANCE,seat_y,

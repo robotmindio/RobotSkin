@@ -32,7 +32,7 @@ is not a safety component. A production release requires every gate in
 | RM-PC-UNO3-C | `uno_carrier.stl` | C | Solid UNO R3-form-factor carrier |
 | RM-PC-RPI5U-A | `rpi5_usb_carrier.stl` | A | Raspberry Pi 5 + Waveshare USB Board (C) carrier |
 | RM-PC-RPI5T-A | `rpi5_table.stl` | A | Raspberry Pi 5 open protection table |
-| RM-PC-ES3DC-E | `esp32_s3_devkitc_carrier.stl` | E | Open one-piece carrier for the 44-pin dual-USB-C ESP32-S3 board |
+| RM-PC-ES3DC-F | `esp32_s3_devkitc_carrier.stl` | F | Solid-deck one-piece carrier for the 44-pin dual-USB-C ESP32-S3 board |
 | RM-SV-H25T-D | `h25t_horn_plate_3x3.stl` | D | STS3215 H25T 7 mm-radius drive plate with horn-screw clearance |
 | RM-SV-H25C-F | `h25t_port_cube_3x3.stl` | F | STS3215 drive plate to compact five-face RobotSkin end-effector hub |
 

@@ -99,9 +99,12 @@ Confirmed header dimensions are 22 mm inside, 28 mm outside and 2 mm high:
 projecting antenna; the 28 mm PCB envelope, 1.6 mm PCB thickness and 2.54 mm
 pin pitch remain nominal assumptions, not additional caliper measurements.
 
-The 60×32.6 mm open frame has four consecutive RobotSkin locks. Four outside
-arms wrap around the PCB and catch the exposed header tops. Separate edge
-seats and corner stops locate the PCB without preloading the soldered rows.
+The 60×32.6 mm carrier has a solid central deck, continuous side cheeks and
+four consecutive RobotSkin locks. One-millimetre relief slots isolate the four
+spring arms without leaving exposed towers. Both centre end openings remain
+open for USB cables and the projecting antenna. Four outside
+arms wrap around the PCB and catch the exposed header tops. Continuous edge
+seats interrupted only at the spring arms, plus corner stops, locate the PCB without preloading the soldered rows.
 `RM_ESP32_S3_DEVKITC_SNAP_OVERLAP` (0.2 mm) and `SNAP_GAP` (0.2 mm, same prefix)
 control retention and vertical clearance. Increase overlap only after checking
 jumper clearance: nominal 2.54 mm housings have only 0.03 mm lateral clearance

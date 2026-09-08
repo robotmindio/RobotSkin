@@ -98,7 +98,7 @@ open sides unobstructed so the active cooler can exhaust air.
 Attach the empty carrier using its four consecutive RobotSkin lock stations
 before fitting the board. Orient components toward the frame and both yellow
 header strips and long pins away from it. Centre the PCB between the corner
-stops; lower it evenly onto the four edge seats. The four outside hooks must
+stops; lower it evenly onto the side edge seats. The four outside hooks must
 return over the outer edges of the yellow plastic, with no PCB bending.
 The seats touch the PCB edge underneath; the hooks retain the plastic above it.
 
