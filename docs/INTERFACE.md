@@ -53,9 +53,10 @@ pilots end at the normal shoulder, while a 3.4 mm M3 clearance continues
 through the final 1 mm backing wall. Each corner therefore accepts the normal
 peg and heat-set insert or an M3 pan-head mounting screw through the plate.
 
-One plate is the default product. When both faces are required, place two
-identical plates flat-back to flat-back and fasten them through the four corner
-ports; no adhesive or second plate design is required.
+One plate is the default product. `double_sided_plate(columns,rows)` provides
+blind female ports on both faces, including the 40×10 mm 4×1 production row.
+It is 8 mm thick so the opposing 3 mm insert pockets retain a 2 mm shared
+backing wall. The two sides remain independent: do not drill its ports through.
 
 `through_plate(columns,rows)` is the mounting-oriented variant: every grid
 station remains a standard RobotSkin port while its M3 centre continues through

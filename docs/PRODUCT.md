@@ -14,6 +14,7 @@ is not a safety component. A production release requires every gate in
 | SKU | Export | Revision | Product |
 |---|---|---|---|
 | RM-PL-0808-A | `plate_8x8.stl` | A | 80×80 mm single-sided plate |
+| RM-PLD-0401-A | `double_sided_plate_4x1.stl` | A | 40×10×8 mm plate with four blind female ports on each face |
 | RM-PT-0503-A | `through_plate_5x3.stl` | A | 50×30 mm plate, every port M3-through |
 | RM-PT-0508-A | `through_plate_5x8.stl` | A | 50×80 mm plate, every port M3-through |
 | RM-PT-0808-A | `through_plate_8x8.stl` | A | 80×80 mm plate, every port M3-through |

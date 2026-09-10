@@ -16,6 +16,7 @@ standards
 ```scad
 plate(columns, rows, thickness=RM_PLATE_T);
 through_plate(columns, rows, thickness=RM_PLATE_T);
+double_sided_plate(columns, rows, thickness=2*RM_PLATE_T);
 h25t_horn_plate_3x3(thickness=2*RM_PLATE_T,
                      hub_radius=RM_STS3215_HUB_RADIUS);
 h25t_port_cube_3x3();
@@ -43,6 +44,10 @@ derived as `count × RM_GRID`; `thickness` defaults to 4 mm and may be increased
 for custom structural plates. The four corner ports receive the M3 through bore.
 `through_plate()` uses the same dimensions and identical octagonal ports, but
 continues the 3.4 mm M3 centre path through the backing wall at every station.
+`double_sided_plate()` permits positive integer dimensions, including a 4×1
+row, and provides standard blind female ports on both faces. It is 8 mm thick
+by default, retaining a 2 mm wall between the opposing insert pockets; its
+ports are blind, not M3-through.
 Join counts control their connector field without changing the shared port,
 peg, hardware, or fit standard.
 

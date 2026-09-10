@@ -108,6 +108,7 @@ translate([50,-50,0]) h25t_horn_plate_3x3();
 translate([100,-50,0]) h25t_port_cube_3x3();
 translate([0,50,0]) through_plate(5,3);
 translate([0,100,0]) through_plate(5,8);
+translate([70,100,0]) double_sided_plate(4,1);
 translate([30,0,0]) flat_join(1,1);
 translate([50,0,0]) angle_join(1,1);
 translate([75,0,0]) outer_angle_join(1,1);

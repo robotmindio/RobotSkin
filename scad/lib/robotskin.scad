@@ -331,6 +331,22 @@ module through_plate(columns,rows,thickness=RM_PLATE_T) {
   }
 }
 
+// Female ports on both faces need two standard plate thicknesses so their
+// insert pockets retain a 2 mm shared backing wall.
+module double_sided_plate(columns,rows,thickness=2*RM_PLATE_T) {
+  assert(columns >= 1 && rows >= 1 &&
+         columns == floor(columns) && rows == floor(rows),
+         "Double-sided plate dimensions must be positive integers");
+  assert(thickness >= 2*RM_PLATE_T,
+         "Double-sided plates require at least 8 mm thickness");
+  difference() {
+    plate_body(columns,rows,thickness);
+    plate_port_cuts(columns,rows,thickness);
+    for(x=grid_positions(columns),y=grid_positions(rows))
+      translate([x,y,0]) port_cut();
+  }
+}
+
 // LeKiwi top plate: 3x5 RobotSkin end, flat LD06 end, and wheel clearance.
 module lekiwi_lidar_base(ld06_hole_d=RM_LD06_HOLE_D,
                          ld06_insert_bore=RM_LD06_INSERT_BORE,
