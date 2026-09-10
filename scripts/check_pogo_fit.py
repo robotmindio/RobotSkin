@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check provisional pogo connector, cable and lock access clearances."""
+"""Check provisional pogo connector, cable and both screw access clearances."""
 from pathlib import Path
 import subprocess
 import tempfile
@@ -19,7 +19,7 @@ def main():
             raise RuntimeError(result.stderr)
         mesh = trimesh.load_mesh(output, process=True)
         if not mesh.is_watertight or len(mesh.split()) != 1 or abs(mesh.volume-1) > 1e-5:
-            raise AssertionError("Pogo mount intersects nominal connector, cables or lock access")
+            raise AssertionError("Pogo mount intersects nominal connector, cables or screw access")
         print("PASS pogo nominal clearances (screenshot dimensions and physical fit unconfirmed)")
 
 

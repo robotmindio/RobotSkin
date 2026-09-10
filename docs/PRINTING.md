@@ -28,7 +28,7 @@ printer. Orientations are already encoded in the production exports.
 | UNO carrier | Long frame edge on bed; local support only beneath horizontal connector details when bridging fails |
 | Raspberry Pi table | Tabletop on bed, legs and pegs upward; no support |
 | ESP32-S3 dual-USB-C carrier | Long frame edge on bed; local supports beneath horizontal arms, side seats and pegs; inspect support removal access |
-| Pogo mount | Flat contact face on bed as exported; local support beneath horizontal RobotSkin pegs; print two clamps flat-back down, pads upward, without support |
+| Pogo mount | Flat contact face on bed as exported; 0.20 mm layers give four face layers; local support beneath horizontal feet/RobotSkin pegs; keep supports out of the rear M2 pilots |
 | Tripod, 2020, DIN, cable clip | As exported; inspect slicer preview before first production run |
 
 For the ESP32 carrier, use the PETG baseline and the exported side orientation.

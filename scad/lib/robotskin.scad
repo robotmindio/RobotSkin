@@ -97,17 +97,22 @@ RM_LD06_INSERT_BORE = 3.7;
 RM_LD06_INSERT_DEPTH = 3.5;
 RM_LEKIWI_CORNER_R = 7.5;
 
-// Pogo mount: provisional dimensions transcribed/estimated from user screenshot.
-// Confirm contact diameter/pitch, flange thickness and usable pin travel before fit.
+// Pogo connector drawing: nominal envelope; physical dimensions/travel unconfirmed.
 RM_POGO_PIN_PITCH = 20;
-RM_POGO_PIN_HOLE_D = 5;
+RM_POGO_PIN_D = 6;
+RM_POGO_PIN_HOLE_D = 6.4;
 RM_POGO_FLANGE_SIZE = [55,15,3];
-RM_POGO_FACE_T = 1.2;
-RM_POGO_PIN_Z = 15;
-RM_POGO_SIZE = [70,26,25];
-RM_POGO_CLAMP_X = 31.5;
-RM_POGO_CLAMP_SEAT = RM_POGO_FACE_T+RM_POGO_FLANGE_SIZE[2]+3;
-RM_POGO_CLAMP_T = 3.2;
+RM_POGO_MOUNT_PITCH = 43;
+RM_POGO_MOUNT_HOLE_D = 4.5;
+RM_POGO_FACE_T = 0.8;
+RM_POGO_PIN_Z = 9;
+RM_POGO_SIZE = [60,13,18];
+RM_POGO_RIM_DEPTH = 4.1;
+RM_POGO_POST_D = 4.2;
+RM_POGO_POST_H = 2.8;
+RM_POGO_PILOT_D = 1.7;
+RM_POGO_PILOT_FLOOR = 0.9;
+RM_POGO_REAR_BODY = [31.3,12,11];
 
 // Calibration-part standard.
 RM_TEST_MALE_FITS = [0,0.05,0.10,0.15,0.20];
@@ -757,48 +762,54 @@ module uno_carrier() {
   }
 }
 
-// Contact axes run along Y; standard RobotSkin pegs point down along Z.
-// Rear clamps keep all fasteners off the thin, flat contact face.
+// Capsule profile centred on X/Z, extruded toward the connector's rear (+Y).
+module pogo_capsule(size,depth) {
+  rotate([-90,0,0]) linear_extrude(height=depth)
+    hull() for(side=[-1,1])
+      translate([side*(size[0]-size[1])/2,0]) circle(d=size[1],$fn=64);
+}
+
+// Thin capsule face and two discrete 90-degree feet; centre/rear stay open.
+// Rear M2 screws and washers use the connector's existing flange holes.
 module pogo_pin_mount() {
   difference() {
     union() {
-      translate([-RM_POGO_SIZE[0]/2,0,0]) {
-        cube([RM_POGO_SIZE[0],RM_POGO_FACE_T,RM_POGO_SIZE[2]]);
-        cube([RM_POGO_SIZE[0],RM_POGO_SIZE[1],RM_JOIN_T]);
+      difference() {
+        union() {
+          translate([0,0,RM_POGO_PIN_Z]) {
+            // Small front bevel, continuous rounded perimeter.
+            hull() {
+              pogo_capsule([RM_POGO_SIZE[0]-0.6,RM_POGO_SIZE[2]-0.6],0.1);
+              translate([0,0.3,0])
+                pogo_capsule([RM_POGO_SIZE[0],RM_POGO_SIZE[2]],0.1);
+            }
+            translate([0,0.3,0])
+              pogo_capsule([RM_POGO_SIZE[0],RM_POGO_SIZE[2]],
+                           RM_POGO_RIM_DEPTH-0.3);
+          }
+          for(side=[-1,1])
+            translate([side*2.5*RM_GRID-5,1.5,0])
+              rounded_box([10,11.5,RM_JOIN_T],2.5);
+        }
+        // The 0.2 mm perimeter clearance also cuts the feet clear of the flange.
+        translate([0,RM_POGO_FACE_T,RM_POGO_PIN_Z])
+          pogo_capsule([RM_POGO_FLANGE_SIZE[0]+0.4,
+                        RM_POGO_FLANGE_SIZE[1]+0.4],RM_POGO_RIM_DEPTH+RM_EPS);
       }
       for(side=[-1,1]) {
-        translate([side*RM_POGO_CLAMP_X-3,RM_POGO_FACE_T-RM_EPS,
-                   RM_POGO_PIN_Z-4])
-          cube([6,RM_POGO_CLAMP_SEAT-RM_POGO_FACE_T+RM_EPS,8]);
-        // Outside gussets leave the connector and screwdrivers unobstructed.
-        translate([side > 0 ? RM_POGO_SIZE[0]/2-2 : -RM_POGO_SIZE[0]/2,0,0])
-          rotate([90,0,90]) linear_extrude(height=2)
-            polygon([[0,0],[RM_POGO_SIZE[1],0],
-                     [RM_POGO_SIZE[1],RM_JOIN_T],[0,RM_POGO_SIZE[2]]]);
-        translate([side*2.5*RM_GRID,19,0]) connector_peg();
+        translate([side*RM_POGO_MOUNT_PITCH/2,RM_POGO_FACE_T-RM_EPS,RM_POGO_PIN_Z])
+          rotate([-90,0,0]) cylinder(h=RM_POGO_POST_H+RM_EPS,d=RM_POGO_POST_D);
+        translate([side*2.5*RM_GRID,8,0]) connector_peg();
       }
     }
     for(side=[-1,1]) {
       translate([side*RM_POGO_PIN_PITCH/2,-RM_EPS,RM_POGO_PIN_Z])
         rotate([-90,0,0])
-          cylinder(h=RM_POGO_FACE_T+2*RM_EPS,d=RM_POGO_PIN_HOLE_D);
-      translate([side*RM_POGO_CLAMP_X,RM_POGO_CLAMP_SEAT,RM_POGO_PIN_Z])
-        rotate([90,0,0]) heat_set_insert_cut();
-      translate([side*2.5*RM_GRID,19,0]) connector_screw_cut();
+          cylinder(h=RM_POGO_FACE_T+2*RM_EPS,d=RM_POGO_PIN_HOLE_D,$fn=64);
+      translate([side*RM_POGO_MOUNT_PITCH/2,RM_POGO_PILOT_FLOOR,RM_POGO_PIN_Z])
+        rotate([-90,0,0]) cylinder(h=RM_POGO_RIM_DEPTH,d=RM_POGO_PILOT_D);
+      translate([side*2.5*RM_GRID,8,0]) connector_screw_cut();
     }
-  }
-}
-
-// Print two. Local Z is the clamp screw axis; flat back is on the bed.
-module pogo_pin_clamp() {
-  difference() {
-    union() {
-      translate([-7.5,-3,0]) rounded_box([10.5,6,RM_POGO_CLAMP_T],0.5);
-      translate([-7.5,-3,RM_POGO_CLAMP_T-RM_EPS])
-        cube([3,6,3+RM_EPS]);
-    }
-    translate([0,0,-RM_EPS])
-      cylinder(h=RM_POGO_CLAMP_T+2*RM_EPS,d=RM_M3_CLEARANCE);
   }
 }
 

@@ -118,21 +118,23 @@ through-bolts or reusable binding posts. Do not glue the plate backs together.
 
 ## Two-contact pogo mount
 
-Print one mount and two identical rear clamps. Verify the provisional
-[connector footprint and mating travel](PRODUCT.md#two-contact-pogo-mount-provisional-footprint)
-before committing to a batch.
+Print one revision B mount. Confirm the
+[nominal footprint and mating travel](PRODUCT.md#two-contact-pogo-mount-nominal-footprint)
+against the actual connector. The older separate clamps are not used.
 
-1. Heat-set two standard M3 inserts into the rear-facing tower pockets; keep
-   them flush. Fit two inserts to the matching RobotSkin plate ports.
-2. Attach the empty mount using two M3×6 screws through its base. The contacts
-   face sideways relative to the plate; the two pegs point into the plate.
-3. Feed the pogo pins through the face from behind and seat the flange against
-   the skin. Route the leads through the open rear area.
-4. Install one clamp at each end, with its raised pad toward the connector's
-   flange and its flat back toward the screw head. The clamps mirror each
-   other in assembly. Use one M3×6 screw per clamp and tighten evenly just until
-   retained, without bowing the thin face.
-5. Check pin movement, electrical mating and cable clearance with the actual
-   mating connector. Verify its housing does not stop against the skin before
-   the pins reach their specified working compression. Cable bend radius and
-   strain relief depend on the actual leads and are not established by CAD.
+1. Install two standard M3 inserts in RobotSkin plate ports 50 mm apart, then
+   attach the empty mount with two M3×6 screws through its rear feet.
+2. Feed the contacts through the face from behind. Align the flange's two
+   existing mounting holes over the locating posts and seat it in the capsule
+   recess without forcing either the contacts or posts.
+3. Place a 5 mm-OD, 0.3 mm-thick M2 washer over each rear flange hole. Fit one
+   M2×3 thread-forming screw into each blind pilot, turning gently until the
+   flange is retained. Do not use M2×6 screws here or overtighten the posts.
+4. Route the leads through the open centre/rear. Check pin movement and mate
+   with the actual counterpart: its housing must not meet the skin before
+   the pins reach their specified working compression. Verify cable bend and
+   strain relief with the actual leads.
+
+The standard RobotSkin locks and both rear M2 screws remain accessible with
+the connector installed. Inspect post cracking, front-face distortion and
+retention during the first physical fit check before repeated use.

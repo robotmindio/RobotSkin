@@ -135,19 +135,18 @@ translate([130,0,0])
     connector_grid(2,2,direction="up",cut=true,body_t=RM_PLATE_T);
   }
 
-assert(RM_POGO_FACE_T == 1.2 && RM_POGO_PIN_PITCH == 20 &&
-       RM_POGO_PIN_HOLE_D == 5,
-       "Pogo face must retain its provisional two-hole footprint");
-assert(RM_POGO_PIN_Z-RM_POGO_FLANGE_SIZE[1]/2 > RM_JOIN_T &&
-       RM_POGO_PIN_Z+RM_POGO_FLANGE_SIZE[1]/2 < RM_POGO_SIZE[2] &&
-       RM_POGO_CLAMP_X-3 > RM_POGO_FLANGE_SIZE[0]/2,
-       "Pogo flange must clear the floor and clamp towers");
-assert(RM_POGO_CLAMP_SEAT-RM_INSERT_DEPTH > RM_POGO_FACE_T &&
-       RM_LOCK_SCREW_LENGTH-RM_POGO_CLAMP_T > 0 &&
-       RM_LOCK_SCREW_LENGTH-RM_POGO_CLAMP_T < RM_INSERT_DEPTH,
-       "Rear clamp inserts must stay blind and screws must not bottom out");
-assert(RM_POGO_SIZE[1]-RM_POGO_CLAMP_SEAT > RM_M3_HEAD_CLEARANCE_D &&
-       2.5*RM_GRID+octagon_d(peg_root_af())/2 < RM_POGO_SIZE[0]/2,
-       "Pogo mount must retain rear access and standard contained pegs");
+assert(RM_POGO_FACE_T == 0.8 && RM_POGO_SIZE == [60,13,18] &&
+       RM_POGO_PIN_PITCH == 20 && RM_POGO_PIN_HOLE_D > RM_POGO_PIN_D,
+       "Pogo face must retain its compact envelope and clear both contacts");
+assert(RM_POGO_MOUNT_PITCH == 43 &&
+       RM_POGO_POST_D < RM_POGO_MOUNT_HOLE_D &&
+       (RM_POGO_POST_D-RM_POGO_PILOT_D)/2 >= 1.2 &&
+       RM_POGO_POST_H < RM_POGO_FLANGE_SIZE[2],
+       "Pogo locating posts must fit flange holes with printable screw walls");
+assert(RM_POGO_PILOT_FLOOR > RM_POGO_FACE_T &&
+       RM_POGO_FACE_T+RM_POGO_FLANGE_SIZE[2]+0.3-3 > RM_POGO_PILOT_FLOOR,
+       "M2x3 screws through 0.3 mm washers must not break through the face");
+assert(RM_POGO_FACE_T+RM_POGO_FLANGE_SIZE[2] < 8-RM_M3_HEAD_CLEARANCE_D/2 &&
+       RM_POGO_REAR_BODY[0]/2 < 2.5*RM_GRID-RM_M3_HEAD_CLEARANCE_D/2,
+       "RobotSkin lock heads and drivers must clear the connector");
 translate([870,100,0]) pogo_pin_mount();
-translate([920,100,0]) pogo_pin_clamp();

@@ -36,7 +36,6 @@ rpi5_usb_carrier();
 rpi5_table();
 esp32_s3_devkitc_carrier();
 pogo_pin_mount();
-pogo_pin_clamp();
 ```
 
 `plate()` requires integer dimensions of at least 2×2. Width and height are
@@ -117,15 +116,17 @@ preview. `python scripts/check_esp32_fit.py` checks unwanted intersections with
 the PCB, headers, pins, solder, nominal jumpers, USB cable plugs and lock-screw
 heads. It runs in the normal build; it is not a physical qualification test.
 
-`pogo_pin_mount()` provides a thin contact face with two apertures, rear flange
-clamps and two standard downward RobotSkin pegs perpendicular to the contacts.
-Print two copies of `pogo_pin_clamp()`. The mount module uses assembly
-orientation; the production wrapper places its contact face on the bed.
-Dimensions are provisional: see [product compatibility](PRODUCT.md).
-`scad/source/pogo_fit.scad` shows the nominal assembly;
-`python scripts/check_pogo_fit.py` checks its connector, cable route and
-RobotSkin screw access for interference as part of the normal build.
-The nominal envelope is not supplier CAD and does not establish mating travel.
+`pogo_pin_mount()` is a one-piece capsule face with two short rear feet and
+standard downward RobotSkin pegs, perpendicular to the contacts. Integral
+locating posts enter the connector's existing flange holes; rear M2 screws
+and washers retain it without visible front fasteners. The centre and rear
+remain open. The module uses assembly orientation; its wrapper puts the face
+on the bed. Revision B replaces the separate clamps; no clamp STL is needed.
+See [product compatibility](PRODUCT.md) for the nominal drawing dimensions and
+remaining fit measurements. `scad/source/pogo_fit.scad` shows the assembly;
+`python scripts/check_pogo_fit.py` checks the connector, cables and both sets
+of screw-access paths during the normal build. It does not establish spring
+travel or physical screw retention.
 
 The mounting adapters deliberately expose RobotSkin in the useful direction:
 `tripod_adapter()` places two upward pegs under a plate, while the 2020-profile
