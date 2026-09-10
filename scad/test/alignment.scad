@@ -134,3 +134,20 @@ translate([130,0,0])
     cube([grid_size(2),grid_size(2),RM_PLATE_T],center=true);
     connector_grid(2,2,direction="up",cut=true,body_t=RM_PLATE_T);
   }
+
+assert(RM_POGO_FACE_T == 1.2 && RM_POGO_PIN_PITCH == 20 &&
+       RM_POGO_PIN_HOLE_D == 5,
+       "Pogo face must retain its provisional two-hole footprint");
+assert(RM_POGO_PIN_Z-RM_POGO_FLANGE_SIZE[1]/2 > RM_JOIN_T &&
+       RM_POGO_PIN_Z+RM_POGO_FLANGE_SIZE[1]/2 < RM_POGO_SIZE[2] &&
+       RM_POGO_CLAMP_X-3 > RM_POGO_FLANGE_SIZE[0]/2,
+       "Pogo flange must clear the floor and clamp towers");
+assert(RM_POGO_CLAMP_SEAT-RM_INSERT_DEPTH > RM_POGO_FACE_T &&
+       RM_LOCK_SCREW_LENGTH-RM_POGO_CLAMP_T > 0 &&
+       RM_LOCK_SCREW_LENGTH-RM_POGO_CLAMP_T < RM_INSERT_DEPTH,
+       "Rear clamp inserts must stay blind and screws must not bottom out");
+assert(RM_POGO_SIZE[1]-RM_POGO_CLAMP_SEAT > RM_M3_HEAD_CLEARANCE_D &&
+       2.5*RM_GRID+octagon_d(peg_root_af())/2 < RM_POGO_SIZE[0]/2,
+       "Pogo mount must retain rear access and standard contained pegs");
+translate([870,100,0]) pogo_pin_mount();
+translate([920,100,0]) pogo_pin_clamp();

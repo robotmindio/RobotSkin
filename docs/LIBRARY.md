@@ -35,6 +35,8 @@ uno_carrier();
 rpi5_usb_carrier();
 rpi5_table();
 esp32_s3_devkitc_carrier();
+pogo_pin_mount();
+pogo_pin_clamp();
 ```
 
 `plate()` requires integer dimensions of at least 2×2. Width and height are
@@ -114,6 +116,16 @@ at the hooks. Physical fit, release force and durability are not yet verified.
 preview. `python scripts/check_esp32_fit.py` checks unwanted intersections with
 the PCB, headers, pins, solder, nominal jumpers, USB cable plugs and lock-screw
 heads. It runs in the normal build; it is not a physical qualification test.
+
+`pogo_pin_mount()` provides a thin contact face with two apertures, rear flange
+clamps and two standard downward RobotSkin pegs perpendicular to the contacts.
+Print two copies of `pogo_pin_clamp()`. The mount module uses assembly
+orientation; the production wrapper places its contact face on the bed.
+Dimensions are provisional: see [product compatibility](PRODUCT.md).
+`scad/source/pogo_fit.scad` shows the nominal assembly;
+`python scripts/check_pogo_fit.py` checks its connector, cable route and
+RobotSkin screw access for interference as part of the normal build.
+The nominal envelope is not supplier CAD and does not establish mating travel.
 
 The mounting adapters deliberately expose RobotSkin in the useful direction:
 `tripod_adapter()` places two upward pegs under a plate, while the 2020-profile

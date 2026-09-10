@@ -19,4 +19,15 @@ for mode in assembly part; do
     "$PROJECT_DIR/scad/source/esp32_fit.scad"
 done
 
+for mode in assembly part; do
+  openscad --autocenter --viewall --projection=ortho --imgsize=1400,1000 \
+    --colorscheme=Tomorrow --camera=0,0,0,65,0,25,100 \
+    -D "MODE=\"$mode\"" -o "$RENDER_DIR/pogo_$mode.png" \
+    "$PROJECT_DIR/scad/source/pogo_fit.scad"
+done
+
+openscad --autocenter --viewall --projection=ortho --imgsize=1400,1000 \
+  --colorscheme=Tomorrow --camera=0,0,0,60,0,205,100 \
+  -o "$RENDER_DIR/pogo_rear.png" "$PROJECT_DIR/scad/source/pogo_fit.scad"
+
 echo "Rendered previews in $RENDER_DIR"

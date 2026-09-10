@@ -33,6 +33,7 @@ is not a safety component. A production release requires every gate in
 | RM-PC-RPI5U-A | `rpi5_usb_carrier.stl` | A | Raspberry Pi 5 + Waveshare USB Board (C) carrier |
 | RM-PC-RPI5T-A | `rpi5_table.stl` | A | Raspberry Pi 5 open protection table |
 | RM-PC-ES3DC-F | `esp32_s3_devkitc_carrier.stl` | F | Solid-deck one-piece carrier for the 44-pin dual-USB-C ESP32-S3 board |
+| RM-PG-2P-A | `pogo_pin_mount.stl`; `pogo_pin_clamp.stl` | A | Two-contact pogo mount; print one mount and two rear clamps; provisional fit |
 | RM-SV-H25T-D | `h25t_horn_plate_3x3.stl` | D | STS3215 H25T 7 mm-radius drive plate with horn-screw clearance |
 | RM-SV-H25C-F | `h25t_port_cube_3x3.stl` | F | STS3215 drive plate to compact five-face RobotSkin end-effector hub |
 
@@ -44,8 +45,8 @@ dimension and material requirement is met.
 
 | Hardware ID | Approved engineering specification | Used by | Quantity |
 |---|---|---|---:|
-| HW-INS-M3-334 | Heat-set insert, M3 female, 3 mm long, 4.0 mm OD | RobotSkin port; UNO standoff; PJ030 clamp | 1 per lock or clamp screw |
-| HW-SCR-M3X6-PH | M3×6 pan-head machine screw | Standard RobotSkin lock; PJ030 clamp | 1 per lock or clamp screw |
+| HW-INS-M3-334 | Heat-set insert, M3 female, 3 mm long, 4.0 mm OD | RobotSkin port; UNO standoff; PJ030 clamp; pogo rear clamp | 1 per lock or clamp screw |
+| HW-SCR-M3X6-PH | M3×6 pan-head machine screw | Standard RobotSkin lock; PJ030 clamp; pogo rear clamp | 1 per lock or clamp screw |
 | HW-SCR-M3X4-PH | M3×4 pan-head machine screw | UNO PCB | 4 |
 | HW-SCR-M3X8-PH | M3×8 pan-head machine screw | H25T horn plate | 4 |
 | HW-SCR-M3X10-PH | M3×10 pan-head machine screw | H25T end-effector hub lock | 4 |
@@ -77,8 +78,36 @@ standoff insert after passing through a 1.6 mm PCB.
 | DIN adapter | V0.1 pegs/carriers | EN 60715 TH35 rail | Slides on from a free rail end; it is not a front-snap clip |
 | Tripod adapter | V0.1 plate | 1/4-20 tripod screw | Maximum 4.5 mm screw entry into adapter |
 | Cable clip | V0.1 plate | 7.5 mm nominal flat Grove cable | Verify cable jacket compression before repeated use |
+| Two-contact pogo mount | Two V0.1 ports, 50 mm apart | User-supplied two-contact connector screenshot | Provisional footprint below; pin travel, cable bend and physical fit unverified |
 | H25T drive plate | Four V0.1 corner female ports with M3-through paths | STS3215/LeRobot H25T horn, 4×M3 at 7 mm radius | All five horn screws install from the port face |
 | H25T end-effector hub | H25T drive plate | Five top ports plus two ports on each vertical face | Four 22 mm corner M3 access bores lock into the drive plate |
 
 Compatibility means nominal mechanical geometry only until the applicable
 qualification record in `QUALITY.md` is complete.
+
+## Two-contact pogo mount provisional footprint
+
+This accessory targets the projecting-pin half in the user's screenshot, not
+its flat-contact mate. The low-resolution drawing is insufficient to verify
+all dimensions. These are explicit design assumptions pending measurements:
+
+| Feature | Candidate dimension |
+|---|---|
+| Connector flange | 55 × 15 × 3 mm, capsule outline |
+| Pin centres / assumed pin diameter | 20 mm / 4.5 mm |
+| Printed pin clearance holes | 5 mm diameter |
+| Contact face | 70 × 25 × 1.2 mm, only two pin holes |
+| Mount body, excluding RobotSkin pegs | 70 × 26 × 25 mm |
+| Pin centre above RobotSkin mating surface | 15 mm |
+| Nominal rear connector body used in clearance check | 31.3 mm wide × 11 mm high × 12 mm behind flange |
+| Cable route tested behind body | 24 mm wide × 8 mm high, open rear exit |
+| RobotSkin pegs | 50 mm apart; axes perpendicular to contacts |
+
+The 1.2 mm face consumes 1.2 mm of available contact projection. Confirm that
+the mating connector can reach the required working compression before either
+housing touches the printed face. The preview's 5 mm pin projection is only
+illustrative; spring stroke and working height are unconfirmed. This is not a
+mount for the flush-contact half, whose pads would be recessed by the skin.
+Rear clamps retain the flange at its outer ends without using its screw holes.
+The mount needs four standard M3×6 screws and four standard M3 inserts in total:
+two for the rear clamps, two for its RobotSkin plate locks.

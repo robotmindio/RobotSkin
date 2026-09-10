@@ -115,3 +115,24 @@ the same M3 pan-head screw type as the rest of the kit to mount one plate to a
 threaded surface. For a double-sided assembly, place two identical plates
 flat-back to flat-back and fasten the corner ports with suitably long M3
 through-bolts or reusable binding posts. Do not glue the plate backs together.
+
+## Two-contact pogo mount
+
+Print one mount and two identical rear clamps. Verify the provisional
+[connector footprint and mating travel](PRODUCT.md#two-contact-pogo-mount-provisional-footprint)
+before committing to a batch.
+
+1. Heat-set two standard M3 inserts into the rear-facing tower pockets; keep
+   them flush. Fit two inserts to the matching RobotSkin plate ports.
+2. Attach the empty mount using two M3×6 screws through its base. The contacts
+   face sideways relative to the plate; the two pegs point into the plate.
+3. Feed the pogo pins through the face from behind and seat the flange against
+   the skin. Route the leads through the open rear area.
+4. Install one clamp at each end, with its raised pad toward the connector's
+   flange and its flat back toward the screw head. The clamps mirror each
+   other in assembly. Use one M3×6 screw per clamp and tighten evenly just until
+   retained, without bowing the thin face.
+5. Check pin movement, electrical mating and cable clearance with the actual
+   mating connector. Verify its housing does not stop against the skin before
+   the pins reach their specified working compression. Cable bend radius and
+   strain relief depend on the actual leads and are not established by CAD.
