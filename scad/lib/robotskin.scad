@@ -109,7 +109,8 @@ RM_POGO_PIN_Z = 12;
 RM_POGO_FACE_SIZE = [60,18];
 RM_POGO_RIM_DEPTH = 4.1;
 RM_POGO_LOCK_COUNT = 6;
-RM_POGO_LOCK_Y = 22;
+RM_POGO_LOCK_Y = RM_POGO_RIM_DEPTH+RM_GRID/2;
+RM_POGO_LOCK_RECESS = 0.4;
 RM_POGO_SIZE = [RM_POGO_FACE_SIZE[0],
                 RM_POGO_LOCK_Y+RM_GRID/2,
                 RM_POGO_PIN_Z+RM_POGO_FACE_SIZE[1]/2];
@@ -792,15 +793,10 @@ module pogo_pin_mount() {
               pogo_capsule(RM_POGO_FACE_SIZE,
                            RM_POGO_RIM_DEPTH-0.3);
           }
-          // Open-centre bridge: the rear rail clears the connector and its terminals.
-          difference() {
-            translate([-grid_size(RM_POGO_LOCK_COUNT)/2,0,0])
-              rounded_box([grid_size(RM_POGO_LOCK_COUNT),
-                           RM_POGO_LOCK_Y+RM_GRID/2,RM_JOIN_T],2.5);
-            translate([-20,RM_POGO_RIM_DEPTH,-RM_EPS])
-              cube([40,RM_POGO_LOCK_Y-RM_GRID/2-RM_POGO_RIM_DEPTH,
-                    RM_JOIN_T+2*RM_EPS]);
-          }
+          // The 10 mm connector rail starts directly at the rim: no bridge gap.
+          translate([-grid_size(RM_POGO_LOCK_COUNT)/2,0,0])
+            rounded_box([grid_size(RM_POGO_LOCK_COUNT),
+                         RM_POGO_LOCK_Y+RM_GRID/2,RM_JOIN_T],2.5);
         }
         // Leave 0.2 mm perimeter clearance around the connector flange.
         translate([0,RM_POGO_FACE_T,RM_POGO_PIN_Z])
@@ -821,6 +817,10 @@ module pogo_pin_mount() {
         rotate([-90,0,0]) cylinder(h=RM_POGO_RIM_DEPTH,d=RM_POGO_PILOT_D);
     }
     translate([0,RM_POGO_LOCK_Y,0]) connector_grid(RM_POGO_LOCK_COUNT,1,cut=true);
+    // Shallow head seats keep standard M3x6 locks below the connector body.
+    for(x=grid_positions(RM_POGO_LOCK_COUNT))
+      translate([x,RM_POGO_LOCK_Y,RM_JOIN_T-RM_POGO_LOCK_RECESS])
+        cylinder(h=RM_POGO_LOCK_RECESS+RM_EPS,d=RM_M3_HEAD_CLEARANCE_D);
   }
 }
 

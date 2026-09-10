@@ -117,17 +117,18 @@ the PCB, headers, pins, solder, nominal jumpers, USB cable plugs and lock-screw
 heads. It runs in the normal build; it is not a physical qualification test.
 
 `pogo_pin_mount()` is a one-piece capsule face with a continuous rear rail and
-six standard downward RobotSkin pegs at 10 mm pitch, perpendicular to the contacts. Integral
-locating posts enter the connector's existing flange holes; rear M2 screws
-and washers retain it without visible front fasteners. The rear
+six standard downward RobotSkin pegs at 10 mm pitch, perpendicular to the
+contacts. Integral locating posts enter the connector's existing flange holes;
+rear M2 screws and washers retain it without visible front fasteners. The rear
 remains open. The module uses assembly orientation; its wrapper places the
-peg tips on the bed, with support under the rail. Revision D places the
-peg row behind the connector body, with contacts facing away from the plate; no clamp STL is needed.
+peg tips on the bed, with support under the rail. Revision E joins the peg rail
+directly to the rear rim, under the connector, with no spacer bridges or clamps.
 See [product compatibility](PRODUCT.md) for the nominal drawing dimensions and
-remaining fit measurements. `scad/source/pogo_fit.scad` shows the assembly (`MODE="mounted"` adds a RobotSkin plate);
-`python scripts/check_pogo_fit.py` checks the connector, mating flange, cables and both sets
-of screw-access paths, then measures the mesh hole centres during the normal build. It does not establish spring
-travel or physical screw retention.
+remaining fit measurements. `scad/source/pogo_fit.scad` shows the assembly
+(`MODE="mounted"` adds a RobotSkin plate). `python scripts/check_pogo_fit.py`
+checks the connector, mating flange, cables, empty-mount driver paths and
+installed screw heads, then measures the mesh hole centres during the normal
+build. It does not establish spring travel or physical screw retention.
 
 The mounting adapters deliberately expose RobotSkin in the useful direction:
 `tripod_adapter()` places two upward pegs under a plate, while the 2020-profile

@@ -47,7 +47,9 @@ def main():
             assert section_centres(mesh, [0,2,0], [0,1,0], [0,2], diameter) == [(-21.5,12),(21.5,12)], \
                 "Flange pilots/posts must share the 43 mm mounting pattern"
         assert section_centres(mesh, [0,0,-1], [0,0,1], [0,1], 5.9) == \
-            [(x,22) for x in [-25,-15,-5,5,15,25]], "Six standard pegs must sit behind the contact face on the 10 mm grid"
+            [(x,9.1) for x in [-25,-15,-5,5,15,25]], "Six standard pegs must sit behind the contact face on the 10 mm grid"
+        assert section_centres(mesh, [0,0,3.8], [0,0,1], [0,1], 6.2) == \
+            [(x,9.1) for x in [-25,-15,-5,5,15,25]], "All six locks need recessed head clearance"
         print("PASS mesh sections: 20 mm contact pitch, 43 mm flange pitch, six rear pegs at 10 mm")
         print("Contact diameter/tolerances and physical fit still need supplier confirmation")
 

@@ -33,7 +33,7 @@ is not a safety component. A production release requires every gate in
 | RM-PC-RPI5U-A | `rpi5_usb_carrier.stl` | A | Raspberry Pi 5 + Waveshare USB Board (C) carrier |
 | RM-PC-RPI5T-A | `rpi5_table.stl` | A | Raspberry Pi 5 open protection table |
 | RM-PC-ES3DC-F | `esp32_s3_devkitc_carrier.stl` | F | Solid-deck one-piece carrier for the 44-pin dual-USB-C ESP32-S3 board |
-| RM-PG-2P-D | `pogo_pin_mount.stl` | D | Outward-facing pogo mount with six rear RobotSkin pegs; nominal fit candidate |
+| RM-PG-2P-E | `pogo_pin_mount.stl` | E | Compact outward-facing pogo mount with six directly attached RobotSkin pegs; nominal fit candidate |
 | RM-SV-H25T-D | `h25t_horn_plate_3x3.stl` | D | STS3215 H25T 7 mm-radius drive plate with horn-screw clearance |
 | RM-SV-H25C-F | `h25t_port_cube_3x3.stl` | F | STS3215 drive plate to compact five-face RobotSkin end-effector hub |
 
@@ -89,7 +89,7 @@ qualification record in `QUALITY.md` is complete.
 
 ## Two-contact pogo mount nominal footprint
 
-Revision D targets the projecting-pin half shown in the user's drawing. The
+Revision E targets the projecting-pin half shown in the user's drawing. The
 screenshot suggests the following nominal connector dimensions; it is not a
 substitute for a readable supplier drawing or measurements. Confirm especially
 the contact diameter, mounting-hole bore and pin working height before printing.
@@ -101,12 +101,12 @@ the contact diameter, mounting-hole bore and pin working height before printing.
 | Pin centres / nominal pin diameter | 20 mm / 6 mm |
 | Printed pin clearance holes | 6.4 mm diameter |
 | Contact face | 60 × 18 × 0.8 mm, two apertures and a 0.3 mm perimeter bevel |
-| Mount body, excluding RobotSkin pegs | 60 × 27 × 21 mm |
+| Mount body, excluding RobotSkin pegs | 60 × 14.1 × 21 mm |
 | Pin centre above RobotSkin mating surface | 12 mm |
 | Nominal rear connector body used in clearance check | 31.3 mm wide × 11 mm high × 12 mm behind flange |
 | Locating posts | 4.2 mm OD, 2.8 mm high, 1.7 mm blind screw pilots |
 | Cable route tested behind body | 24 mm wide × 8 mm high, open rear exit |
-| RobotSkin pegs | Six at 10 mm pitch, X = −25, −15, −5, 5, 15, 25 mm; row 22 mm behind face; axes perpendicular to contacts |
+| RobotSkin pegs | Six at 10 mm pitch, X = −25, −15, −5, 5, 15, 25 mm; row 9.1 mm behind face; axes perpendicular to contacts |
 
 The flange pocket has 0.2 mm perimeter clearance. Two M2×3 thread-forming
 screws with 0.3 mm-thick washers clamp the existing flange holes onto the
@@ -114,7 +114,10 @@ locating posts, with nominal 2.5 mm thread engagement and 1.1 mm of material
 between the screw tip and front surface. The 0.9 mm pilot floor is blind.
 Do not substitute longer screws: they can pierce the front. No printed clamps
 or accessory heat-set inserts are needed. Six standard M3×6 screws and six
-standard plate inserts populate all RobotSkin locks.
+standard plate inserts populate all RobotSkin locks. Their 0.4 mm-deep head
+seats give 2.4 mm insert engagement and 0.5 mm clearance between the nominal
+2.4 mm-high heads and connector body. Use heads no taller than 2.4 mm.
+Fasten these locks before fitting the connector; the installed body covers the central screwdriver paths.
 
 The 0.8 mm skin consumes 0.8 mm of available pin projection. The mating half
 must reach the supplier's working compression before touching the printed
@@ -140,9 +143,11 @@ half targeted here. The readable nominal callouts match the model as follows:
 `check_pogo_fit.py` measures mesh sections to verify the above printed diameters
 and centre locations plus all six RobotSkin pegs. That verifies CAD output,
 not unreadable vendor dimensions. A full-height mating-flange sweep also
-checks that the bridge leaves 0.5 mm below the nominal mating flange.
-The contact face points away from the RobotSkin plate. The body and terminals
-sit between the face and rear peg row; leads exit above the rear rail through
-the tested cable envelope. The open bridge avoids a solid shelf under the body.
-Lock-screw access is checked with the connector installed and its mating
-counterpart removed; move the loose leads aside when using a screwdriver.
+checks that the rail leaves 0.5 mm below the nominal mating flange.
+The contact face points away from the RobotSkin plate. The 10 mm-deep rail
+starts at the rear rim with no bridge gap. The connector sits above its
+recessed screw heads; the connector's rear body and terminals project beyond
+the rail, leaving the cable exit open. Driver access is checked before the
+connector is installed, then installed head clearance and rear M2 access are
+checked with the connector present. Remove the connector before accessing
+covered RobotSkin lock screws.

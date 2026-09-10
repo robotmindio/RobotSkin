@@ -135,7 +135,7 @@ translate([130,0,0])
     connector_grid(2,2,direction="up",cut=true,body_t=RM_PLATE_T);
   }
 
-assert(RM_POGO_FACE_T == 0.8 && RM_POGO_FACE_SIZE == [60,18] && near(RM_POGO_SIZE[1],27) &&
+assert(RM_POGO_FACE_T == 0.8 && RM_POGO_FACE_SIZE == [60,18] && near(RM_POGO_SIZE[1],14.1) &&
        RM_POGO_SIZE[2] == 21 &&
        RM_POGO_PIN_PITCH == 20 && RM_POGO_PIN_HOLE_D > RM_POGO_PIN_D,
        "Pogo face must retain its compact envelope and clear both contacts");
@@ -150,8 +150,10 @@ assert(RM_POGO_PILOT_FLOOR > RM_POGO_FACE_T &&
 assert(RM_POGO_LOCK_COUNT == 6 &&
        grid_positions(RM_POGO_LOCK_COUNT) == [-25,-15,-5,5,15,25],
        "Pogo mount needs one uninterrupted standard 10 mm peg row");
-assert(RM_POGO_LOCK_Y-RM_M3_HEAD_CLEARANCE_D/2 >
-       RM_POGO_FACE_T+RM_POGO_FLANGE_SIZE[2]+RM_POGO_REAR_BODY[1]+2 &&
-       RM_POGO_PIN_Z-RM_POGO_FLANGE_SIZE[1]/2-RM_JOIN_T >= 0.5,
-       "The rail must sit behind the body/terminals, opposite the contact face");
+assert(near(RM_POGO_LOCK_Y-RM_GRID/2,RM_POGO_RIM_DEPTH),
+       "The rear rail must meet the rim directly, without spacer bridges");
+assert(RM_POGO_PIN_Z-RM_POGO_REAR_BODY[2]/2-
+       (RM_JOIN_T-RM_POGO_LOCK_RECESS+2.4) >= 0.5 &&
+       RM_LOCK_SCREW_LENGTH-(RM_JOIN_T-RM_POGO_LOCK_RECESS) < RM_INSERT_DEPTH,
+       "Recessed heads must clear the body without bottoming the M3x6 locks");
 translate([870,100,0]) pogo_pin_mount();

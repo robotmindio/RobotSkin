@@ -46,11 +46,12 @@ module clearance_envelope() {
   screw_access();
 }
 
-module screw_access() {
-  // All six RobotSkin heads and straight driver paths, connector installed/unmated.
+module screw_access(installed=false) {
+  // Drive the six locks before fitting the connector; only the heads remain beneath it.
+  // Nominal 2.4 mm head height matches the existing ESP32 hardware envelope.
   for(x=grid_positions(RM_POGO_LOCK_COUNT))
-    translate([x,RM_POGO_LOCK_Y,RM_JOIN_T+0.01])
-      cylinder(h=25,d=RM_M3_HEAD_CLEARANCE_D);
+    translate([x,RM_POGO_LOCK_Y,RM_JOIN_T-RM_POGO_LOCK_RECESS+0.01])
+      cylinder(h=installed ? 2.4-0.01 : 25,d=RM_M3_HEAD_CLEARANCE_D);
   for(side=[-1,1]) {
     // Rear M2 washer/head and driver clearance.
     translate([side*RM_POGO_MOUNT_PITCH/2,
@@ -79,9 +80,9 @@ if(MODE == "mounted")
 if(MODE == "collision") {
   translate([100,100,100]) cube(1); // Known volume makes empty intersections testable.
   intersection() { pogo_pin_mount(); clearance_envelope(); }
-  // Access tools must also clear the installed connector, not only the print.
+  // Installed M3 heads and rear M2 driver paths must clear the connector.
   intersection() {
-    screw_access();
+    screw_access(installed=true);
     union() { connector_plastic(); connector_contacts(); }
   }
 }
