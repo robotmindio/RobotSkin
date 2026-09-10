@@ -109,9 +109,9 @@ RM_POGO_PIN_Z = 12;
 RM_POGO_FACE_SIZE = [60,18];
 RM_POGO_RIM_DEPTH = 4.1;
 RM_POGO_LOCK_COUNT = 6;
-RM_POGO_LOCK_Y = -9;
+RM_POGO_LOCK_Y = 22;
 RM_POGO_SIZE = [RM_POGO_FACE_SIZE[0],
-                RM_POGO_RIM_DEPTH-RM_POGO_LOCK_Y+RM_GRID/2,
+                RM_POGO_LOCK_Y+RM_GRID/2,
                 RM_POGO_PIN_Z+RM_POGO_FACE_SIZE[1]/2];
 RM_POGO_POST_D = 4.2;
 RM_POGO_POST_H = 2.8;
@@ -774,7 +774,7 @@ module pogo_capsule(size,depth) {
       translate([side*(size[0]-size[1])/2,0]) circle(d=size[1],$fn=64);
 }
 
-// Thin capsule face and one outside rail with six consecutive 90-degree pegs.
+// Contacts face forward (-Y); six perpendicular RobotSkin pegs sit behind (+Y).
 // Rear M2 screws and washers use the connector's existing flange holes.
 module pogo_pin_mount() {
   difference() {
@@ -792,9 +792,15 @@ module pogo_pin_mount() {
               pogo_capsule(RM_POGO_FACE_SIZE,
                            RM_POGO_RIM_DEPTH-0.3);
           }
-          translate([-grid_size(RM_POGO_LOCK_COUNT)/2,RM_POGO_LOCK_Y-RM_GRID/2,0])
-            rounded_box([grid_size(RM_POGO_LOCK_COUNT),
-                         RM_POGO_FACE_T-RM_POGO_LOCK_Y+RM_GRID/2,RM_JOIN_T],2.5);
+          // Open-centre bridge: the rear rail clears the connector and its terminals.
+          difference() {
+            translate([-grid_size(RM_POGO_LOCK_COUNT)/2,0,0])
+              rounded_box([grid_size(RM_POGO_LOCK_COUNT),
+                           RM_POGO_LOCK_Y+RM_GRID/2,RM_JOIN_T],2.5);
+            translate([-20,RM_POGO_RIM_DEPTH,-RM_EPS])
+              cube([40,RM_POGO_LOCK_Y-RM_GRID/2-RM_POGO_RIM_DEPTH,
+                    RM_JOIN_T+2*RM_EPS]);
+          }
         }
         // Leave 0.2 mm perimeter clearance around the connector flange.
         translate([0,RM_POGO_FACE_T,RM_POGO_PIN_Z])

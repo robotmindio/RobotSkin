@@ -19,7 +19,7 @@ for mode in assembly part; do
     "$PROJECT_DIR/scad/source/esp32_fit.scad"
 done
 
-for mode in assembly part; do
+for mode in assembly part mounted; do
   openscad --autocenter --viewall --projection=ortho --imgsize=1400,1000 \
     --colorscheme=Tomorrow --camera=0,0,0,65,0,25,100 \
     -D "MODE=\"$mode\"" -o "$RENDER_DIR/pogo_$mode.png" \

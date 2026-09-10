@@ -118,24 +118,26 @@ through-bolts or reusable binding posts. Do not glue the plate backs together.
 
 ## Two-contact pogo mount
 
-Print one revision C mount. Confirm the
+Print one revision D mount. Confirm the
 [nominal footprint and mating travel](PRODUCT.md#two-contact-pogo-mount-nominal-footprint)
 against the actual connector. The older separate clamps are not used.
 
 1. Install six standard M3 inserts in six consecutive RobotSkin ports, then
-   attach the mount with six M3×6 screws through its outside lower/front rail.
-   This row is outside the connector body; keep the rear clear for wiring.
+   attach the mount with six M3×6 screws through its rear rail.
+   The contacts must face away from the RobotSkin plate; the connector body
+   sits between the face and peg row, with leads exiting above the rail.
 2. Feed the contacts through the face from behind. Align the flange's two
    existing mounting holes over the locating posts and seat it in the capsule
    recess without forcing either the contacts or posts.
 3. Place a 5 mm-OD, 0.3 mm-thick M2 washer over each rear flange hole. Fit one
    M2×3 thread-forming screw into each blind pilot, turning gently until the
    flange is retained. Do not use M2×6 screws here or overtighten the posts.
-4. Route the leads through the open centre/rear. Check pin movement and mate
+4. Route the leads through the open centre and above the rear rail. Check pin movement and mate
    with the actual counterpart: its housing must not meet the skin before
    the pins reach their specified working compression. Verify cable bend and
    strain relief with the actual leads.
 
 The standard RobotSkin locks and both rear M2 screws remain accessible with
-the connector installed and its mating counterpart removed. Inspect post cracking, front-face distortion and
+the connector installed and its mating counterpart removed; move leads aside
+for screwdriver access. Inspect post cracking, front-face distortion and
 retention during the first physical fit check before repeated use.

@@ -1,7 +1,7 @@
 include <../lib/robotskin.scad>
 
-MODE = "assembly"; // assembly, part, collision
-assert(MODE == "assembly" || MODE == "part" || MODE == "collision");
+MODE = "assembly"; // assembly, mounted, part, collision
+assert(MODE == "assembly" || MODE == "mounted" || MODE == "part" || MODE == "collision");
 
 // Nominal drawing envelope, not supplier CAD; pin stroke still needs confirmation.
 module connector_plastic() {
@@ -60,7 +60,7 @@ module screw_access() {
 }
 
 if(MODE == "part") pogo_pin_mount();
-if(MODE == "assembly") {
+if(MODE == "assembly" || MODE == "mounted") {
   color([0.2,0.24,0.29]) pogo_pin_mount();
   color([0.07,0.08,0.09]) connector_plastic();
   color([0.8,0.66,0.32]) connector_contacts();
@@ -72,6 +72,10 @@ if(MODE == "assembly") {
         translate([0,0,1.3]) cylinder(h=0.4,d=1.7,$fn=6);
       }
 }
+if(MODE == "mounted")
+  color([0.48,0.65,0.8])
+    translate([0,RM_POGO_LOCK_Y+RM_GRID/2,-RM_PLATE_T]) plate(6,2);
+
 if(MODE == "collision") {
   translate([100,100,100]) cube(1); // Known volume makes empty intersections testable.
   intersection() { pogo_pin_mount(); clearance_envelope(); }
