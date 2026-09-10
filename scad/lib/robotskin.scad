@@ -105,9 +105,14 @@ RM_POGO_FLANGE_SIZE = [55,15,3];
 RM_POGO_MOUNT_PITCH = 43;
 RM_POGO_MOUNT_HOLE_D = 4.5;
 RM_POGO_FACE_T = 0.8;
-RM_POGO_PIN_Z = 9;
-RM_POGO_SIZE = [60,13,18];
+RM_POGO_PIN_Z = 12;
+RM_POGO_FACE_SIZE = [60,18];
 RM_POGO_RIM_DEPTH = 4.1;
+RM_POGO_LOCK_COUNT = 6;
+RM_POGO_LOCK_Y = -9;
+RM_POGO_SIZE = [RM_POGO_FACE_SIZE[0],
+                RM_POGO_RIM_DEPTH-RM_POGO_LOCK_Y+RM_GRID/2,
+                RM_POGO_PIN_Z+RM_POGO_FACE_SIZE[1]/2];
 RM_POGO_POST_D = 4.2;
 RM_POGO_POST_H = 2.8;
 RM_POGO_PILOT_D = 1.7;
@@ -769,7 +774,7 @@ module pogo_capsule(size,depth) {
       translate([side*(size[0]-size[1])/2,0]) circle(d=size[1],$fn=64);
 }
 
-// Thin capsule face and two discrete 90-degree feet; centre/rear stay open.
+// Thin capsule face and one outside rail with six consecutive 90-degree pegs.
 // Rear M2 screws and washers use the connector's existing flange holes.
 module pogo_pin_mount() {
   difference() {
@@ -779,19 +784,19 @@ module pogo_pin_mount() {
           translate([0,0,RM_POGO_PIN_Z]) {
             // Small front bevel, continuous rounded perimeter.
             hull() {
-              pogo_capsule([RM_POGO_SIZE[0]-0.6,RM_POGO_SIZE[2]-0.6],0.1);
+              pogo_capsule([RM_POGO_FACE_SIZE[0]-0.6,RM_POGO_FACE_SIZE[1]-0.6],0.1);
               translate([0,0.3,0])
-                pogo_capsule([RM_POGO_SIZE[0],RM_POGO_SIZE[2]],0.1);
+                pogo_capsule(RM_POGO_FACE_SIZE,0.1);
             }
             translate([0,0.3,0])
-              pogo_capsule([RM_POGO_SIZE[0],RM_POGO_SIZE[2]],
+              pogo_capsule(RM_POGO_FACE_SIZE,
                            RM_POGO_RIM_DEPTH-0.3);
           }
-          for(side=[-1,1])
-            translate([side*2.5*RM_GRID-5,1.5,0])
-              rounded_box([10,11.5,RM_JOIN_T],2.5);
+          translate([-grid_size(RM_POGO_LOCK_COUNT)/2,RM_POGO_LOCK_Y-RM_GRID/2,0])
+            rounded_box([grid_size(RM_POGO_LOCK_COUNT),
+                         RM_POGO_FACE_T-RM_POGO_LOCK_Y+RM_GRID/2,RM_JOIN_T],2.5);
         }
-        // The 0.2 mm perimeter clearance also cuts the feet clear of the flange.
+        // Leave 0.2 mm perimeter clearance around the connector flange.
         translate([0,RM_POGO_FACE_T,RM_POGO_PIN_Z])
           pogo_capsule([RM_POGO_FLANGE_SIZE[0]+0.4,
                         RM_POGO_FLANGE_SIZE[1]+0.4],RM_POGO_RIM_DEPTH+RM_EPS);
@@ -799,8 +804,8 @@ module pogo_pin_mount() {
       for(side=[-1,1]) {
         translate([side*RM_POGO_MOUNT_PITCH/2,RM_POGO_FACE_T-RM_EPS,RM_POGO_PIN_Z])
           rotate([-90,0,0]) cylinder(h=RM_POGO_POST_H+RM_EPS,d=RM_POGO_POST_D);
-        translate([side*2.5*RM_GRID,8,0]) connector_peg();
       }
+      translate([0,RM_POGO_LOCK_Y,0]) connector_grid(RM_POGO_LOCK_COUNT,1);
     }
     for(side=[-1,1]) {
       translate([side*RM_POGO_PIN_PITCH/2,-RM_EPS,RM_POGO_PIN_Z])
@@ -808,8 +813,8 @@ module pogo_pin_mount() {
           cylinder(h=RM_POGO_FACE_T+2*RM_EPS,d=RM_POGO_PIN_HOLE_D,$fn=64);
       translate([side*RM_POGO_MOUNT_PITCH/2,RM_POGO_PILOT_FLOOR,RM_POGO_PIN_Z])
         rotate([-90,0,0]) cylinder(h=RM_POGO_RIM_DEPTH,d=RM_POGO_PILOT_D);
-      translate([side*2.5*RM_GRID,8,0]) connector_screw_cut();
     }
+    translate([0,RM_POGO_LOCK_Y,0]) connector_grid(RM_POGO_LOCK_COUNT,1,cut=true);
   }
 }
 

@@ -118,12 +118,13 @@ through-bolts or reusable binding posts. Do not glue the plate backs together.
 
 ## Two-contact pogo mount
 
-Print one revision B mount. Confirm the
+Print one revision C mount. Confirm the
 [nominal footprint and mating travel](PRODUCT.md#two-contact-pogo-mount-nominal-footprint)
 against the actual connector. The older separate clamps are not used.
 
-1. Install two standard M3 inserts in RobotSkin plate ports 50 mm apart, then
-   attach the empty mount with two M3×6 screws through its rear feet.
+1. Install six standard M3 inserts in six consecutive RobotSkin ports, then
+   attach the mount with six M3×6 screws through its outside lower/front rail.
+   This row is outside the connector body; keep the rear clear for wiring.
 2. Feed the contacts through the face from behind. Align the flange's two
    existing mounting holes over the locating posts and seat it in the capsule
    recess without forcing either the contacts or posts.
@@ -136,5 +137,5 @@ against the actual connector. The older separate clamps are not used.
    strain relief with the actual leads.
 
 The standard RobotSkin locks and both rear M2 screws remain accessible with
-the connector installed. Inspect post cracking, front-face distortion and
+the connector installed and its mating counterpart removed. Inspect post cracking, front-face distortion and
 retention during the first physical fit check before repeated use.

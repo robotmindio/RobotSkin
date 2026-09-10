@@ -135,7 +135,8 @@ translate([130,0,0])
     connector_grid(2,2,direction="up",cut=true,body_t=RM_PLATE_T);
   }
 
-assert(RM_POGO_FACE_T == 0.8 && RM_POGO_SIZE == [60,13,18] &&
+assert(RM_POGO_FACE_T == 0.8 && RM_POGO_FACE_SIZE == [60,18] && near(RM_POGO_SIZE[1],18.1) &&
+       RM_POGO_SIZE[2] == 21 &&
        RM_POGO_PIN_PITCH == 20 && RM_POGO_PIN_HOLE_D > RM_POGO_PIN_D,
        "Pogo face must retain its compact envelope and clear both contacts");
 assert(RM_POGO_MOUNT_PITCH == 43 &&
@@ -146,7 +147,10 @@ assert(RM_POGO_MOUNT_PITCH == 43 &&
 assert(RM_POGO_PILOT_FLOOR > RM_POGO_FACE_T &&
        RM_POGO_FACE_T+RM_POGO_FLANGE_SIZE[2]+0.3-3 > RM_POGO_PILOT_FLOOR,
        "M2x3 screws through 0.3 mm washers must not break through the face");
-assert(RM_POGO_FACE_T+RM_POGO_FLANGE_SIZE[2] < 8-RM_M3_HEAD_CLEARANCE_D/2 &&
-       RM_POGO_REAR_BODY[0]/2 < 2.5*RM_GRID-RM_M3_HEAD_CLEARANCE_D/2,
-       "RobotSkin lock heads and drivers must clear the connector");
+assert(RM_POGO_LOCK_COUNT == 6 &&
+       grid_positions(RM_POGO_LOCK_COUNT) == [-25,-15,-5,5,15,25],
+       "Pogo mount needs one uninterrupted standard 10 mm peg row");
+assert(RM_POGO_LOCK_Y+RM_M3_HEAD_CLEARANCE_D/2 < RM_POGO_FACE_T-5 &&
+       RM_POGO_PIN_Z-RM_POGO_FLANGE_SIZE[1]/2-RM_JOIN_T >= 0.5,
+       "Outside rail must clear the projecting pins and mating flange");
 translate([870,100,0]) pogo_pin_mount();

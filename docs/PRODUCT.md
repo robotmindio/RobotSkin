@@ -33,7 +33,7 @@ is not a safety component. A production release requires every gate in
 | RM-PC-RPI5U-A | `rpi5_usb_carrier.stl` | A | Raspberry Pi 5 + Waveshare USB Board (C) carrier |
 | RM-PC-RPI5T-A | `rpi5_table.stl` | A | Raspberry Pi 5 open protection table |
 | RM-PC-ES3DC-F | `esp32_s3_devkitc_carrier.stl` | F | Solid-deck one-piece carrier for the 44-pin dual-USB-C ESP32-S3 board |
-| RM-PG-2P-B | `pogo_pin_mount.stl` | B | Compact one-piece two-contact pogo mount; nominal fit candidate |
+| RM-PG-2P-C | `pogo_pin_mount.stl` | C | Capsule pogo mount with six outside RobotSkin pegs; nominal fit candidate |
 | RM-SV-H25T-D | `h25t_horn_plate_3x3.stl` | D | STS3215 H25T 7 mm-radius drive plate with horn-screw clearance |
 | RM-SV-H25C-F | `h25t_port_cube_3x3.stl` | F | STS3215 drive plate to compact five-face RobotSkin end-effector hub |
 
@@ -80,7 +80,7 @@ standoff insert after passing through a 1.6 mm PCB.
 | DIN adapter | V0.1 pegs/carriers | EN 60715 TH35 rail | Slides on from a free rail end; it is not a front-snap clip |
 | Tripod adapter | V0.1 plate | 1/4-20 tripod screw | Maximum 4.5 mm screw entry into adapter |
 | Cable clip | V0.1 plate | 7.5 mm nominal flat Grove cable | Verify cable jacket compression before repeated use |
-| Two-contact pogo mount | Two V0.1 ports, 50 mm apart | User-supplied two-contact connector screenshot | Nominal footprint below; pin travel, M2 retention and physical fit unverified |
+| Two-contact pogo mount | Six consecutive V0.1 ports at 10 mm pitch | User-supplied two-contact connector screenshot | Nominal footprint below; pin travel, M2 retention and physical fit unverified |
 | H25T drive plate | Four V0.1 corner female ports with M3-through paths | STS3215/LeRobot H25T horn, 4×M3 at 7 mm radius | All five horn screws install from the port face |
 | H25T end-effector hub | H25T drive plate | Five top ports plus two ports on each vertical face | Four 22 mm corner M3 access bores lock into the drive plate |
 
@@ -89,7 +89,7 @@ qualification record in `QUALITY.md` is complete.
 
 ## Two-contact pogo mount nominal footprint
 
-Revision B targets the projecting-pin half shown in the user's drawing. The
+Revision C targets the projecting-pin half shown in the user's drawing. The
 screenshot suggests the following nominal connector dimensions; it is not a
 substitute for a readable supplier drawing or measurements. Confirm especially
 the contact diameter, mounting-hole bore and pin working height before printing.
@@ -101,20 +101,20 @@ the contact diameter, mounting-hole bore and pin working height before printing.
 | Pin centres / nominal pin diameter | 20 mm / 6 mm |
 | Printed pin clearance holes | 6.4 mm diameter |
 | Contact face | 60 × 18 × 0.8 mm, two apertures and a 0.3 mm perimeter bevel |
-| Mount body, excluding RobotSkin pegs | 60 × 13 × 18 mm |
-| Pin centre above RobotSkin mating surface | 9 mm |
+| Mount body, excluding RobotSkin pegs | 60 × 18.1 × 21 mm |
+| Pin centre above RobotSkin mating surface | 12 mm |
 | Nominal rear connector body used in clearance check | 31.3 mm wide × 11 mm high × 12 mm behind flange |
 | Locating posts | 4.2 mm OD, 2.8 mm high, 1.7 mm blind screw pilots |
 | Cable route tested behind body | 24 mm wide × 8 mm high, open rear exit |
-| RobotSkin pegs | 50 mm apart; axes perpendicular to contacts |
+| RobotSkin pegs | Six at 10 mm pitch, X = −25, −15, −5, 5, 15, 25 mm; row 9 mm forward of face; axes perpendicular to contacts |
 
 The flange pocket has 0.2 mm perimeter clearance. Two M2×3 thread-forming
 screws with 0.3 mm-thick washers clamp the existing flange holes onto the
 locating posts, with nominal 2.5 mm thread engagement and 1.1 mm of material
 between the screw tip and front surface. The 0.9 mm pilot floor is blind.
 Do not substitute longer screws: they can pierce the front. No printed clamps
-or accessory heat-set inserts are needed. Two standard M3×6 screws and two
-standard plate inserts provide the RobotSkin locks.
+or accessory heat-set inserts are needed. Six standard M3×6 screws and six
+standard plate inserts populate all RobotSkin locks.
 
 The 0.8 mm skin consumes 0.8 mm of available pin projection. The mating half
 must reach the supplier's working compression before touching the printed
@@ -122,4 +122,25 @@ face. The preview's 5 mm projection is illustrative; stroke and working
 height remain unconfirmed. This mount does not fit the flush-contact half.
 Check the M2 retention in the first PETG print; CAD clearance is not physical
 qualification. Revision A's separate clamps are obsolete and must not be used
-with revision B.
+with later revisions.
+
+### Drawing-to-model hole audit
+
+Both diagrams show the same nominal contact and mounting centres. The upper
+sheet depicts the flush-contact half; the lower sheet is the projecting-pin
+half targeted here. The readable nominal callouts match the model as follows:
+
+| Drawing feature | Printed interface | Review |
+|---|---|---|
+| 20 mm contact pitch | Two apertures at X = ±10 mm | Centres match |
+| 43 mm flange mounting pitch | Posts and blind pilots at X = ±21.5 mm | Centres match |
+| Ø4.5 flange mounting bore | Ø4.2 locating post, Ø1.7 pilot for the rear M2 screw | Intentional 0.3 mm diametral post clearance; not a Ø4.5 hole in the mount |
+| Contact diameter and small tolerances | Ø6.4 aperture based on a nominal Ø6 contact | Callout insufficiently legible; not confirmed from this screenshot |
+
+`check_pogo_fit.py` measures mesh sections to verify the above printed diameters
+and centre locations plus all six RobotSkin pegs. That verifies CAD output,
+not unreadable vendor dimensions. A full-height mating-flange sweep also
+checks that the outside rail leaves 0.5 mm below the nominal mating flange.
+The rear body, terminals and cable route remain entirely behind the face,
+clear of the outside row. Lock-screw access is checked with the connector
+installed and its mating counterpart removed.

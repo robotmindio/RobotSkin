@@ -116,16 +116,17 @@ preview. `python scripts/check_esp32_fit.py` checks unwanted intersections with
 the PCB, headers, pins, solder, nominal jumpers, USB cable plugs and lock-screw
 heads. It runs in the normal build; it is not a physical qualification test.
 
-`pogo_pin_mount()` is a one-piece capsule face with two short rear feet and
-standard downward RobotSkin pegs, perpendicular to the contacts. Integral
+`pogo_pin_mount()` is a one-piece capsule face with a continuous outside lower/front rail and
+six standard downward RobotSkin pegs at 10 mm pitch, perpendicular to the contacts. Integral
 locating posts enter the connector's existing flange holes; rear M2 screws
-and washers retain it without visible front fasteners. The centre and rear
-remain open. The module uses assembly orientation; its wrapper puts the face
-on the bed. Revision B replaces the separate clamps; no clamp STL is needed.
+and washers retain it without visible front fasteners. The rear
+remains open. The module uses assembly orientation; its wrapper places the
+peg tips on the bed, with support under the rail. Revision C moves the entire
+peg row outside the connector footprint; no clamp STL is needed.
 See [product compatibility](PRODUCT.md) for the nominal drawing dimensions and
 remaining fit measurements. `scad/source/pogo_fit.scad` shows the assembly;
-`python scripts/check_pogo_fit.py` checks the connector, cables and both sets
-of screw-access paths during the normal build. It does not establish spring
+`python scripts/check_pogo_fit.py` checks the connector, mating flange, cables and both sets
+of screw-access paths, then measures the mesh hole centres during the normal build. It does not establish spring
 travel or physical screw retention.
 
 The mounting adapters deliberately expose RobotSkin in the useful direction:

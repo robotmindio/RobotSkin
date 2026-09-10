@@ -38,13 +38,20 @@ module connector_contacts() {
 module clearance_envelope() {
   connector_plastic();
   connector_contacts();
-  // Open cable route begins at the rear body and continues beyond the feet.
-  translate([-12,RM_POGO_FACE_T+RM_POGO_FLANGE_SIZE[2]+RM_POGO_REAR_BODY[1],5])
+  // Open cable route begins at the rear body.
+  translate([-12,RM_POGO_FACE_T+RM_POGO_FLANGE_SIZE[2]+RM_POGO_REAR_BODY[1],RM_POGO_PIN_Z-4])
     cube([24,25,8]);
-  for(side=[-1,1]) {
-    // RobotSkin screw heads and straight driver paths.
-    translate([side*2.5*RM_GRID,8,RM_JOIN_T+0.01])
+  // The mating flange can approach the skin without striking the outside rail.
+  translate([0,-30,RM_POGO_PIN_Z]) pogo_capsule(RM_POGO_FLANGE_SIZE,29.99);
+  screw_access();
+}
+
+module screw_access() {
+  // All six RobotSkin heads and straight driver paths, connector installed/unmated.
+  for(x=grid_positions(RM_POGO_LOCK_COUNT))
+    translate([x,RM_POGO_LOCK_Y,RM_JOIN_T+0.01])
       cylinder(h=25,d=RM_M3_HEAD_CLEARANCE_D);
+  for(side=[-1,1]) {
     // Rear M2 washer/head and driver clearance.
     translate([side*RM_POGO_MOUNT_PITCH/2,
                RM_POGO_FACE_T+RM_POGO_FLANGE_SIZE[2]+0.01,RM_POGO_PIN_Z])
@@ -68,4 +75,9 @@ if(MODE == "assembly") {
 if(MODE == "collision") {
   translate([100,100,100]) cube(1); // Known volume makes empty intersections testable.
   intersection() { pogo_pin_mount(); clearance_envelope(); }
+  // Access tools must also clear the installed connector, not only the print.
+  intersection() {
+    screw_access();
+    union() { connector_plastic(); connector_contacts(); }
+  }
 }

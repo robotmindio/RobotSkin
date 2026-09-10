@@ -30,4 +30,8 @@ openscad --autocenter --viewall --projection=ortho --imgsize=1400,1000 \
   --colorscheme=Tomorrow --camera=0,0,0,60,0,205,100 \
   -o "$RENDER_DIR/pogo_rear.png" "$PROJECT_DIR/scad/source/pogo_fit.scad"
 
+openscad --autocenter --viewall --projection=ortho --imgsize=1400,1000 \
+  --colorscheme=Tomorrow --camera=0,0,0,120,0,25,100 \
+  -D 'MODE="part"' -o "$RENDER_DIR/pogo_under.png" "$PROJECT_DIR/scad/source/pogo_fit.scad"
+
 echo "Rendered previews in $RENDER_DIR"
