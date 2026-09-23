@@ -1,0 +1,10 @@
+# Python tools used by scripts/*.py (validate_stl.py, check_esp32_fit.py,
+# check_pogo_fit.py) and installed by CI (.github/workflows/validate.yml).
+#
+# trimesh.Trimesh.split() needs a graph backend (networkx or scipy) to find
+# connected components; trimesh alone raises "no graph engines available!".
+# Pin trimesh so CI is reproducible; scipy is trimesh's lighter-weight graph
+# backend (no separate compiled extension beyond what it already needs).
+trimesh==4.8.3
+scipy
+networkx
