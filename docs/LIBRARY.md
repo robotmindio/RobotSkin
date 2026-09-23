@@ -16,6 +16,7 @@ standards
 ```scad
 plate(columns, rows, thickness=RM_PLATE_T);
 through_plate(columns, rows, thickness=RM_PLATE_T);
+double_sided_plate(columns, rows, thickness=2*RM_PLATE_T);
 h25t_horn_plate_3x3(thickness=2*RM_PLATE_T,
                      hub_radius=RM_STS3215_HUB_RADIUS);
 h25t_port_cube_3x3();
@@ -35,6 +36,7 @@ uno_carrier();
 rpi5_usb_carrier();
 rpi5_table();
 esp32_s3_devkitc_carrier();
+pogo_pin_mount();
 ```
 
 `plate()` requires integer dimensions of at least 2×2. Width and height are
@@ -42,6 +44,10 @@ derived as `count × RM_GRID`; `thickness` defaults to 4 mm and may be increased
 for custom structural plates. The four corner ports receive the M3 through bore.
 `through_plate()` uses the same dimensions and identical octagonal ports, but
 continues the 3.4 mm M3 centre path through the backing wall at every station.
+`double_sided_plate()` permits positive integer dimensions, including a 4×1
+row, and provides standard blind female ports on both faces. It is 8 mm thick
+by default, retaining a 2 mm wall between the opposing insert pockets; its
+ports are blind, not M3-through.
 Join counts control their connector field without changing the shared port,
 peg, hardware, or fit standard.
 
@@ -114,6 +120,20 @@ at the hooks. Physical fit, release force and durability are not yet verified.
 preview. `python scripts/check_esp32_fit.py` checks unwanted intersections with
 the PCB, headers, pins, solder, nominal jumpers, USB cable plugs and lock-screw
 heads. It runs in the normal build; it is not a physical qualification test.
+
+`pogo_pin_mount()` is a one-piece capsule face with a continuous rear rail and
+six standard downward RobotSkin pegs at 10 mm pitch, perpendicular to the
+contacts. Integral locating posts enter the connector's existing flange holes;
+rear M2 screws and washers retain it without visible front fasteners. The rear
+remains open. The module uses assembly orientation; its wrapper places the
+peg tips on the bed, with support under the rail. Revision E joins the peg rail
+directly to the rear rim, under the connector, with no spacer bridges or clamps.
+See [product compatibility](PRODUCT.md) for the nominal drawing dimensions and
+remaining fit measurements. `scad/source/pogo_fit.scad` shows the assembly
+(`MODE="mounted"` adds a RobotSkin plate). `python scripts/check_pogo_fit.py`
+checks the connector, mating flange, cables, empty-mount driver paths and
+installed screw heads, then measures the mesh hole centres during the normal
+build. It does not establish spring travel or physical screw retention.
 
 The mounting adapters deliberately expose RobotSkin in the useful direction:
 `tripod_adapter()` places two upward pegs under a plate, while the 2020-profile

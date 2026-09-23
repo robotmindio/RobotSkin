@@ -97,6 +97,29 @@ RM_LD06_INSERT_BORE = 3.7;
 RM_LD06_INSERT_DEPTH = 3.5;
 RM_LEKIWI_CORNER_R = 7.5;
 
+// Pogo connector drawing: nominal envelope; physical dimensions/travel unconfirmed.
+RM_POGO_PIN_PITCH = 20;
+RM_POGO_PIN_D = 6;
+RM_POGO_PIN_HOLE_D = 6.4;
+RM_POGO_FLANGE_SIZE = [55,15,3];
+RM_POGO_MOUNT_PITCH = 43;
+RM_POGO_MOUNT_HOLE_D = 4.5;
+RM_POGO_FACE_T = 0.8;
+RM_POGO_PIN_Z = 12;
+RM_POGO_FACE_SIZE = [60,18];
+RM_POGO_RIM_DEPTH = 4.1;
+RM_POGO_LOCK_COUNT = 6;
+RM_POGO_LOCK_Y = RM_POGO_RIM_DEPTH+RM_GRID/2;
+RM_POGO_LOCK_RECESS = 0.4;
+RM_POGO_SIZE = [RM_POGO_FACE_SIZE[0],
+                RM_POGO_LOCK_Y+RM_GRID/2,
+                RM_POGO_PIN_Z+RM_POGO_FACE_SIZE[1]/2];
+RM_POGO_POST_D = 4.2;
+RM_POGO_POST_H = 2.8;
+RM_POGO_PILOT_D = 1.7;
+RM_POGO_PILOT_FLOOR = 0.9;
+RM_POGO_REAR_BODY = [31.3,12,11];
+
 // Calibration-part standard.
 RM_TEST_MALE_FITS = [0,0.05,0.10,0.15,0.20];
 RM_TEST_PAD_SIZE = 12;
@@ -305,6 +328,22 @@ module through_plate(columns,rows,thickness=RM_PLATE_T) {
     plate_body(columns,rows,thickness);
     plate_port_cuts(columns,rows,thickness);
     plate_all_through_cuts(columns,rows,thickness);
+  }
+}
+
+// Female ports on both faces need two standard plate thicknesses so their
+// insert pockets retain a 2 mm shared backing wall.
+module double_sided_plate(columns,rows,thickness=2*RM_PLATE_T) {
+  assert(columns >= 1 && rows >= 1 &&
+         columns == floor(columns) && rows == floor(rows),
+         "Double-sided plate dimensions must be positive integers");
+  assert(thickness >= 2*RM_PLATE_T,
+         "Double-sided plates require at least 8 mm thickness");
+  difference() {
+    plate_body(columns,rows,thickness);
+    plate_port_cuts(columns,rows,thickness);
+    for(x=grid_positions(columns),y=grid_positions(rows))
+      translate([x,y,0]) port_cut();
   }
 }
 
@@ -742,6 +781,62 @@ module uno_carrier() {
     for(position=locks)
       translate([position[0],position[1],0])
         connector_screw_cut(body_t=RM_CARRIER_T);
+  }
+}
+
+// Capsule profile centred on X/Z, extruded toward the connector's rear (+Y).
+module pogo_capsule(size,depth) {
+  rotate([-90,0,0]) linear_extrude(height=depth)
+    hull() for(side=[-1,1])
+      translate([side*(size[0]-size[1])/2,0]) circle(d=size[1],$fn=64);
+}
+
+// Contacts face forward (-Y); six perpendicular RobotSkin pegs sit behind (+Y).
+// Rear M2 screws and washers use the connector's existing flange holes.
+module pogo_pin_mount() {
+  difference() {
+    union() {
+      difference() {
+        union() {
+          translate([0,0,RM_POGO_PIN_Z]) {
+            // Small front bevel, continuous rounded perimeter.
+            hull() {
+              pogo_capsule([RM_POGO_FACE_SIZE[0]-0.6,RM_POGO_FACE_SIZE[1]-0.6],0.1);
+              translate([0,0.3,0])
+                pogo_capsule(RM_POGO_FACE_SIZE,0.1);
+            }
+            translate([0,0.3,0])
+              pogo_capsule(RM_POGO_FACE_SIZE,
+                           RM_POGO_RIM_DEPTH-0.3);
+          }
+          // The 10 mm connector rail starts directly at the rim: no bridge gap.
+          translate([-grid_size(RM_POGO_LOCK_COUNT)/2,0,0])
+            rounded_box([grid_size(RM_POGO_LOCK_COUNT),
+                         RM_POGO_LOCK_Y+RM_GRID/2,RM_JOIN_T],2.5);
+        }
+        // Leave 0.2 mm perimeter clearance around the connector flange.
+        translate([0,RM_POGO_FACE_T,RM_POGO_PIN_Z])
+          pogo_capsule([RM_POGO_FLANGE_SIZE[0]+0.4,
+                        RM_POGO_FLANGE_SIZE[1]+0.4],RM_POGO_RIM_DEPTH+RM_EPS);
+      }
+      for(side=[-1,1]) {
+        translate([side*RM_POGO_MOUNT_PITCH/2,RM_POGO_FACE_T-RM_EPS,RM_POGO_PIN_Z])
+          rotate([-90,0,0]) cylinder(h=RM_POGO_POST_H+RM_EPS,d=RM_POGO_POST_D);
+      }
+      translate([0,RM_POGO_LOCK_Y,0]) connector_grid(RM_POGO_LOCK_COUNT,1);
+    }
+    for(side=[-1,1]) {
+      translate([side*RM_POGO_PIN_PITCH/2,-RM_EPS,RM_POGO_PIN_Z])
+        rotate([-90,0,0])
+          cylinder(h=RM_POGO_FACE_T+2*RM_EPS,d=RM_POGO_PIN_HOLE_D,$fn=64);
+      translate([side*RM_POGO_MOUNT_PITCH/2,RM_POGO_PILOT_FLOOR,RM_POGO_PIN_Z])
+        rotate([-90,0,0]) cylinder(h=RM_POGO_RIM_DEPTH,d=RM_POGO_PILOT_D);
+    }
+    translate([0,RM_POGO_LOCK_Y,0]) connector_grid(RM_POGO_LOCK_COUNT,1,cut=true);
+    // Shallow head seats keep standard M3x6 locks below the connector body.
+    for(x=grid_positions(RM_POGO_LOCK_COUNT))
+      translate([x,RM_POGO_LOCK_Y,RM_JOIN_T-RM_POGO_LOCK_RECESS])
+        cylinder(h=RM_POGO_LOCK_RECESS+RM_EPS,d=RM_M3_HEAD_CLEARANCE_D);
   }
 }
 

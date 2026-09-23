@@ -108,6 +108,7 @@ translate([50,-50,0]) h25t_horn_plate_3x3();
 translate([100,-50,0]) h25t_port_cube_3x3();
 translate([0,50,0]) through_plate(5,3);
 translate([0,100,0]) through_plate(5,8);
+translate([70,100,0]) double_sided_plate(4,1);
 translate([30,0,0]) flat_join(1,1);
 translate([50,0,0]) angle_join(1,1);
 translate([75,0,0]) outer_angle_join(1,1);
@@ -134,3 +135,26 @@ translate([130,0,0])
     cube([grid_size(2),grid_size(2),RM_PLATE_T],center=true);
     connector_grid(2,2,direction="up",cut=true,body_t=RM_PLATE_T);
   }
+
+assert(RM_POGO_FACE_T == 0.8 && RM_POGO_FACE_SIZE == [60,18] && near(RM_POGO_SIZE[1],14.1) &&
+       RM_POGO_SIZE[2] == 21 &&
+       RM_POGO_PIN_PITCH == 20 && RM_POGO_PIN_HOLE_D > RM_POGO_PIN_D,
+       "Pogo face must retain its compact envelope and clear both contacts");
+assert(RM_POGO_MOUNT_PITCH == 43 &&
+       RM_POGO_POST_D < RM_POGO_MOUNT_HOLE_D &&
+       (RM_POGO_POST_D-RM_POGO_PILOT_D)/2 >= 1.2 &&
+       RM_POGO_POST_H < RM_POGO_FLANGE_SIZE[2],
+       "Pogo locating posts must fit flange holes with printable screw walls");
+assert(RM_POGO_PILOT_FLOOR > RM_POGO_FACE_T &&
+       RM_POGO_FACE_T+RM_POGO_FLANGE_SIZE[2]+0.3-3 > RM_POGO_PILOT_FLOOR,
+       "M2x3 screws through 0.3 mm washers must not break through the face");
+assert(RM_POGO_LOCK_COUNT == 6 &&
+       grid_positions(RM_POGO_LOCK_COUNT) == [-25,-15,-5,5,15,25],
+       "Pogo mount needs one uninterrupted standard 10 mm peg row");
+assert(near(RM_POGO_LOCK_Y-RM_GRID/2,RM_POGO_RIM_DEPTH),
+       "The rear rail must meet the rim directly, without spacer bridges");
+assert(RM_POGO_PIN_Z-RM_POGO_REAR_BODY[2]/2-
+       (RM_JOIN_T-RM_POGO_LOCK_RECESS+2.4) >= 0.5 &&
+       RM_LOCK_SCREW_LENGTH-(RM_JOIN_T-RM_POGO_LOCK_RECESS) < RM_INSERT_DEPTH,
+       "Recessed heads must clear the body without bottoming the M3x6 locks");
+translate([870,100,0]) pogo_pin_mount();
