@@ -7,7 +7,7 @@ from pathlib import Path
 import trimesh
 
 
-def validate(path: Path) -> list[str]:
+def validate(path: Path, allow_multiple_shells: bool = False) -> list[str]:
     loaded = trimesh.load_mesh(path, process=True)
     mesh = loaded.dump(concatenate=True) if isinstance(loaded, trimesh.Scene) else loaded
     errors = []
@@ -20,7 +20,7 @@ def validate(path: Path) -> list[str]:
     if mesh.volume <= 0:
         errors.append(f"non-positive volume ({mesh.volume:g})")
     components = mesh.split(only_watertight=False)
-    if len(components) != 1:
+    if not allow_multiple_shells and len(components) != 1:
         errors.append(f"{len(components)} disconnected shells (floating regions)")
     return errors
 
@@ -28,10 +28,17 @@ def validate(path: Path) -> list[str]:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("paths", nargs="+", type=Path)
+    parser.add_argument(
+        "--allow-multiple-shells",
+        action="store_true",
+        help="permit calibration sets that intentionally bundle several "
+             "independent bodies on one plate (e.g. scad/test_parts); "
+             "watertightness, winding, and volume are still checked",
+    )
     args = parser.parse_args()
     failed = False
     for path in args.paths:
-        errors = validate(path)
+        errors = validate(path, allow_multiple_shells=args.allow_multiple_shells)
         if errors:
             failed = True
             print(f"FAIL {path}: {'; '.join(errors)}")

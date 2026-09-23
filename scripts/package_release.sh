@@ -11,6 +11,12 @@ VERSION="$(tr -d '[:space:]' < "$PROJECT_DIR/VERSION")"
 "$PROJECT_DIR/scripts/build.sh"
 "$PROJECT_DIR/scripts/build_test_parts.sh"
 python "$PROJECT_DIR/scripts/validate_stl.py" "$PROJECT_DIR"/stl/*.stl
+# Calibration sets (e.g. tolerance_male_set) intentionally bundle several
+# independent bodies on one plate; watertightness, winding, and volume are
+# still checked, just not the single-shell rule that applies to production
+# parts.
+python "$PROJECT_DIR/scripts/validate_stl.py" --allow-multiple-shells \
+  "$PROJECT_DIR"/test-stl/*.stl
 
 STAGE_ROOT="$(mktemp -d)"
 trap 'rm -rf "$STAGE_ROOT"' EXIT
